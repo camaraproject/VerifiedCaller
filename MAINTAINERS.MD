@@ -1,3 +1,9 @@
 | Org                    | Name                                      | GitHub Username        |
 | -----------------------| ------------------------------------------| -----------------------|
-| §company§ | §name§ | §github_username§ |
+| China Telecom	| Dan Xu | DanXu-ChinaTelecom |
+| China Telecom	| Xianyang Zhang | zxyxwz |
+| ZTE	| Tu Jiashun	| Jason-ZTE |
+| China Unicom	| Yang Fan	| chinaunicomyangfan |
+| China Mobile	| Hanbai Wang	| HanbaiWang |
+| HuaWei | Shuting Qing | ShutingQing |
+
