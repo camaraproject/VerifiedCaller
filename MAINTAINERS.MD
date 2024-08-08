@@ -1,7 +1,7 @@
 | Org                    | Name                                      | GitHub Username        |
 | -----------------------| ------------------------------------------| -----------------------|
 | China Telecom	| Dan Xu | DanXu-ChinaTelecom |
-| China Telecom	| Xianyang Zhang | zxyxwz |
+| China Telecom	| Yong Deng | DENGYONG18 |
 | ZTE	| Tu Jiashun	| Jason-ZTE |
 | China Unicom	| Yang Fan	| chinaunicomyangfan |
 | China Mobile	| Hanbai Wang	| HanbaiWang |
