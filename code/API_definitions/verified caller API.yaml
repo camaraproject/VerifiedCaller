@@ -1,0 +1,172 @@
+openapi: 3.0.3
+info:
+  title: Caller-ID-Service-Related-API 
+  description: the API for service subscription/unsubscription and message notification between the caller ID Open Gateway and IMS Message AS
+  version: v1.0.0
+servers:
+  - url: 'http://{apiRoot}/api/v1.0.0'
+    description:  IMS Message AS 
+tags:
+  - name: Caller ID Service Related API
+    description: subscription/unsubscription, call status subscription, call status push
+paths:
+  /userinfo:
+    post:
+      tags:
+        - subscription/unsubscription
+      summary: Open Gateway send subscription or unsubscription API to IMS Message AS 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/userinfo_request'
+      responses:
+        '200':
+          description: (OK) status code indicates that the request result successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/userinfo_response'
+        '201':
+          description: (Created) HTTP code indicates that the request has created one or more resource successfully.
+        '400':
+          description: (Bad Request) status code indicates that the server cannot or will not process the request due to something perceived as a client error (for example, malformed request syntax, invalid request message structure, or incorrect routing).
+        '401':
+          description: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+        '403':
+          description: (Forbidden) status code indicates that the server understood the request, but is refusing to authorize it. 
+        '404':
+          description: (Not Found) status code indicates that the origin server either did not find a current representation for the target resource or is unwilling to reveal that it exists. 
+        '409':
+          description: (Conflict) status code indicates when a request conflicts with the current state of the server
+        '429':
+          description: 429 (Too Many Requests) status code indicates that the server is temporarily unable to accept any more requests from the client due to the high number of requests recently sent.
+        '500':
+          description: (Internal Server Error) indicates that the server encountered an unexpected condition that prevented it from fulfilling the request.
+        '503':
+          description: (Service Unavailable) status code indicates that the server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.                              
+       
+  /status:
+    post:
+      tags:
+        - call status push 
+      summary: IMS Message AS send call status push API to Open Gateway 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/status_request'
+      responses:
+        '200':
+          description: (OK) status code indicates that the request result successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/status_response'
+        '201':
+          description: (Created) HTTP code indicates that the request has created one or more resource successfully
+        '400':
+          description: (Bad Request) status code indicates that the server cannot or will not process the request due to something perceived as a client error (for example, malformed request syntax, invalid request message structure, or incorrect routing)
+        '401':
+          description: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource
+        '403':
+          description: (Forbidden) status code indicates that the server understood the request, but is refusing to authorize it
+        '404':
+          description: (Not Found) status code indicates that the origin server either did not find a current representation for the target resource or is unwilling to reveal that it exists
+        '409':
+          description: (Conflict) status code indicates when a request conflicts with the current state of the server
+        '429':
+          description: 429 (Too Many Requests) status code indicates that the server is temporarily unable to accept any more requests from the client due to the high number of requests recently sent
+        '500':
+          description: (Internal Server Error) indicates that the server encountered an unexpected condition that prevented it from fulfilling the request
+        '503':
+          description: (Service Unavailable) status code indicates that the server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay                             
+
+components:
+  schemas:
+    userinfo_request:
+      title: userinfo_request
+      type: object
+      properties:
+        id:
+          type: string
+          description: API id ,Max length of 30 characters
+        userID:
+          type: string
+          description: Authentication userID
+        pwd:
+          type: string
+          description: Authentication password                            
+        userNumber:
+          type: string
+          description: user number
+        tradeType:
+          type: string
+          description: service type, e.g. LDMP
+        provinceCode:
+          type: string
+          description: province code
+        opType:
+          type: string
+          description: operation type 1:subscription 2:unsubscription
+        statusPush:
+          type: string
+          description:  call status, e.g. ringing  
+        timestamp:
+          type: string
+          description: timestamp YYYY-MM-DD hh:mm:ss          
+      description: request parmeters
+      
+    userinfo_response:
+      title: userinfo_response
+      type: object
+      properties:
+        code:
+          type: string
+          description: response code, where 200 indicates success, and any other codes indicate failure
+        msg:
+          type: string
+          description: response code detail description
+      description: response parmeters
+    
+          
+			status_request:
+      title: status_request
+      type: object
+      properties:
+        id:
+          type: string
+          description: API id, Max length of 30 characters
+        callid:
+          type: string
+          description: the "call id" corresponds to the "Call-ID" header in the INVITE message
+        caller:
+          type: string
+          description: Calling Number
+        callee:
+          type: string
+          description: Called Number
+        status:
+          type: string
+          description: call status, e.g. ringing
+        timestamp:
+          type: string
+          description: timestamp YYYY-MM-DD hh:mm:ss         
+      description: request parmeters
+      
+			status_response:
+      title: status_response
+      type: object
+      properties:
+        code:
+          type: string
+          description: response code, where 200 indicates success, and any other codes indicate failure
+        msg:
+          type: string
+          description: response code detail description
+        date:
+          properties:
+              id:
+                type: string
+                description: call id
+      description: response parmeters
