@@ -1,0 +1,236 @@
+openapi: 3.0.3
+info:
+  title: Caller-Flash-SMS-Business-Card-Service-Related-API 
+  description: 
+    This API provides users with the ability of caller ID：
+     - Ordering operation
+     - Unsubscribe operation
+     - Send the operation of caller ID flash message
+    The API provides users with the ability to order caller ID and send caller ID flash messages.
+
+    # Introduction
+
+    ## Ordering operation
+    API users can order the caller ID function through this document. It is only the ordering ability and cannot send caller ID flash messages. After this interface is called, the ordering status of the caller ID ability will be returned.
+    If it returns successfully, it means the ability has been ordered successfully.
+    If it returns a failure, the specific reason for the ordering failure needs to be known through the returned status code and information, such as repeated ordering or the number not conforming to the specification.
+    
+    ##Unsubscribe operation
+    API users can unsubscribe from the caller ID function through this document. After a successful unsubscribe, if the flash message sending interface is called again, the flash message cannot be sent.
+    If it returns successfully, it means the unsubscription of caller ID is successful.
+    If it returns a failure, the specific reason for the unsubscription failure needs to be known through the returned status code and information, such as no order existing or an interface problem.
+
+    ##Send the operation of caller ID flash message
+    API users can perform the operation of sending flash messages through this interface. The calling number and called number must be included in the parameters so that the platform knows the target number for sending and the flash message number that triggers the incoming call.
+    The calling number is mainly used for the platform to query whether this number has ordered the caller ID ability. At the same time, it performs verification operations such as the strategy, frequency, whether there is a blacklist, and function switch for the calling number.
+    After these verifications pass, the verification of the number of sent messages is performed again. If the number is insufficient, the caller ID cannot be sent. At the same time, the sending route is found according to the province and operator to which the calling number belongs.
+
+    **WARNING**: The sent template must be reported in advance.
+
+    ## Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: 1010869492@qq.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: wip
+externalDocs:
+  description: Official website of caller ID.
+  url: https://www.118114.net/qt2//#/intro
+
+servers:
+  - url: 'http://{apiRoot}/api/v1.0.0'
+    variables:
+      apiRoot:
+        default: http://localhost:8080
+        description: API root
+
+tags:
+  - name: subscription/unsubscription
+    description: Subscribe/Unsubscribe, Delivery of Caller Flash SMS Function
+  - name: Send the operation of caller ID flash message
+    description: Send the operation of caller ID flash message
+
+paths:
+  /order:
+    post:
+      tags:
+        - subscription/unsubscription
+      summary: API for business applications to subscribe or unsubscribe to services from the caller flash SMS service 
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/VO/orderRequest'
+      responses:
+        '200':
+          description: (OK) status code indicates that the request result successfully
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/VO/orderResponse'
+        '201':
+          description: (Created) HTTP code indicates that the request has created one or more resource successfully.
+        '400':
+          description: (Bad Request) status code indicates that the server cannot or will not process the request due to something perceived as a client error (for example, malformed request syntax, invalid request message structure, or incorrect routing).
+        '401':
+          description: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource.
+        '403':
+          description: (Forbidden) status code indicates that the server understood the request, but is refusing to authorize it. 
+        '404':
+          description: (Not Found) status code indicates that the origin server either did not find a current representation for the target resource or is unwilling to reveal that it exists. 
+        '409':
+          description: (Conflict) status code indicates when a request conflicts with the current state of the server
+        '429':
+          description: 429 (Too Many Requests) status code indicates that the server is temporarily unable to accept any more requests from the client due to the high number of requests recently sent.
+        '500':
+          description: (Internal Server Error) indicates that the server encountered an unexpected condition that prevented it from fulfilling the request.
+        '503':
+          description: (Service Unavailable) status code indicates that the server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay.                              
+       
+  /SMSSendRequest:
+    post:
+      tags:
+        - Send the operation of caller ID flash message
+      summary:  
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/VO/SMSSendRequest'
+      responses:
+        '200':
+          description: (OK) status code indicates that the request result successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SMSSendResponse'
+        '201':
+          description: (Created) HTTP code indicates that the request has created one or more resource successfully
+        '400':
+          description: (Bad Request) status code indicates that the server cannot or will not process the request due to something perceived as a client error (for example, malformed request syntax, invalid request message structure, or incorrect routing)
+        '401':
+          description: (Unauthorized) status code indicates that the request has not been applied because it lacks valid authentication credentials for the target resource
+        '403':
+          description: (Forbidden) status code indicates that the server understood the request, but is refusing to authorize it
+        '404':
+          description: (Not Found) status code indicates that the origin server either did not find a current representation for the target resource or is unwilling to reveal that it exists
+        '409':
+          description: (Conflict) status code indicates when a request conflicts with the current state of the server
+        '429':
+          description: 429 (Too Many Requests) status code indicates that the server is temporarily unable to accept any more requests from the client due to the high number of requests recently sent
+        '500':
+          description: (Internal Server Error) indicates that the server encountered an unexpected condition that prevented it from fulfilling the request
+        '503':
+          description: (Service Unavailable) status code indicates that the server is currently unable to handle the request due to a temporary overload or scheduled maintenance, which will likely be alleviated after some delay                             
+
+components:
+  schemas:
+    orderRequest:
+      title: orderRequest
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Business number, with a maximum length of 12
+        status:
+          type: string
+          description:  Operation status: A for subscription, D for unsubscription
+        sign:
+          type: string
+          description: Authentication password                            
+        name:
+          type: string
+          description: User account
+        custName:
+          type: string
+          description: Customer name
+        userName:
+          type: string
+          description: Contact person's name 
+        userPhone:
+          type: string
+          description: Contact number        
+      description: request parmeters
+      
+    orderResponse:
+      title: orderResponse
+      type: object
+      properties:
+        code:
+          type: string
+          description: response code, where 200 indicates success, and any other codes indicate failure
+        msg:
+          type: string
+          description: response code detail description
+      description: response parmeters
+             
+		SMSSendRequest:
+      title: SMSSendRequest
+      type: object
+      properties:
+        name:
+          type: string
+          description: User account
+        sign:
+          type: string
+          description: Authentication password    
+        caller:
+          type: string
+          description: Calling Number
+        callee:
+          type: string
+          description: Called Number
+        templateCode:
+          type: string
+          description: Template code  
+        templateParams:
+          type: string
+          description: Template parameters     
+      description: request parmeters
+      
+		SMSSendResponse:
+      title: SMSSendResponse
+      type: object
+      properties:
+        code:
+          type: string
+          description: response code, where 200 indicates success, and any other codes indicate failure
+        msg:
+          type: string
+          description: response code detail description
+      description: response 
+
+    examples:
+      orderRequest:
+        value:
+          phone: 12345678901
+          status: A
+          sign: qs15h556rt891298               
+          name: ldmp
+          custName: zhansan
+          userName: zhansa 
+          userPhone: 182736518937
+
+      orderResponse:
+        value:
+          code: 0000
+          msg: Ordering is successful.
+
+      SMSSendRequest:
+        value:
+          name: ldmp
+          sign: qs15h556rt891298   
+          caller: 18928176381
+          callee: 18762178127
+          templateCode:  tmplatcode11001
+          templateParams: {"custname":"tom"}
+
+      SMSSendResponse:
+        value:
+          code: 0000
+          msg: Sending is successful.
