@@ -13,7 +13,7 @@ Repository to describe, develop, document, and test the Verified Caller API fami
 ## Scope
 * Service APIs for “VerifiedCaller” (see APIBacklog.md)
 * It provides the customer with the ability to:  
-  * (Replase with content for Verified Caller.)
+  * (Replace with content for Verified Caller.)
   <!-- delete the following line if the scope of the API is defined differently in APIBacklog -->
   * NOTE: The scope of this API family should be limited (at least at the first stage) to 4G and 5G.  
 * Describe, develop, document, and test the APIs
