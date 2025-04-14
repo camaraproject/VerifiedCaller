@@ -5,17 +5,18 @@
 <a href="https://github.com/camaraproject/VerifiedCaller" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/VerifiedCaller?style=plastic"></a>
 <a href="https://github.com/camaraproject/VerifiedCaller/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/VerifiedCaller/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/VerifiedCaller?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Sandbox API Repository"><img src="https://img.shields.io/badge/Sandbox%20API%20Repository-yellow?style=plastic"></a>
 
 # VerifiedCaller
 Repository to describe, develop, document, and test the Verified Caller API family
 <!-- Alternative if an additional API repo of an existing API family: "Repository to describe, develop, document, and test the VerifiedCaller API of the $api-familiy$ API group" -->
 
 ## Scope
-* Service APIs for “VerifiedCaller” (see APIBacklog.md)
-* It provides the customer with the ability to:  
-  * (Replase with content for Verified Caller.)
-  <!-- delete the following line if the scope of the API is defined differently in APIBacklog -->
-  * NOTE: The scope of this API family should be limited (at least at the first stage) to 4G and 5G.  
+* Service APIs to deliver secure and branded calls (see “VerifiedCaller” within [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
+* It provides the API consumer with the ability to:  
+  * Announce a branded call via the Verified Caller API
+  * Register the content via Service Registration
+  * NOTE: The scope of this API family should be limited (at least at the first stage) to calls made over 4G or 5G.  
 * Describe, develop, document, and test the APIs
 * Started: May 2024
 
