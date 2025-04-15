@@ -29,9 +29,9 @@ The sub project has no (pre)releases yet, work in progress is within the main br
 
 ## Contributing
 * Meetings <!-- for new API families request a meeting link from the LF admin team or replace the information with the existing meeting information (of the API family) -->
-    * [Registration / Join](https://wiki.camaraproject.org/x/TQAG) !! Update this link with your meeting registration/join link
-    * Schedule: 
-    * Minutes: Access [meeting minutes] (update this link to your wiki page using the "Share" link).
+    * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/95553339882?password=c2022918-91d5-4d3d-9c4f-14b759b16e69)
+    * Schedule: bi-weekly (odd weeks), Thursday, 9:00 AM UTC (10:00 CET/11:00 CEST)
+    * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/l/cp/1k9fcyv1)
 * Mailing List
     * Subscribe / Unsubscribe to the mailing list of this Sub Project <https://lists.camaraproject.org/g/sp-verified-caller>.
     * A message to the community of this Sub Project can be sent using <sp-verified-caller@lists.camaraproject.org>.
