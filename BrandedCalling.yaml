@@ -1,0 +1,482 @@
+openapi: 3.0.3
+info:
+  title: Branded Calling
+  description: |
+    # Summary
+
+    The CAMARA Branded Calling API allows for Service APIs to deliver secure and branded calls 
+    It provides the API consumer with the ability to:
+    - Announce a branded call via the Pre-announcement API
+    - Register the content via Service Registration
+    NOTE: The scope of this API family should be limited (at least at the first stage) to calls made over 4G or 5G.
+
+
+    # Authorization and authentication
+
+    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
+
+    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
+
+    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+
+    # API functionality
+
+    The API defines two service endpoints:
+
+    - `POST /register`
+
+      Register the branded calling information for a specific brand phone number
+
+    - `POST /pre-announce`
+
+      Pre-announcement service activation before calling a phone number 
+
+    To call those endpoints, the API consumer must first obtain a valid access token with the specified scope from the specified token endpoint, which is then passed to the endpoint via the `Authorization` header. For more details on access token processing, see below.
+
+    ## Inputs
+
+    The endpoint registration request body is a JSON object with the following parameters:
+    - `phoneNumber`: the caller phone number associated to the branded calling service
+    - `alternatePhoneNumber`: alternate phone number, for small company identified with PBX and extension number
+    - `brandName`: brand name to be announced
+    - `actionType`: type of action requested on the concerned branded calling configuration
+    - `clientId`: identifier of the client which subscribed to the service
+    - `terminatingCountry`: country index
+    - `campaignName`: the name of the calling campaign concerned by the subscription 
+
+    The endpoint pre-announce request body is a JSON object with the following parameters:
+    - `phoneNumber`: the caller phone number 
+    - `calledPhoneNumber`: the  phone number which will be called and for which brand information should be announced
+    - `clientId`: identifier of the client which subscribed to the service
+    - `timeToLive`: duration of service availability 
+
+    ## Outputs
+
+    If successful, a JSON object is returned for a registration operation containing the following data:
+    - `id`: registration identifier
+
+    An example of a JSON response object is as follows:
+    ```
+    {
+        "id": "REG1548"
+    }
+    ```
+
+    ## Errors
+
+    If the authentication token is missing or not a valid token, a `401 UNAUTHENTICATED` error is returned
+
+    If the authentication token is no longer valid, a `401 AUTHENTICATION_REQUIRED` error is returned
+
+    If the API call contain a formatting or other error, a `400 INVALID_ARGUMENT` error is returned.
+
+    If the API consumer has a valid access token that does not have the required scope to manage branded calling information or use the service, then a `403 PERMISSION_DENIED` error is returned.
+
+    Other errors may be returned as specified in the example responses below.
+    
+    ## Error handling:
+    - If the subject cannot be identified from the access token then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+
+    # Authorization and authentication
+
+    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
+
+    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
+
+    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+
+    # Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
+  version: 0.1.0
+  x-camara-commonalities: 0.5
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/brandedCalling
+
+servers:
+  - url: "{apiRoot}/branded-calling/v0.1"
+    variables:
+      apiRoot:
+        default: https://localhost:9091
+        description: API root
+
+tags:
+  - name: Branded Calling management
+    description: Manage Branded Calling information and service usage
+
+paths:
+  /register:
+    post:
+      tags:
+        -  Branded Calling management
+      summary: The Branded Calling register service API
+      description: |
+        Registration of the branded calling information.
+
+      security:
+        - openId:
+            - branded-calling:register
+
+      operationId: register
+
+      parameters:
+        - in: header
+          name: x-correlator
+          description: Correlation id for the different services
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9-]{1,55}$
+            example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/registration"
+
+      responses:
+        "200":
+          description: Respond with registration information
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/X-Correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/registrationInfo"
+
+        "400":
+          $ref: '#/components/responses/Generic400'
+        "401":
+          $ref: '#/components/responses/Generic401'
+        "403":
+          $ref: '#/components/responses/Generic403'
+        "404":
+          $ref: '#/components/responses/Generic404'
+        "422":
+          $ref: '#/components/responses/Generic422'
+
+  /pre-announce:
+    post:
+      tags:
+        -  Branded Calling management
+      summary: The Branded Calling register service API
+      description: |
+        Registration of the branded calling information.
+
+      security:
+        - openId:
+            - branded-calling:register
+
+      operationId: pre-announce
+
+      parameters:
+        - in: header
+          name: x-correlator
+          description: Correlation id for the different services
+          required: false
+          schema:
+            type: string
+            pattern: ^[a-zA-Z0-9-]{1,55}$
+            example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/pre-announcement"
+
+      responses:
+        "200":
+          description: Respond with pre-announcement information
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/X-Correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/pre-announcementInfo"
+
+        "400":
+          $ref: '#/components/responses/Generic400'
+        "401":
+          $ref: '#/components/responses/Generic401'
+        "403":
+          $ref: '#/components/responses/Generic403'
+        "404":
+          $ref: '#/components/responses/Generic404'
+        "422":
+          $ref: '#/components/responses/Generic422'
+
+components:
+
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+
+  headers:
+    X-Correlator:
+      description: Correlation id for the different services
+      required: false
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9-]{1,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+
+  responses:
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: 400
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
+
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+                      - AUTHENTICATION_REQUIRED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
+              value:
+                status: 401
+                code: AUTHENTICATION_REQUIRED
+                message: New authentication is required.
+
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+
+    Generic404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 404
+                  code:
+                    enum:
+                      - IDENTIFIER_NOT_FOUND
+          examples:
+            GENERIC_404_IDENTIFIER_NOT_FOUND:
+              description: The phone number is not associated with a CSP customer account
+              value:
+                status: 404
+                code: IDENTIFIER_NOT_FOUND
+                message: The phone number provided is not associated with a customer account
+
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service is not applicable for the provided phone number
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not applicable for the provided phone number
+
+  schemas:
+    registration:
+      description: Specifies branded information for a phone number
+      type: object
+      properties:
+        phoneNumber:
+          $ref: "#/components/schemas/phoneNumber"
+
+        alternatePhoneNumber:
+          $ref: "#/components/schemas/phoneNumber"
+
+        brandName:
+          type: string
+          description: display branded name
+
+        actionType:
+          type: string
+          description: Can have 3 actions, for the company to declare Blocking or Not_branding when verification fails but also a No_Verify when a small company needs only call branding and no verification-call announcement
+          enum:
+            - Blocking
+            - Not_branding
+            - No_Verify
+            
+        clientId:
+          type: string
+          description: Identifier To uniquely identify the company. Useful for reporting of branded calls for a certain company. Can be used at pre-announcement as well so no company impersonates another one by declaring their phone number
+
+        termintaingCountry:
+          type: string
+          description: Country index - For Company to specify for which markets they want branded calling for. Relevant for operators that have presence in many countries. Can be an array of countries. Optional. If not declared it can apply globally for all available markets
+          example: "+34"       
+
+        campaignName:
+          type: string
+          description: Name of the campaign if concerned - Can be relevant for reporting purposes, stats like pickup rates per campaign etc. Companies often register many phone numbers and pool them to a campaign
+
+      required:
+        - phoneNumber
+        - brandName
+        - actionType
+
+    pre-announcement:
+      description: Specifies information of pre-announcement
+      type: object
+      properties:
+        phoneNumber:
+          $ref: "#/components/schemas/phoneNumber"
+
+        calledPhoneNumber:
+          $ref: "#/components/schemas/phoneNumber"
+
+        clientId:
+          type: string
+          description: identifier of the client which has subscribed to the service
+
+        timeToLive:
+          type: integer
+          description: a duration in secondes of pre-authorization availibility
+          example: "30"       
+          
+      required:
+        - phoneNumber
+        - calledPhoneNumber
+
+    phoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: "+123456789"
+
+    registrationInfo:
+      properties:
+        id:
+          description: |
+            identifier of the registration
+          type: string
+
+    pre-announcementInfo:
+      properties:
+        id:
+          description: |
+            identifier of the registration
+          type: string
+
+    ErrorInfo:
+      type: object
+      required:
+        - message
+        - status
+        - code
+
+      properties:
+        message:
+          type: string
+          description: A human readable description of what the event represent
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Friendly Code to describe the error
