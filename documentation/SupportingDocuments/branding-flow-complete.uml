@@ -1,0 +1,149 @@
+@startuml
+
+title Branded Calling
+
+autonumber "<font color=blue><b>[00]"
+hide footbox
+
+' ---------------
+
+participant CC as "**API consumer**\nCall Center\nPlatform" #lightSalmon
+participant AGG as "Aggregator"
+box Operator network
+    participant APIGW as "API Gateway\nExposure"
+    participant BRAND as "Branded\nSolution"
+    participant CSCF as "Voice\nnetwork"
+endbox
+
+== Onboarding ==
+
+-> CC: register
+activate CC #lightBlue
+CC <-> AGG: **onboard**
+activate AGG #lightBlue
+deactivate CC
+
+AGG -> APIGW: **POST /register**\n\
+  aNumber\n\
+  aDisplayName\n\
+  actionType\n\
+  validUntil
+
+note right
+  ""aNumber"": **Madnatory** Caller phone number
+  ""aNumberAlt"": Alternative caller number
+  ""aDisplayName"": **Mandatory** Display branded name
+  ""actionType"": **Mandatory** Action type. ENUM: Blocking | Not_branding | No_Verify
+  ""validUntil"": Registration valid period. UTC timestamp valid period
+  ""clientId"": Unique client identifierClientID (New proposal)
+  ""terminatingCountry"": Terminating Country (New proposal)
+  ""campaignId"": Unique campaign identificator
+end note
+
+activate APIGW
+return **204 OK**\n\
+  clientId\n\
+  validUntil
+
+|||
+
+== Call pre-announcement ==
+
+-> CC: campaing\nactivation
+activate CC
+
+-> CC: pre-announce
+CC -> AGG: **POST /pre-announce**\n\
+  aNumber\n\
+  bNumber\n\
+  expiresAt\n\
+  clientId
+activate AGG
+
+AGG -> APIGW: **POST /pre-announce**\n\
+  aNumber\n\
+  bNumber\n\
+  expiresAt\n\
+  clientId
+activate APIGW
+
+note right
+  ""aNumber"": **Mandatory** caller phone number (Mandatory)
+  ""bNumber"": **Mandatory** called phone number (Mandatory)
+  ""expiresAt"": Requested UTC valid until timestamp
+  ""clientId"": ClientID (Optional?)
+end note
+
+APIGW -> BRAND: **POST /pre-announce**\n\
+  aNumber\n\
+  bNumber\n\
+  expiresAt\n\
+  clientId
+activate BRAND
+
+return **200 OK**\n\
+  expiresAt\n\
+  preAnnounceId
+
+return **200 OK**\n\
+  expiresAt\n\
+  preAnnounceId
+  return **200 OK**\n\
+  expiresAt\n\
+  preAnnounceId
+
+-> CC: make call
+
+== Call Branding ==
+
+CC-> CSCF: **INVITE**\n\
+  aNumber\n\
+  bNumber\n\
+  preAnnounceId (optional)
+activate CSCF
+
+CSCF->BRAND: **POST /validate**\n\
+  aNumber\n\
+  bNumber\n\
+  preAnnounceId (optional)
+activate BRAND
+
+note over BRAND, CSCF 
+  Based on the covered validations, different
+  levels of attesitation are possible
+end note
+
+alt pre-announced
+  BRAND-->CSCF: **200 OK**\n\
+  preAnnounceId\n\
+  action: brand
+
+  CSCF -> : **INVITE**\n\
+    aNumber\n\
+    bNumber\n\
+    RCD (branding)\n\
+    <size:30><&circle-check>
+
+else continue - Not branded
+
+  BRAND-->CSCF: **200 OK**\n\
+  preAnnounceId\n\
+  action: Continue
+  CSCF -> : **INVITE**\n\
+    aNumber\n\
+    bNumber
+
+else blocked
+
+  BRAND-->CSCF: **200 OK**\n\
+  preAnnounceId\n\
+  action: Block
+  deactivate BRAND
+
+  CSCF-\\: <color:red>**BLOCKED INVITE**
+
+end
+
+
+
+@enduml
