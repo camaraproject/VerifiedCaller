@@ -1,0 +1,68 @@
+@startuml
+
+title Branded Calling
+
+autonumber "<font color=blue><b>[00]"
+hide footbox
+
+' ---------------
+
+participant CC as "**API consumer**\nCall Center\nPlatform" #lightSalmon
+participant AGG as "Aggregator"
+box Operator network
+    participant APIGW as "API Gateway\nExposure"
+    participant BRAND as "Branded\nSolution"
+    participant CSCF as "Voice\nnetwork"
+endbox
+
+== Onboarding ==
+
+-> CC: register
+activate CC #lightBlue
+CC <-> AGG: **onboard**
+activate AGG #lightBlue
+deactivate CC
+
+AGG -> APIGW: **POST /register**\n\
+  aNumber, aDisplayName, actionType,validUntil
+
+activate APIGW
+return **204 OK**\n\
+  clientId, validUntil
+
+|||
+
+== Call pre-announcement ==
+
+-> CC: campaing\nactivation
+activate CC
+
+-> CC: pre-announce
+CC -> AGG
+activate AGG
+
+AGG -> APIGW: **POST /pre-announce**\n\
+  aNumber, bNumber, expiresAt, clientId
+activate APIGW
+
+APIGW -> BRAND ++
+'activate BRAND
+return 
+
+return **200 OK**\n\
+  expiresAt, preAnnounceId
+return
+
+-> CC: make call
+
+== Call Branding ==
+
+CC-> CSCF: **INVITE**\n\
+  aNumber, bNumber, preAnnounceId (optional)
+activate CSCF
+note over BRAND, CSCF 
+  Based on the covered validations, different
+  levels of attesitation are possible
+end note
+
+@enduml
