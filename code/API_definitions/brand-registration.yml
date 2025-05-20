@@ -23,9 +23,9 @@ info:
 
     The API exposes the following endpoints/operations:
 
-    - `/registrations` :
+    - `/registrations` : 
       - **POST** operation creates a new registration and returns a registration identifier
-    - `/registrations/{registrationId}` :
+    - `/registrations/{registrationId}` : 
       - **PUT** operation updates an existing registration identified by the registrationId in the brand registration service
       - **GET** operation reads an existing registration identified by the registrationId from the brand registration service
       - **DEL** operation deletes an existing registration identified by the registrationId from the brand registration service
@@ -111,12 +111,12 @@ paths:
                 value:
                   device:
                     phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
+                    phoneNumberAlternate: "+123456790"  
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   clientId: "Client2"
                   verifyCallerAction: "DO_NOT_BRAND"
-
+            
       responses:
         '201':
           $ref: '#/components/responses/CreateRegistrationSuccess'
@@ -132,13 +132,13 @@ paths:
           $ref: '#/components/responses/Generic409'
         '422':
           $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
-        '429':
+        '429':  
           $ref: '#/components/responses/Generic429'
-        '500':
+        '500':  
           $ref: '#/components/responses/Generic500'
-        '503':
-          $ref: '#/components/responses/Generic503'
-
+        '503':  
+          $ref: '#/components/responses/Generic503'          
+        
       security:
         - openId:
             - brand-registration:create
@@ -170,12 +170,12 @@ paths:
           $ref: '#/components/responses/Generic403'
         '404':
           $ref: '#/components/responses/Generic404'
-        '429':
+        '429':  
           $ref: '#/components/responses/Generic429'
-        '500':
+        '500':  
           $ref: '#/components/responses/Generic500'
-        '503':
-          $ref: '#/components/responses/Generic503'
+        '503':  
+          $ref: '#/components/responses/Generic503' 
 
       security:
         - openId:
@@ -206,12 +206,12 @@ paths:
           $ref: '#/components/responses/Generic403'
         '404':
           $ref: '#/components/responses/Generic404'
-        '429':
+        '429':  
           $ref: '#/components/responses/Generic429'
-        '500':
+        '500':  
           $ref: '#/components/responses/Generic500'
-        '503':
-          $ref: '#/components/responses/Generic503'
+        '503':  
+          $ref: '#/components/responses/Generic503' 
 
       security:
         - openId:
@@ -254,12 +254,12 @@ paths:
                 value:
                   device:
                     phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
+                    phoneNumberAlternate: "+123456790"  
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   clientId: "Client2"
                   verifyCallerAction: "DO_NOT_BRAND"
-
+            
       responses:
         '204':
           $ref: '#/components/responses/204NoContent'
@@ -275,13 +275,13 @@ paths:
           $ref: '#/components/responses/Generic409'
         '422':
           $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
-        '429':
+        '429':  
           $ref: '#/components/responses/Generic429'
-        '500':
+        '500':  
           $ref: '#/components/responses/Generic500'
-        '503':
-          $ref: '#/components/responses/Generic503'
-
+        '503':  
+          $ref: '#/components/responses/Generic503'          
+        
       security:
         - openId:
             - brand-registration:update
@@ -315,9 +315,9 @@ components:
       schema:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
-
   schemas:
-     Device:
+ 
+    Device:
       description: |
         End-user device able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
 
@@ -343,18 +343,18 @@ components:
           $ref: "#/components/schemas/DeviceIpv6Address"
       minProperties: 1
 
-     PhoneNumber:
+    PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
       example: "+123456789"
 
-     NetworkAccessIdentifier:
+    NetworkAccessIdentifier:
       description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
       type: string
       example: "123456789@domain.com"
 
-     DeviceIpv4Addr:
+    DeviceIpv4Addr:
       type: object
       description: |
         The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device (this information can be obtained by various means, for example from some DNS servers).
@@ -378,43 +378,43 @@ components:
         publicAddress: "84.125.93.10"
         publicPort: 59765
 
-     SingleIpv4Addr:
+    SingleIpv4Addr:
       description: A single IPv4 address with no subnet mask
       type: string
       format: ipv4
       example: "84.125.93.10"
 
-     Port:
+    Port:
       description: TCP or UDP port number
       type: integer
       minimum: 0
       maximum: 65535
 
-     DeviceIpv6Address:
+    DeviceIpv6Address:
       description: |
         The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
       type: string
       format: ipv6
       example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
-     RegistrationId:
+    RegistrationId:
       type: string
       format: uuid
       description: Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
-
-     ClientId:
+  
+    ClientId:
       type: string
       description: Unique customer identifier for a brand
       example: "Client1"
-
-     DisplayName:
+    
+    DisplayName:
       type: string
       maxLength: 32
       description: Brand information that will be displayed for the calling party
       example: "Company X Call Center"
 
-     VerifyCallerAction:
+    VerifyCallerAction:
       type: string
       description: >-
         Indicates if Antispoofing feature is enabled for the A-party, if enabled what action to take in case antispoofing check fails
@@ -423,18 +423,18 @@ components:
         - "DO_NOT_VERIFY"
         - "BLOCK_UNVERIFIED"
         - "DO_NOT_BRAND"
-
-     TerminatingCountryCode:
+    
+    TerminatingCountryCode:
       type: integer
       description: Country Code of the called number in E.164 format
-      example: 44
+      example: 44  
 
-     Campaign:
+    Campaign:
       type: string
       description: Logical name to group a set of calling party numbers under a brand for a specific purpose, e.g. special charging
       example: "Company X New Year Sales"
 
-     CreateOrUpdateRegistrationRequest:
+    CreateOrUpdateRegistrationRequest:
       type: object
       description: "Request object to create or update (replace) a brand registration"
       required:
@@ -447,15 +447,15 @@ components:
         displayName:
           $ref: '#/components/schemas/DisplayName'
         clientId:
-          $ref: '#/components/schemas/ClientId'
+          $ref: '#/components/schemas/ClientId'          
         verifyCallerAction:
           $ref: '#/components/schemas/VerifyCallerAction'
         terminatingCountryCode:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaign:
-          $ref: '#/components/schemas/Campaign'
+          $ref: '#/components/schemas/Campaign' 
 
-     ReadRecordResponse:
+    ReadRecordResponse:
       type: object
       description: "Object to represent the content read from the service platform for a single brand registration"
       required:
@@ -479,16 +479,16 @@ components:
         campaign:
           $ref: '#/components/schemas/Campaign'
 
-     CreateRegistrationResponse:
+    CreateRegistrationResponse:
       type: object
       description: "Object returned upon successful registration"
-      required:
+      required: 
         - "registrationId"
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
 
-     ErrorInfo:
+    ErrorInfo:
       description: Common schema for errors
       type: object
       required:
@@ -520,7 +520,7 @@ components:
       description: Registration read successfully
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "#/components/headers/x-correlator"        
       content:
         application/json:
           schema:
@@ -544,7 +544,7 @@ components:
                   registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                   device:
                     phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
+                    phoneNumberAlternate: "+123456790"  
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   clientId: "Client2"
@@ -553,7 +553,7 @@ components:
       description: Successful response with no content
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "#/components/headers/x-correlator"        
     Generic400:
       description: Bad Request
       headers:
@@ -732,7 +732,7 @@ components:
               value:
                 status: 409
                 code: CONFLICT
-                message: Requested operation conflicts with existing data in the service platform
+                message: Requested operation conflicts with existing data in the service platform                
     CreateOrUpdateRegistrationUnprocessableEntity422:
       description: Unprocessable Content
       headers:
