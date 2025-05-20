@@ -524,31 +524,31 @@ components:
       content:
         application/json:
           schema:
-              $ref: '#/components/schemas/ReadRecordResponse'
+            $ref: '#/components/schemas/ReadRecordResponse'
           examples:
-              RECORD_SINGLE_PHONE_NUMBER:
-                summary: Device identified by phoneNumber
-                description: Registration for a device, identified by a phone number
-                value:
-                  registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                  device:
-                    phoneNumber: "+123456789"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  clientId: "Client1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-              RECORD_TWO_PHONE_NUMBERS:
-                summary: Device identified by phoneNumber & phoneNumberAlternate
-                description: A registration for a device, identified by both a phone number and a phone number alternate
-                value:
-                  registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                  device:
-                    phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
-                  terminatingCountryCode: 44
-                  displayName: "Company Y Calling"
-                  clientId: "Client2"
-                  verifyCallerAction: "DO_NOT_BRAND"
+            RECORD_SINGLE_PHONE_NUMBER:
+              summary: Device identified by phoneNumber
+              description: Registration for a device, identified by a phone number
+              value:
+                registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                device:
+                  phoneNumber: "+123456789"
+                terminatingCountryCode: 44
+                displayName: "Company X Calling"
+                clientId: "Client1"
+                verifyCallerAction: "DO_NOT_BRAND"
+            RECORD_TWO_PHONE_NUMBERS:
+              summary: Device identified by phoneNumber & phoneNumberAlternate
+              description: A registration for a device, identified by both a phone number and a phone number alternate
+              value:
+                registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                device:
+                  phoneNumber: "+123456789"
+                  phoneNumberAlternate: "+123456790"
+                terminatingCountryCode: 44
+                displayName: "Company Y Calling"
+                clientId: "Client2"
+                verifyCallerAction: "DO_NOT_BRAND"
     204NoContent:
       description: Successful response with no content
       headers:
