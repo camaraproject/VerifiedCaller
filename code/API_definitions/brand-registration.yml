@@ -99,8 +99,7 @@ paths:
                 summary: Device identified by phoneNumber
                 description: Create a registration for a device, identified by a phone number
                 value:
-                  device:
-                    phoneNumber: "+123456789"
+                  phoneNumber: "+123456789"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   clientId: "Client1"
@@ -109,9 +108,8 @@ paths:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
                 description: Create a registration for a device, identified by a phone number & phone number alternate
                 value:
-                  device:
-                    phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
+                  phoneNumber: "+123456789"
+                  phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   clientId: "Client2"
@@ -119,7 +117,7 @@ paths:
 
       responses:
         '201':
-          $ref: '#/components/responses/CreateRegistrationSuccess'
+          $ref: '#/components/responses/SuccessfulRecord'
         '400':
           $ref: '#/components/responses/Generic400'
         '401':
@@ -152,7 +150,6 @@ paths:
       operationId: readRegistration
       parameters:
         - $ref: '#/components/parameters/x-correlator'
-        - $ref: '#/components/parameters/partnerId'
         - description: Unique identifier of an existing brand registration
           in: path
           name: registrationId
@@ -161,7 +158,7 @@ paths:
             type: string
       responses:
         '200':
-          $ref: '#/components/responses/200Record'
+          $ref: '#/components/responses/SuccessfulRecord'
         '400':
           $ref: '#/components/responses/Generic400'
         '401':
@@ -188,7 +185,6 @@ paths:
       operationId: deleteRegistration
       parameters:
         - $ref: '#/components/parameters/x-correlator'
-        - $ref: '#/components/parameters/partnerId'
         - description: Unique identifier of an existing brand registration
           in: path
           name: registrationId
@@ -224,7 +220,6 @@ paths:
       operationId: updateRegistration
       parameters:
         - $ref: '#/components/parameters/x-correlator'
-        - $ref: '#/components/parameters/partnerId'
         - description: Unique identifier of an existing brand registration
           in: path
           name: registrationId
@@ -240,29 +235,27 @@ paths:
             examples:
               INPUT_SINGLE_PHONE_NUMBER:
                 summary: Device identified by phoneNumber
-                description: Create a registration for a device, identified by a phone number
+                description: Update registration for a device, identified by a phone number
                 value:
-                  device:
-                    phoneNumber: "+123456789"
+                  phoneNumber: "+123456789"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   clientId: "Client1"
                   verifyCallerAction: "DO_NOT_BRAND"
               INPUT_TWO_PHONE_NUMBERS:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
-                description: Create a registration for a device, identified by a phone number & phone number alternate
+                description: Update registration for a device, identified by a phone number & phone number alternate
                 value:
-                  device:
-                    phoneNumber: "+123456789"
-                    phoneNumberAlternate: "+123456790"
+                  phoneNumber: "+123456789"
+                  phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   clientId: "Client2"
                   verifyCallerAction: "DO_NOT_BRAND"
 
       responses:
-        '204':
-          $ref: '#/components/responses/204NoContent'
+        '200':
+          $ref: '#/components/responses/SuccessfulRecord'
         '400':
           $ref: '#/components/responses/Generic400'
         '401':
@@ -300,15 +293,6 @@ components:
       schema:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
-    partnerId:
-      name: partnerId
-      in: header
-      description:
-        Unique reference associated to an onboarded partner
-      required: true
-      example: "PARTNER1"
-      schema:
-        type: string
   headers:
     x-correlator:
       description: Correlation id for the different services
@@ -316,86 +300,11 @@ components:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
   schemas:
-
-    Device:
-      description: |
-        End-user device able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
-
-        The developer can choose to provide the below specified device identifiers:
-
-        * `ipv4Address`
-        * `ipv6Address`
-        * `phoneNumber`
-        * `networkAccessIdentifier`
-        NOTE1: the network operator might support only a subset of these options. The API invoker can provide multiple identifiers to be compatible across different network operators. In this case the identifiers MUST belong to the same device.
-        NOTE2: as for this Commonalities release, we are enforcing that the networkAccessIdentifier is only part of the schema for future-proofing, and CAMARA does not currently allow its use. After the CAMARA meta-release work is concluded and the relevant issues are resolved, its use will need to be explicitly documented in the guidelines.
-      type: object
-      properties:
-        phoneNumber:
-          $ref: "#/components/schemas/PhoneNumber"
-        phoneNumberAlternate:
-          $ref: "#/components/schemas/PhoneNumber"
-        networkAccessIdentifier:
-          $ref: "#/components/schemas/NetworkAccessIdentifier"
-        ipv4Address:
-          $ref: "#/components/schemas/DeviceIpv4Addr"
-        ipv6Address:
-          $ref: "#/components/schemas/DeviceIpv6Address"
-      minProperties: 1
-
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
       example: "+123456789"
-
-    NetworkAccessIdentifier:
-      description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
-      type: string
-      example: "123456789@domain.com"
-
-    DeviceIpv4Addr:
-      type: object
-      description: |
-        The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device (this information can be obtained by various means, for example from some DNS servers).
-
-        If the allocated and observed IP addresses are the same (i.e. NAT is not in use) then  the same address should be specified for both publicAddress and privateAddress.
-
-        If NAT64 is in use, the device should be identified by its publicAddress and publicPort, or separately by its allocated IPv6 address (field ipv6Address of the Device object)
-
-        In all cases, publicAddress must be specified, along with at least one of either privateAddress or publicPort, dependent upon which is known. In general, mobile devices cannot be identified by their public IPv4 address alone.
-      properties:
-        publicAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
-        privateAddress:
-          $ref: "#/components/schemas/SingleIpv4Addr"
-        publicPort:
-          $ref: "#/components/schemas/Port"
-      anyOf:
-        - required: [publicAddress, privateAddress]
-        - required: [publicAddress, publicPort]
-      example:
-        publicAddress: "84.125.93.10"
-        publicPort: 59765
-
-    SingleIpv4Addr:
-      description: A single IPv4 address with no subnet mask
-      type: string
-      format: ipv4
-      example: "84.125.93.10"
-
-    Port:
-      description: TCP or UDP port number
-      type: integer
-      minimum: 0
-      maximum: 65535
-
-    DeviceIpv6Address:
-      description: |
-        The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
-      type: string
-      format: ipv6
-      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
 
     RegistrationId:
       type: string
@@ -438,12 +347,14 @@ components:
       type: object
       description: "Request object to create or update (replace) a brand registration"
       required:
-        - "device"
+        - "phoneNumber"
         - "displayName"
         - "terminatingCountryCode"
       properties:
-        device:
-          $ref: '#/components/schemas/Device'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        phoneNumberAlternate:
+          $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
         clientId:
@@ -455,19 +366,21 @@ components:
         campaign:
           $ref: '#/components/schemas/Campaign'
 
-    ReadRecordResponse:
+    RegistrationRecord:
       type: object
-      description: "Object to represent the content read from the service platform for a single brand registration"
+      description: "Object to represent a single brand registration in the service platform"
       required:
         - "registrationId"
-        - "device"
+        - "phoneNumber"
         - "displayName"
         - "terminatingCountryCode"
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
-        device:
-          $ref: '#/components/schemas/Device'
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        phoneNumberAlternate:
+          $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
         clientId:
@@ -478,15 +391,6 @@ components:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaign:
           $ref: '#/components/schemas/Campaign'
-
-    CreateRegistrationResponse:
-      type: object
-      description: "Object returned upon successful registration"
-      required:
-        - "registrationId"
-      properties:
-        registrationId:
-          $ref: '#/components/schemas/RegistrationId'
 
     ErrorInfo:
       description: Common schema for errors
@@ -507,32 +411,22 @@ components:
           description: Detailed error description
 
   responses:
-    CreateRegistrationSuccess:
-      description: Registration created successfully
+    SuccessfulRecord:
+      description: Success response with a brand registration record
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CreateRegistrationResponse'
-    200Record:
-      description: Registration read successfully
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ReadRecordResponse'
+            $ref: '#/components/schemas/RegistrationRecord'
           examples:
             RECORD_SINGLE_PHONE_NUMBER:
               summary: Device identified by phoneNumber
               description: Registration for a device, identified by a phone number
               value:
                 registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                device:
-                  phoneNumber: "+123456789"
+                phoneNumber: "+123456789"
                 terminatingCountryCode: 44
                 displayName: "Company X Calling"
                 clientId: "Client1"
@@ -542,9 +436,8 @@ components:
               description: A registration for a device, identified by both a phone number and a phone number alternate
               value:
                 registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                device:
-                  phoneNumber: "+123456789"
-                  phoneNumberAlternate: "+123456790"
+                phoneNumber: "+123456789"
+                phoneNumberAlternate: "+123456790"
                 terminatingCountryCode: 44
                 displayName: "Company Y Calling"
                 clientId: "Client2"
@@ -772,7 +665,7 @@ components:
                 message: The service is not available for the provided identifier.
             GENERIC_422_MISSING_IDENTIFIER:
               summary: Missing identifier
-              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              description: An identifier is not included in the request and the device identification cannot be derived from the 3-legged access token
               value:
                 status: 422
                 code: MISSING_IDENTIFIER
