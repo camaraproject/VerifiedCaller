@@ -1,0 +1,399 @@
+openapi: 3.0.3
+info:
+  title: Verified Caller
+  description: |
+    This API provides the API consumers with the ability to display their brand cards and improve the connection rate.
+
+    # Introduction
+
+    The Verified Caller API is used by the API consumer to display its brand card to the called user, which informs the called user who the caller is, thus reducing malicious calls.
+
+    # Relevant Definitions and Concepts
+
+    * **Verified Caller**: A service that verifies the identity of the caller. It informs the identity of the caller to the called user through the caller's brand card.
+
+    * **Brand card template**: A template includes template code, template parameters and etc., which is to show brand name, logo, text content and etc. Template parameters are used to display the brand card content, and one template code corresponds to one template parameter.
+
+    * **Strategy**: A brand card presentation strategy, including TTL, location and etc.
+
+
+    # API Functionality
+
+    This API allows accurate operator certified "brand card" information such as SMS to be displayed on the phone screen of the called user before answering the call.
+
+    # Authorization and authentication
+
+    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+
+    ## Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: wip
+externalDocs:
+  description: Official website of caller ID.
+  url: https://www.118114.net/qt2//#/intro
+
+servers:
+  - url: '{apiRoot}/verified-caller/v1.0.0'
+    variables:
+      apiRoot:
+        default: http://localhost:8081
+        description: API root
+
+tags:
+  - name: Verified Caller
+    description: Operations to display caller's brand card to the called user
+paths:
+  /smssend:
+    post:
+      tags:
+        - smssend
+      summary: "Request to send brand card information such as SMS"
+      description: Request to send brand card information such as SMS
+      operationId: SMSSendRequest
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SMSSendRequest"
+        required: true
+      responses:
+        "200":
+          description: (OK) status code indicates that the request result successfully.
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SMSSendResponse"
+              examples:
+                SMSSendResponse:
+                  value:
+                    code: 200
+                    msg: "consumer name: Tom"
+
+        "204":
+          $ref: "#/components/responses/Generic204"
+        "400":
+          $ref: "#/components/responses/Generic400"
+        "401":
+          $ref: "#/components/responses/Generic401"
+        "403":
+          $ref: "#/components/responses/Generic403"
+        "404":
+          $ref: "#/components/responses/Generic404"
+        "422":
+          $ref: "#/components/responses/Generic422"
+        "429":
+          $ref: "#/components/responses/Generic429"
+
+components:
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+  schemas:
+    SMSSendRequest:
+      title: SMSSendRequest
+      type: object
+      properties:
+        brand name:
+          type: string
+          description: Consumer account
+          example: 'XX Hospital'
+        client ID:
+          type: string
+          description: Consumer authentication identifier
+          example: 'string'
+        A-number:
+          type: string
+          description: Calling Phone Number
+          example: '+123456789'
+        B-number:
+          type: string
+          description: Called Phone Number
+          example: '+123456789'
+        templateCode:
+          type: string
+          description: Template code
+          example: 'tmplatcode11001'
+        strategy:
+          type: string
+          description: Indicating API service providers to send the brand card under certain specific circumstances such as TTL, location and etc. Different strategies can be used for different called phone numbers.
+      description: request parameters
+
+    SMSSendResponse:
+      title: SMSSendResponse
+      type: object
+      properties:
+        code:
+          type: integer
+          description: response code, where 200 indicates success, and any other codes indicate failure
+        msg:
+          type: string
+          description: response code detail description
+          example: 'No_Content'
+      description: response parameters
+
+    PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: "+123456789"
+
+    Port:
+      description: TCP or UDP port number
+      type: integer
+      minimum: 0
+      maximum: 65535
+
+    ErrorInfo:
+      description: The error object used for error-cases.
+      type: object
+      required:
+        - status
+        - code
+      properties:
+        code:
+          type: integer
+          description: HTTP response status code
+        status:
+          type: string
+          description: Code given to this error
+
+
+  responses:
+    Generic204:
+      description: Status code indicates that the request result failure.
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 204
+                  status:
+                    enum:
+                      - No_Contect
+
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid request.
+              value:
+                status: No_Contect
+                code: 204
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 400
+                  status:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: INVALID_ARGUMENT
+                code: 400
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: OUT_OF_RANGE
+                code: 400
+                message: Client specified an invalid range.
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 401
+                  status:
+                    enum:
+                      - UNAUTHENTICATED
+                      - AUTHENTICATION_REQUIRED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated
+              value:
+                status: UNAUTHENTICATED
+                code: 401
+                message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
+              value:
+                status: AUTHENTICATION_REQUIRED
+                code: 401
+                message: New authentication is required.
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 403
+                  status:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: PERMISSION_DENIED
+                code: 403
+                message: Client does not have sufficient permissions to perform this action.
+    Generic404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 404
+                  status:
+                    enum:
+                      - NOT_FOUND
+                      - IDENTIFIER_NOT_FOUND
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: NOT_FOUND
+                code: 404
+                message: The specified resource is not found.
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 422
+                  status:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
+              value:
+                status: SERVICE_NOT_APPLICABLE
+                code: 422
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: phone number is not included in the request (in case of 2-legged) or the phone number identification cannot be derived from access token (in 3-legged)
+              value:
+                status: MISSING_IDENTIFIER
+                code: 422
+                message: The device cannot be identified.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: UNNECESSARY_IDENTIFIER
+                code: 422
+                message: The device is already identified by the access token.
+    Generic429:
+      description: Too Many Requests
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  code:
+                    enum:
+                      - 429
+                  status:
+                    enum:
+                      - QUOTA_EXCEEDED
+                      - TOO_MANY_REQUESTS
+          examples:
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
+              value:
+                status: QUOTA_EXCEEDED
+                code: 429
+                message: Rejected due to exceeding a business quota limit.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: API Server request limit is overpassed
+              value:
+                status: TOO_MANY_REQUESTS
+                code: 429
+                message: Rejected due to request rate limit overpassed.
