@@ -326,10 +326,9 @@ components:
     VerifyCallerAction:
       type: string
       description: >-
-        Indicates if Antispoofing feature is enabled for the A-party, if enabled what action to take in case antispoofing check fails
+        Indicates if Antispoofing feature is enabled for the A-party, if enabled what action to take in case antispoofing check fails. Absence of parameter means feature not enabled.
       example: "DO_NOT_BRAND"
       enum:
-        - "DO_NOT_VERIFY"
         - "BLOCK_UNVERIFIED"
         - "DO_NOT_BRAND"
 
