@@ -337,7 +337,7 @@ components:
       description: Country Code of the called number in E.164 format
       example: 44
 
-    Campaign:
+    CampaignName:
       type: string
       description: Logical name to group a set of calling party numbers under a brand for a specific purpose, e.g. special charging
       example: "Company X New Year Sales"
@@ -362,8 +362,8 @@ components:
           $ref: '#/components/schemas/VerifyCallerAction'
         terminatingCountryCode:
           $ref: '#/components/schemas/TerminatingCountryCode'
-        campaign:
-          $ref: '#/components/schemas/Campaign'
+        campaignName:
+          $ref: '#/components/schemas/CampaignName'
 
     RegistrationRecord:
       type: object
@@ -388,8 +388,8 @@ components:
           $ref: '#/components/schemas/VerifyCallerAction'
         terminatingCountryCode:
           $ref: '#/components/schemas/TerminatingCountryCode'
-        campaign:
-          $ref: '#/components/schemas/Campaign'
+        campaignName:
+          $ref: '#/components/schemas/CampaignName'
 
     ErrorInfo:
       description: Common schema for errors
