@@ -8,15 +8,18 @@
 <a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Sandbox API Repository"><img src="https://img.shields.io/badge/Sandbox%20API%20Repository-yellow?style=plastic"></a>
 
 # VerifiedCaller
-Repository to describe, develop, document, and test the Verified Caller API family
-<!-- Alternative if an additional API repo of an existing API family: "Repository to describe, develop, document, and test the VerifiedCaller API of the $api-familiy$ API group" -->
+
+Sandbox API Repository to describe, develop, document, and test the VerifiedCaller Service API(s). The repository does not yet belong to a CAMARA Sub Project.
+
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/Pive)
 
 ## Scope
+
 * Service APIs to deliver secure and branded calls (see “VerifiedCaller” within [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
 * It provides the API consumer with the ability to:  
   * Announce a branded call via the Verified Caller API
   * Register the content via Service Registration
-  * NOTE: The scope of this API family should be limited (at least at the first stage) to calls made over 4G or 5G.  
+  * NOTE: The scope of these APIs should be limited (at least at the first stage) to calls made over 4G or 5G.  
 * Describe, develop, document, and test the APIs
 * Started: May 2024
 
@@ -28,7 +31,7 @@ The sub project has no (pre)releases yet, work in progress is within the main br
 <!-- For changes see [CHANGELOG.md](https://github.com/camaraproject/VerifiedCaller/blob/main/CHANGELOG.md) -->
 
 ## Contributing
-* Meetings <!-- for new API families request a meeting link from the LF admin team or replace the information with the existing meeting information (of the API family) -->
+* Meetings
     * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/95553339882?password=c2022918-91d5-4d3d-9c4f-14b759b16e69)
     * Schedule: bi-weekly (odd weeks), Thursday, 9:00 AM UTC (10:00 CET/11:00 CEST)
     * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/l/cp/1k9fcyv1)
