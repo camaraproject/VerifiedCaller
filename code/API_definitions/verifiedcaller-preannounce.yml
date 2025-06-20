@@ -93,12 +93,13 @@ paths:
                   calledParticipant: "+123456790"
               ALL_PARAMETERS_PRESENT:
                 summary: All parameters provided
-                description: Create a pre-announcement for a caling and called participant, specify timeToLive and clientId
+                description: Create a pre-announcement for a caling and called participant, specify timeToLive, displayName and clientId
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
                   timeToLive: 45
                   clientId: "Client1"
+                  displayName: "Company X Re: Your Complaint"
 
       responses:
         '201':
@@ -173,6 +174,12 @@ components:
       description: Unique customer identifier for a brand
       example: "Client1"
 
+    DisplayName:
+      type: string
+      maxLength: 32
+      description: Information that will be displayed to the callee. This may be used to overwrite the registered brand information of the caller on a per-call basis, e.g. to highlight the purpose of a specific call.
+      example: "Company X, Re: Your complaint"
+
     CreatePreAnnouncementRequest:
       type: object
       description: "Request object to create a call pre-announcement"
@@ -188,10 +195,12 @@ components:
           $ref: '#/components/schemas/TimeToLive'
         clientId:
           $ref: '#/components/schemas/ClientId'
+        displayName:
+          $ref: '#/components/schemas/DisplayName'
 
-    AnnouncementRecord:
+    AnnouncementInfo:
       type: object
-      description: "Object to represent a single pre-announcement in the service platform"
+      description: "Object to represent the creation of a single pre-announcement in the service platform"
       properties:
         announcementId:
           $ref: '#/components/schemas/AnnouncementId'
@@ -225,11 +234,11 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/AnnouncementRecord'
+            $ref: '#/components/schemas/AnnouncementInfo'
           examples:
             SUCCESSFUL_CREATION:
               summary: Success response with optional parameters
-              description: Successful pre-announcement of a call
+              description: Successful pre-announcement of a call. The service platform includes optional parameter(s) to inform the client.
               value:
                 announcementId: "be5105dc-9b0e-437b-a03e-6e6ffb5e50c0"
                 timeToLive: 25
