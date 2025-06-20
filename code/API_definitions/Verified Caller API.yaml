@@ -8,7 +8,6 @@ info:
     # Relevant Definitions and Concepts
     * **Verified Caller**: A service that verifies the identity of the caller. It informs the identity of the caller to the called user through the caller's brand card.
     * **Brand card template**: A template includes template code, template parameters and etc., which is to show brand name, logo, text content and etc. Template parameters are used to display the brand card content, and one template code corresponds to one template parameter.
-    
     # API Functionality
     This API allows accurate operator certified "brand card" information such as SMS to be displayed on the phone screen of the called user before answering the call.
     # Authorization and authentication
