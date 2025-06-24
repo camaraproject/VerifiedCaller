@@ -102,7 +102,7 @@ paths:
                   phoneNumber: "+123456789"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
-                  clientId: "Client1"
+                  customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
               INPUT_TWO_PHONE_NUMBERS:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
@@ -112,7 +112,7 @@ paths:
                   phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
-                  clientId: "Client2"
+                  customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
 
       responses:
@@ -240,7 +240,7 @@ paths:
                   phoneNumber: "+123456789"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
-                  clientId: "Client1"
+                  customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
               INPUT_TWO_PHONE_NUMBERS:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
@@ -250,7 +250,7 @@ paths:
                   phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
-                  clientId: "Client2"
+                  customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
 
       responses:
@@ -312,10 +312,10 @@ components:
       description: Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
-    ClientId:
+    CustomerId:
       type: string
       description: Unique customer identifier for a brand
-      example: "Client1"
+      example: "Customer1"
 
     DisplayName:
       type: string
@@ -356,8 +356,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
-        clientId:
-          $ref: '#/components/schemas/ClientId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
         verifyCallerAction:
           $ref: '#/components/schemas/VerifyCallerAction'
         terminatingCountryCode:
@@ -382,8 +382,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
-        clientId:
-          $ref: '#/components/schemas/ClientId'
+        customerId:
+          $ref: '#/components/schemas/CustomerId'
         verifyCallerAction:
           $ref: '#/components/schemas/VerifyCallerAction'
         terminatingCountryCode:
@@ -428,7 +428,7 @@ components:
                 phoneNumber: "+123456789"
                 terminatingCountryCode: 44
                 displayName: "Company X Calling"
-                clientId: "Client1"
+                customerId: "Customer1"
                 verifyCallerAction: "DO_NOT_BRAND"
             RECORD_TWO_PHONE_NUMBERS:
               summary: Device identified by phoneNumber & phoneNumberAlternate
@@ -439,7 +439,7 @@ components:
                 phoneNumberAlternate: "+123456790"
                 terminatingCountryCode: 44
                 displayName: "Company Y Calling"
-                clientId: "Client2"
+                customerId: "Customer2"
                 verifyCallerAction: "DO_NOT_BRAND"
     204NoContent:
       description: Successful response with no content
