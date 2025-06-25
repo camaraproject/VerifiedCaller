@@ -54,15 +54,15 @@ activate CC
 
 -> CC: pre-announce
 CC -> AGG: **POST /pre-announce**\n\
-  aNumber\n\
-  bNumber\n\
+  aNumber*\n\
+  bNumber*\n\
   expiresAt\n\
   clientId
 activate AGG
 
 AGG -> APIGW: **POST /pre-announce**\n\
-  aNumber\n\
-  bNumber\n\
+  aNumber*\n\
+  bNumber*\n\
   expiresAt\n\
   clientId
 activate APIGW
@@ -84,6 +84,8 @@ activate BRAND
 return **200 OK**\n\
   expiresAt\n\
   preAnnounceId
+
+note right: TTL 
 
 return **200 OK**\n\
   expiresAt\n\
