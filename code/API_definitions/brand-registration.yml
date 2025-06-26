@@ -2,22 +2,23 @@ openapi: 3.0.3
 info:
   title: Brand Registration
   description: |
-    This API provides the ability to ...
+    This API provides the ability to associate calling party numbers to be associated with a human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
 
     # Introduction
 
-    With this API, API consumers can ...
+    Consumers of this API can associate calling party numbers with a human-readable string that is to be displayed to the callee on their device screen instead of the calling number. This allows the callee to recognize the caller even if the calling party number is not registered in the callee's device and increases the likelihood of the call being answered.
 
     Brand Registration API could be useful in scenarios such as:
-
-    - ...
-    - ...
-    - ...
-
+    - Telesales
+    - Customer Support
+    - Outreach efforts of NGOs.
+    - Calls placed by authorities or government institutions for official matters.
 
     # Relevant terms and definitions
-
-    * **device**: A device refers to any physical entity that can connect to a network and participate in network communication.
+    * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
+    * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
+    * **clientId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
+    * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
 
     # API Functionality
 
@@ -38,24 +39,10 @@ info:
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
 
-    # Identifying the device from the access token
-
-    This API requires the API consumer to identify a device as the subject of the API as follows:
-    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `device` object, which therefore MUST be provided.
-    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
-
-    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
-
-    ## Error handling:
-
-    - If the subject cannot be identified from the access token and the optional `device` object is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
-
-    - If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.
-
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
-  version: wip
+  version: 0.1.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -64,7 +51,7 @@ externalDocs:
   description: Project documentation at Camara
   url: https://github.com/camaraproject/VerifiedCaller
 servers:
-  - url: '{apiRoot}/brand-registration/wip'
+  - url: '{apiRoot}/brand-registration/v0.1rc1'
     variables:
       apiRoot:
         default: http://localhost:9091
