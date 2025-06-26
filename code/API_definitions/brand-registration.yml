@@ -17,7 +17,7 @@ info:
     # Relevant terms and definitions
     * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
     * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
-    * **clientId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
+    * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
 
     # API Functionality
