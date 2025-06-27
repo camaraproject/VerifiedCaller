@@ -1,6 +1,6 @@
 @startuml
 
-title Branded Calling
+title CAMARA VerifiedCaller usage flow
 
 autonumber "<font color=blue><b>[00]"
 hide footbox
@@ -8,106 +8,122 @@ hide footbox
 ' ---------------
 
 participant CC as "**API consumer**\nCall Center\nPlatform" #lightSalmon
-participant AGG as "Aggregator"
+participant AGG as "API platform\nor aggregator"
 box Operator network
     participant APIGW as "API Gateway\nExposure"
     participant BRAND as "Branded\nSolution"
     participant CSCF as "Voice\nnetwork"
 endbox
 
-== Onboarding ==
+== Brand Registration ==
 
 -> CC: register
 activate CC #lightBlue
-CC <-> AGG: **onboard**
+CC -> AGG: **onboard**
 activate AGG #lightBlue
-deactivate CC
 
-AGG -> APIGW: **POST /register**\n\
-  aNumber\n\
-  aDisplayName\n\
-  actionType\n\
-  validUntil
+AGG -> APIGW: **POST /registrations**\n\
+  phoneNumber* \n\
+  terminatingCountryCode* \n\
+  displayName* \n\
+  verifyCallerAction
 
 note right
-  ""aNumber"": **Madnatory** Caller phone number
-  ""aNumberAlt"": Alternative caller number
-  ""aDisplayName"": **Mandatory** Display branded name
-  ""actionType"": **Mandatory** Action type. ENUM: Blocking | Not_branding | No_Verify
-  ""validUntil"": Registration valid period. UTC timestamp valid period
-  ""clientId"": Unique client identifierClientID (New proposal)
-  ""terminatingCountry"": Terminating Country (New proposal)
-  ""campaignId"": Unique campaign identificator
+  API PARAMS:
+
+  - ""phoneNumber"": **Mandatory** Caller phone number in E.164 standard format
+  - ""phoneNumberAlternate"": Alternative caller number
+  - ""displayName"": **Mandatory** Brand information that will be displayed for the calling party
+  - ""customerId"": Unique customer identifier for a brand
+  - ""verifyCallerAction"": Indicates if Antispoofing feature is enabled for the A-party,
+  - ""terminatingCountryCode"": **Mandatory** Country Code of the called number in E.164 format
+  - ""campaignName"": Logical name to group a set of calling party numbers under a brand for a specific purpose
+
+  RESPONSE:
+  - ""registrationId"": Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
 end note
 
 activate APIGW
-return **204 OK**\n\
-  clientId\n\
-  validUntil
+return **201 OK**\n\
+  **registrationId** \n\
+  phoneNumber \n\
+  terminatingCountryCode \n\
+  displayName \n\
+  verifyCallerAction
+
+CC <- AGG: **201 OK**\n\
+  **registrationId** \n\
+  phoneNumber \n\
+  terminatingCountryCode \n\
+  displayName \n\
+  verifyCallerAction
+deactivate AGG
 
 |||
 
 == Call pre-announcement ==
 
+hnote over AGG: No intermediate intervention\nto avoid leak of called numbers
+
 -> CC: campaing\nactivation
 activate CC
 
 -> CC: pre-announce
-CC -> AGG: **POST /pre-announce**\n\
-  aNumber*\n\
-  bNumber*\n\
-  expiresAt\n\
-  clientId
-activate AGG
 
-AGG -> APIGW: **POST /pre-announce**\n\
-  aNumber*\n\
-  bNumber*\n\
-  expiresAt\n\
-  clientId
+CC -> APIGW: **POST /pre-announce**\n\
+  callingParticipant*\n\
+  calledParticipant*
 activate APIGW
 
 note right
-  ""aNumber"": **Mandatory** caller phone number (Mandatory)
-  ""bNumber"": **Mandatory** called phone number (Mandatory)
-  ""expiresAt"": Requested UTC valid until timestamp
-  ""clientId"": ClientID (Optional?)
-end note
+  API PARAMS:
+  - ""callingParticipant"": **Mandatory** Caller phone number in E.164 standard format
+  - ""calledParticipant"": **Mandatory** Destination phone number in E.164 standard format
+  - ""timeToLive"": This parameter specifies for how long the pre-announcement is requested (secs)
+  - ""customerId"": Unique customer identifier for a brand . ""registrationId?""
+  - ""displayName"": Information that will be displayed to the callee (purpose of a specific call).
+
+  RESPONSE:
+  - ""announcementId"": Unique identifier of a pre-announcement created as a result of the POST operation
+  end note
 
 APIGW -> BRAND: **POST /pre-announce**\n\
-  aNumber\n\
-  bNumber\n\
-  expiresAt\n\
-  clientId
+  callingParticipant\n\
+  calledParticipant
 activate BRAND
 
-return **200 OK**\n\
-  expiresAt\n\
-  preAnnounceId
+return **201 OK**\n\
+  timeToLive\n\
+  announcementId
 
-note right: TTL 
+note right
+  Locate and validate associated customerId
+  Validate requested TTL or add default
+  Create unique identifier for announcement
+end note
 
-return **200 OK**\n\
+return **201 OK**\n\
+  timeToLive\n\
+  announcementId
+
+return **201 OK**\n\
   expiresAt\n\
-  preAnnounceId
-  return **200 OK**\n\
-  expiresAt\n\
-  preAnnounceId
+  announcementId
 
 -> CC: make call
 
 == Call Branding ==
 
 CC-> CSCF: **INVITE**\n\
-  aNumber\n\
-  bNumber\n\
-  preAnnounceId (optional)
+  FROM: aNumber\n\
+  TO: bNumber\n\
+  X-VERIFIED: announcementId
 activate CSCF
 
-CSCF->BRAND: **POST /validate**\n\
+CSCF->BRAND: **GET /pre-announce**\n\
   aNumber\n\
   bNumber\n\
-  preAnnounceId (optional)
+  announcementId
 activate BRAND
 
 note over BRAND, CSCF 
@@ -117,8 +133,8 @@ end note
 
 alt pre-announced
   BRAND-->CSCF: **200 OK**\n\
-  preAnnounceId\n\
-  action: brand
+  announcementId\n\
+  verifyCallerAction: VERIFIY
 
   CSCF -> : **INVITE**\n\
     aNumber\n\
@@ -129,8 +145,8 @@ alt pre-announced
 else continue - Not branded
 
   BRAND-->CSCF: **200 OK**\n\
-  preAnnounceId\n\
-  action: Continue
+  announcementId\n\
+  verifyCallerAction: DO_NOT_BRAND
   CSCF -> : **INVITE**\n\
     aNumber\n\
     bNumber
@@ -138,8 +154,7 @@ else continue - Not branded
 else blocked
 
   BRAND-->CSCF: **200 OK**\n\
-  preAnnounceId\n\
-  action: Block
+  verifyCallerAction: BLOCK_UNVERIFIED
   deactivate BRAND
 
   CSCF-\\: <color:red>**BLOCKED INVITE**

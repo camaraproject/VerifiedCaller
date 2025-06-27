@@ -1,6 +1,6 @@
 @startuml
 
-title Branded Calling
+title CAMARA VerifiedCaller usage flow
 
 autonumber "<font color=blue><b>[00]"
 hide footbox
@@ -8,7 +8,7 @@ hide footbox
 ' ---------------
 
 participant CC as "**API consumer**\nCall Center\nPlatform" #lightSalmon
-participant AGG as "Aggregator"
+participant AGG as "API platform\nor aggregator"
 box Operator network
     participant APIGW as "API Gateway\nExposure"
     participant BRAND as "Branded\nSolution"
@@ -21,15 +21,16 @@ endbox
 activate CC #lightBlue
 CC <-> AGG: **onboard**
 activate AGG #lightBlue
-deactivate CC
 
-AGG -> APIGW: **POST /register**\n\
-  aNumber, aDisplayName, actionType,validUntil
+AGG -> APIGW: **POST /registrations**\n\
+  phoneNumber, displayName, terminatingCountryCode
 
 activate APIGW
-return **204 OK**\n\
-  clientId, validUntil
+return **201 Created**\n\
+  registrationId
 
+return **201 Created**\n\
+  registrationId
 |||
 
 == Call pre-announcement ==
@@ -38,19 +39,16 @@ return **204 OK**\n\
 activate CC
 
 -> CC: pre-announce
-CC -> AGG
-activate AGG
-
-AGG -> APIGW: **POST /pre-announce**\n\
-  aNumber, bNumber, expiresAt, clientId
+CC -> APIGW: **POST /pre-announce**\n\
+  callingParticipant, calledParticipant
 activate APIGW
 
 APIGW -> BRAND ++
 'activate BRAND
 return 
 
-return **200 OK**\n\
-  expiresAt, preAnnounceId
+return **201 Created**\n\
+  timeToLive, preAnnounceId
 return
 
 -> CC: make call
@@ -58,11 +56,18 @@ return
 == Call Branding ==
 
 CC-> CSCF: **INVITE**\n\
-  aNumber, bNumber, preAnnounceId (optional)
+  callingParticipant, calledParticipant, preAnnounceId (optional)
 activate CSCF
 note over BRAND, CSCF 
-  Based on the covered validations, different
+  Based on the verifyCallerAction, different
   levels of attesitation are possible
 end note
+
+CSCF -> : **INVITE**\n\
+  callingParticipant\n\
+  calledParticipant\n\
+  RCD (branding)\n\
+  <size:30><&circle-check>
+
 
 @enduml
