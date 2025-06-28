@@ -16,33 +16,11 @@ The below sections record the changes for each API version in each release as fo
 ## Release Notes
 
 This **pre-release** contains the definition and documentation of
-* Verified Caller Pre-Announcement v0.1.0-rc.1
 * Brand Registration v0.1.0-rc.1
 
 The API definition(s) are based on
 * Commonalities r2.3
 * Identity and Consent Management r2.3
-
-## Verified Caller Pre-Announcement v0.1.0-rc.1
-
-- API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yml&nocors)
-  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.1/code/API_definitions/verifiedcaller-preannounce.yml)
-
-### Added
-* Add new endpoint to pre-announce a call to be branded by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/XXX
-
-### Changed
-* N/A
-
-### Fixed
-* N/A
-
-### Removed
-* N/A
-
-**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/XXX
 
 ## Brand Registration v0.1.0-rc.1
 
