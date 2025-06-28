@@ -1,5 +1,4 @@
-@brand-registration-POST
-Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrations (Create a registration)
+Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrations
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
@@ -39,82 +38,77 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And the response body complies with the schema at "/components/schemas/RegistrationRecord"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And response property "$.phoneNumber" is set to phoneNumber1
-    And response property "$.phoneNumberAlternate" is present and set to phoneNumberAlternate1
-    And response property "$.displayName" is set to displayName1
-    And response property "$.terminatingCountryCode" is set to terminatingCountryCode1
-    And response property "$.customerId" is present and set to customerId1
-    And response property "$.verifyCallerAction" is present and set to verifyCallerAction1
+    And response properties mirror request properties
     And response property "$.registrationId" is set to a UUID created by the service provider.
 
   # Generic 400 errors
 
   @BrandRegistation__POST_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
-      Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
-      When the HTTPS "POST" request is sent
-      Then the response status code is 400
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 400
-      And the response property "$.code" is "INVALID_ARGUMENT"
-      And the response property "$.message" contains a user friendly text
+    Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__POST_400.2_no_request_body
   Scenario: Missing request body
-      Given the request body is not included
-      When the HTTPS "POST" request is sent
-      Then the response status code is 400
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 400
-      And the response property "$.code" is "INVALID_ARGUMENT"
-      And the response property "$.message" contains a user friendly text
+    Given the request body is not included
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 401 errors
 
   @BrandRegistation__POST_401.1_no_authorization_header
   Scenario: No Authorization header
-      Given the header "Authorization" is removed
-      When the HTTPS "POST" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is removed
+    When the HTTPS "POST" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__POST_401.2_expired_access_token
   Scenario: Expired access token
-      Given the header "Authorization" is set to an expired access token
-      When the HTTPS "POST" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to an expired access token
+    When the HTTPS "POST" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__POST_401.3_invalid_access_token
   Scenario: Invalid access token
-      Given the header "Authorization" is set to an invalid access token
-      When the HTTPS "POST" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to an invalid access token
+    When the HTTPS "POST" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 403 errors
 
   @BrandRegistation__POST_403.1_missing_access_token_scope
-  Scenario: Invalid access token
-      Given the header "Authorization" is set to an access token that does not include scope brand-registration:create
-      When the HTTPS "POST" request is sent
-      Then the response status code is 403
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 403
-      And the response property "$.code" is "PERMISSION_DENIED"
-      And the response property "$.message" contains a user friendly text
+  Scenario: Invalid access token scope
+    Given the header "Authorization" is set to an access token that does not include scope brand-registration:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 403
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
