@@ -1,5 +1,4 @@
-@brand-registration-PUT
-Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrations (Replace an existing registration)
+Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrations
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
@@ -35,89 +34,84 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
     And request property "$.displayName" is set to displayName1
     And request property "$.terminatingCountryCode" is set to terminatingCountryCode1
     And request property "$.customerId" is present and set to customerId1
-    And request property "$.verifyCallerAction" is present and set to verifyCallerAction1 
+    And request property "$.verifyCallerAction" is present and set to verifyCallerAction1
     And one of the scopes associated with the access token is brand-registration:update
     When the HTTPS "PUT" request is sent
     Then the response status code is 200
     And the response body complies with the schema at "/components/schemas/RegistrationRecord"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And response property "$.phoneNumber" is set to phoneNumber1
-    And response property "$.phoneNumberAlternate" is present and set to phoneNumberAlternate1
-    And response property "$.displayName" is set to displayName1
-    And response property "$.terminatingCountryCode" is set to terminatingCountryCode1
-    And response property "$.customerId" is present and set to customerId1
-    And response property "$.verifyCallerAction" is present and set to verifyCallerAction1
+    And response properties mirror the request properties
     And response property "$.registrationId" is equal to the registrationId1 in the request URI
 
   # Generic 400 errors
 
   @BrandRegistation__PUT_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
-      Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 400
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 400
-      And the response property "$.code" is "INVALID_ARGUMENT"
-      And the response property "$.message" contains a user friendly text
+    Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__PUT_400.2_no_request_body
   Scenario: Missing request body
-      Given the request body is not included
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 400
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 400
-      And the response property "$.code" is "INVALID_ARGUMENT"
-      And the response property "$.message" contains a user friendly text
+    Given the request body is not included
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 401 errors
 
   @BrandRegistation__PUT_401.1_no_authorization_header
   Scenario: No Authorization header
-      Given the header "Authorization" is removed
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is removed
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__PUT_401.2_expired_access_token
   Scenario: Expired access token
-      Given the header "Authorization" is set to an expired access token
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to an expired access token
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   @BrandRegistation__PUT_401.3_invalid_access_token
   Scenario: Invalid access token
-      Given the header "Authorization" is set to an invalid access token
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 401
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 401
-      And the response property "$.code" is "UNAUTHENTICATED"
-      And the response property "$.message" contains a user friendly text
+    Given the header "Authorization" is set to an invalid access token
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 403 errors
 
   @BrandRegistation__PUT_403.1_missing_access_token_scope
-  Scenario: Invalid access token
-      Given the header "Authorization" is set to an access token that does not include scope brand-registration:update
-      When the HTTPS "PUT" request is sent
-      Then the response status code is 403
-      And the response header "x-correlator" has same value as the request header "x-correlator"
-      And the response header "Content-Type" is "application/json"
-      And the response property "$.status" is 403
-      And the response property "$.code" is "PERMISSION_DENIED"
-      And the response property "$.message" contains a user friendly text
+  Scenario: Invalid access token scope
+    Given the header "Authorization" is set to an access token that does not include scope brand-registration:update
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 403
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
