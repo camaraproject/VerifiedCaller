@@ -10,10 +10,10 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
 # * A calling party "callingParticipant1"
 # * A called party "calledParticipant1"
 
-  Background: Verified Caller Pre-announce setup
+  Background:  setup
     Given an environment at "apiRoot"
     And the resource "/verified-caller/v0.1rc1/pre-announce"
-    And the header "Content-Type" is set to "application/json"
+    And the header "Content-Type" is seVerified Caller Pre-announcet to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
     And the request body is compliant with the RequestBody schema defined by "/components/schemas/CreatePreAnnouncementRequest"
@@ -22,7 +22,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
 
   # Generic 400 errors
 
-  @DeviceIdentifier_retrieveIdentifier_400.1_schema_not_compliant
+  @Verified_Caller_Pre-announce_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreatePreAnnouncementRequest"
     When the HTTPS "POST" request is sent
@@ -33,7 +33,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @DeviceIdentifier_retrieveIdentifier_400.2_no_request_body
+  @Verified_Caller_Pre-announce_400.2_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "POST" request is sent
@@ -44,7 +44,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @DeviceIdentifier_retrieveIdentifier_400.3_callingParticipant_empty
+  @Verified_Caller_Pre-announce_400.3_callingParticipant_empty
   Scenario: The callingParticipant value is an empty object
     Given the request body property "$.callingParticipant" is set to: {}
     When the HTTPS "POST" request is sent
@@ -57,7 +57,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
 
   # Generic 401 errors
 
-  @DeviceIdentifier_retrieveIdentifier_401.1_no_authorization_header
+  @Verified_Caller_Pre-announce_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "POST" request is sent
@@ -68,7 +68,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @DeviceIdentifier_retrieveIdentifier_401.2_expired_access_token
+  @Verified_Caller_Pre-announce_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "POST" request is sent
@@ -79,7 +79,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @DeviceIdentifier_retrieveIdentifier_401.3_invalid_access_token
+  @Verified_Caller_Pre-announce_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "POST" request is sent
@@ -92,7 +92,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
 
   # Generic 403 errors
 
-  @DeviceIdentifier_retrieveIdentifier_403.1_missing_access_token_scope
+  @Verified_Caller_Pre-announce_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope verified-caller:create
     When the HTTPS "POST" request is sent
