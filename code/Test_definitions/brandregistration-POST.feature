@@ -31,7 +31,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And request property "$.displayName" is set to displayName1
     And request property "$.terminatingCountryCode" is set to terminatingCountryCode1
     And request property "$.customerId" is present and set to customerId1
-    And request property "$.verifyCallerAction" is present and set to verifyCallerAction1 
+    And request property "$.verifyCallerAction" is present and set to verifyCallerAction1
     And one of the scopes associated with the access token is brand-registration:create
     When the HTTPS "POST" request is sent
     Then the response status code is 201

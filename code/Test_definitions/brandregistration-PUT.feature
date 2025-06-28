@@ -41,8 +41,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
     And the response body complies with the schema at "/components/schemas/RegistrationRecord"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And response properties mirror the request properties
-    And response property "$.registrationId" is equal to the registrationId1 in the request URI
+    And response properties mirror the request properties while response property "$.registrationId" is equal to the registrationId1 in the request URI
 
   # Generic 400 errors
 

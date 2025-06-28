@@ -1,4 +1,4 @@
-Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: GET /registrations/{registrationId}
+Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: GET
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
