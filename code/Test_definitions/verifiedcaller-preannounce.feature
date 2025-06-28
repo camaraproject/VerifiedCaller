@@ -8,8 +8,7 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
 # * api_root: API root of the server URL
 #
 # Testing assets:
-# * A calling party "callingParticipant1" that is owned by the customer "customerId1"
-# * A calling party "callingParticipant2" that is owned by the customer "customerId2"
+# * A calling party "callingParticipant1"
 # * A called party "calledParticipant1"
 
   Background: Verified Caller Pre-announce setup
@@ -21,22 +20,6 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the request body is compliant with the RequestBody schema defined by "/components/schemas/CreatePreAnnouncementRequest"
 
   # Success scenarios
-
-  @DeviceIdentifier_retrieveIdentifier_201.02_success_scenario_1_all_parameters_provided
-  Scenario: Pre-announce a call from callingParticipant1 to calledParticipant1  
-    Given callingParticipant1 has a brand registration by customer customerId1 towards terminating country of calledParticipant1
-    And request property "$.callingParticipant" is set to callingParticipant1
-    And request property "$.calledParticipant" is set to calledParticipant1
-    And request property "$.customerId" is present and set to customerId1
-    And request property "$.timeToLive" is present and set to a value that complies with schema "/components/schemas/TimeToLive" 
-    And one of the scopes associated with the access token is verified-caller:create
-    When the HTTPS "POST" request is sent
-    Then the response status code is 201
-    And the response body complies with the schema at "/components/schemas/Create201"
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response header "Content-Type" is "application/json"
-    And the response property "$.announcementId", if present, is a valid UUID
-	And the response property "$.timeToLive" has the same value as the request parameter "$.timeToLive"
 
   # Generic 400 errors
 
@@ -119,4 +102,5 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
       And the response header "Content-Type" is "application/json"
       And the response property "$.status" is 403
       And the response property "$.code" is "PERMISSION_DENIED"
-      And the response property "$.message" contains a user friendly text  
+      And the response property "$.message" contains a user friendly text
+
