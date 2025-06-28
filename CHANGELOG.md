@@ -30,7 +30,7 @@ The API definition(s) are based on
   - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.1/code/API_definitions/brand-registration.yml)
 
 ### Added
-* Add new endpoint to create, edit, query and delete a brand registration for call enrichment by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/XXX
+* Add new endpoint to create, edit, query and delete a brand registration for call enrichment by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/47
 
 ### Changed
 * N/A
@@ -41,5 +41,5 @@ The API definition(s) are based on
 ### Removed
 * N/A
 
-**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/XXX
+**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/commits/77eab47f8261b710e2257c7b6b88212777d13d79/code/API_definitions/brand-registration.yml
 
