@@ -72,7 +72,7 @@ paths:
     post:
       tags:
         - Create Pre-announcement
-      summary: Create a call pre-announcement in the service platform 
+      summary: Create a call pre-announcement in the service platform
       description: Create a call pre-announcement for a Calling and optionaly a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
