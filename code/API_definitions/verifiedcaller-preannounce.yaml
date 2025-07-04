@@ -49,7 +49,8 @@ info:
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
-  version: 0.1.0-rc.1
+
+version: 0.1.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -71,7 +72,7 @@ paths:
     post:
       tags:
         - Create Pre-announcement
-      summary: Create a call pre-announcement in the service platform
+      summary: Create a call pre-announcement in the service platform 
       description: Create a call pre-announcement for a Calling and optionaly a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
