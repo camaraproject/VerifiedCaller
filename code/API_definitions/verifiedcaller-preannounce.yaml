@@ -187,8 +187,8 @@ components:
       type: string
       description: The method to be applied to verify the authent
       enum:
-       - "SMS"
-       - "BRAND_DISPLAY"
+        - "SMS"
+        - "BRAND_DISPLAY"
 
     CreatePreAnnouncementRequest:
       type: object
@@ -212,13 +212,13 @@ components:
           $ref: '#/components/schemas/DynamicDisplayName'
 
     ExpiresAt:
-     type: string
-     format: date-time
-     description: |
-      Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
-      It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-      Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
-     example: "2023-07-03T12:27:08.312Z"
+      type: string
+      format: date-time
+      description: |
+       Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
+       It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+       Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+      example: "2023-07-03T12:27:08.312Z"
 
     AnnouncementInfo:
       type: object
