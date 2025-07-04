@@ -50,7 +50,7 @@ info:
 
     (FAQs will be added in a later version of the documentation)
 
-version: 0.1.0-rc.1
+  version: 0.1.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
