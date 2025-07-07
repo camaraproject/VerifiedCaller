@@ -4,7 +4,7 @@ Checklist for Verified Caller Pre-Announcement v0.1.0-rc.1 in r1.1.
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status  | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:-----------------------------------------------------------------------------------------------------------------:|
-|  1 | API definition                               |   M   |         M         |    M    |    M   |  Y   | [verifiedcaller-preannounce.yml](/code/API_definitions/verifiedcaller-preannounce.yml)                            |
+|  1 | API definition                               |   M   |         M         |    M    |    M   |  Y   | [verifiedcaller-preannounce.yaml](/code/API_definitions/verifiedcaller-preannounce.yaml)                          |
 |  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y   | [r3.2](https://github.com/camaraproject/Commonalities/releases/tag/r3.2)                                          |
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |  Y   | [r3.2](https://github.com/camaraproject/IdentityAndConsentManagement/releases/tag/r3.2)                           |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |  Y   |                                                                                                                   |
