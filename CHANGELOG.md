@@ -47,6 +47,7 @@ This is the first release candidate for the first unstable version of Brand Regi
 
 
 ## Verified Caller Pre-Announcement v0.1.0-rc.1
+This is the first release candidate for the first unstable version of Verified Caller Preannouncement API
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yaml&nocors)
