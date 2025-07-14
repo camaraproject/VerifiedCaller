@@ -258,7 +258,7 @@ paths:
         '403':
           $ref: '#/components/responses/Generic403'
         '404':
-          $ref: '#/components/responses/Generic404'
+          $ref: '#/components/responses/Update404'
         '409':
           $ref: '#/components/responses/Generic409'
         '422':
@@ -546,7 +546,7 @@ components:
                   code:
                     enum:
                       - NOT_FOUND
-                      - BRAND_REGISTRATION.DEVICE_NOT_FOUND
+                      - GENERIC_404_IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
               summary: Generic Not Found
@@ -555,12 +555,54 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: "{{resource}} is not found"
-            BRAND_REGISTRATION_404_DEVICE_NOT_FOUND:
+            DEVICE_NOT_FOUND:
               summary: Device not found
               description: The device is not known to the service provider
               value:
                 status: 404
-                code: BRAND_REGISTRATION.DEVICE_NOT_FOUND
+                code: GENERIC_404_IDENTIFIER_NOT_FOUND
+                message: 'The device is not known to the service provider'
+    Update404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 404
+                  code:
+                    enum:
+                      - NOT_FOUND
+                      - BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
+                      - GENERIC_404_IDENTIFIER_NOT_FOUND
+          examples:
+            GENERIC_404_NOT_FOUND:
+              summary: Generic Not Found
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: "{{resource}} is not found"
+            BRAND_REGISTRATION_404_REGISTRATION_NOT_FOUND:
+              summary: Registration not found
+              description: The brand registration service is not able to identify the registration
+              value:
+                status: 404
+                code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
+                message: 'The brand registration service is not able to identify an existing registration'
+            DEVICE_NOT_FOUND:
+              summary: Device not found
+              description: The device is not known to the service provider
+              value:
+                status: 404
+                code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
     Generic404:
       description: Not found
