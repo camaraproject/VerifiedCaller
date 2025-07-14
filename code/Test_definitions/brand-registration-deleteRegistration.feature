@@ -18,7 +18,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
     Given an environment at "apiRoot"
     And the resource "/brand-registration/v0.1rc1/registrations"
     And the header "Authorization" is set to a valid access token
-    And the header "x-correlator" is set to a UUID value
+    And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request URI includes a registrationId parameter that is is a valid UUID format
 
   # Success scenarios
