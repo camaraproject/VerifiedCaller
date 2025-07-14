@@ -24,11 +24,9 @@ Sandbox API Repository to describe, develop, document, and test the VerifiedCall
 * Started: May 2024
 
 ## Release Information
-<!-- Use/uncomment one or multiple the following options -->
-The sub project has no (pre)releases yet, work in progress is within the main branch
-<!-- Pre-releases of this sub project are available in https://github.com/camaraproject/VerifiedCaller/releases -->
-<!-- The latest public release is available here: https://github.com/camaraproject/VerifiedCaller/releases/latest -->
-<!-- For changes see [CHANGELOG.md](https://github.com/camaraproject/VerifiedCaller/blob/main/CHANGELOG.md) -->
+
+Pre-releases of this sub project are available in https://github.com/camaraproject/VerifiedCaller/releases
+For changes see [CHANGELOG.md](https://github.com/camaraproject/VerifiedCaller/blob/main/CHANGELOG.md)
 
 ## Contributing
 * Meetings
