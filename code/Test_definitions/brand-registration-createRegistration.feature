@@ -18,7 +18,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And the resource "/brand-registration/v0.1rc1/registrations"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
-    And the header "x-correlator" is set to a UUID value
+    And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request body is compliant with the RequestBody schema defined by "/components/schemas/CreateOrUpdateRegistrationRequest"
 
   # Success scenarios
