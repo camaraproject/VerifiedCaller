@@ -377,7 +377,7 @@ components:
                   code:
                     enum:
                       - NOT_FOUND
-                      - VERIFIED_CALLER.DEVICE_NOT_FOUND
+                      - GENERIC_404_IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
               summary: Generic Not Found
@@ -391,7 +391,7 @@ components:
               description: Device is not found
               value:
                 status: 404
-                code: VERIFIED_CALLER.DEVICE_NOT_FOUND
+                code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: "Call Participant {{number}} is not known to the service provider"
     Generic409:
       description: Conflict
