@@ -16,7 +16,7 @@ Checklist for Verified Caller Pre-Announcement v0.1.0-rc.1 in r1.1.
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |  Y   | r1.1                                                                                                              |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |  Y   | [CHANGELOG.md](/CHANGELOG.md)                                                                                     |
 | 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |  N   |                                                                                                                   |
-| 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |  Y   | [wiki link](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/81134427/VerifiedCaller+API+description) |
+| 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |  Y   | [wiki link](https://lf-camaraproject.atlassian.net/wiki/x/WwPWB) |
 
 To fill the checklist:
 - in the line above the table, replace the api-name, api-version and the rx.y by their actual values for the current API version and release.
