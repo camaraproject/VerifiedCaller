@@ -11,10 +11,10 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
 # * An E.164 telephony number "phoneNumber1" that is owned by the customer "customerId1"
 # * An optional E.164 telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
 # * A display name "displayName1" that is to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
-# * An E.164 country code "terminatingCountryCode1" that identifies the tarDEL country of potenital callees where the display name is to be shown.
+# * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
 # * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
 
-  Background: Brand Regstration setup
+  Background: Brand Registration setup
     Given an environment at "apiRoot"
     And the resource "/brand-registration/v0.1rc1/registrations"
     And the header "Authorization" is set to a valid access token
@@ -23,7 +23,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
 
   # Success scenarios
 
-  @BrandRegistation__DEL_204.01_success_scenario_1
+  @BrandRegistration__DEL_204.01_success_scenario_1
   Scenario: Delete an existing brand registration
     Given the API consumer can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
@@ -35,7 +35,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
 
   # Generic 400 errors
 
-  @BrandRegistation__DEL_400.1_schema_not_compliant
+  @BrandRegistration__DEL_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request URI does not contain a registrationId parameter with a valid UUID format
     When the HTTPS "DEL" request is sent
@@ -48,7 +48,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
 
   # Generic 401 errors
 
-  @BrandRegistation__DEL_401.1_no_authorization_header
+  @BrandRegistration__DEL_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "DEL" request is sent
@@ -59,7 +59,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__DEL_401.2_expired_access_token
+  @BrandRegistration__DEL_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "DEL" request is sent
@@ -70,7 +70,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__DEL_401.3_invalid_access_token
+  @BrandRegistration__DEL_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "DEL" request is sent
@@ -83,7 +83,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: DEL
 
   # Generic 403 errors
 
-  @BrandRegistation__DEL_403.1_missing_access_token_scope
+  @BrandRegistration__DEL_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:delete
     When the HTTPS "DEL" request is sent

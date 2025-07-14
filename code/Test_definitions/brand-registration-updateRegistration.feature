@@ -14,7 +14,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
 # * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
 # * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
 
-  Background: Brand Regstration setup
+  Background: Brand Registration setup
     Given an environment at "apiRoot"
     And the resource "/brand-registration/v0.1rc1/registrations"
     And the header "Content-Type" is set to "application/json"
@@ -25,7 +25,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
 
   # Success scenarios
 
-  @BrandRegistation__PUT_200.01_success_scenario_1_all_parameters_provided
+  @BrandRegistration__PUT_200.01_success_scenario_1_all_parameters_provided
   Scenario: Replace an existing brand registration for customer1
     Given the API consumer can be verified as customer1 and associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
@@ -45,7 +45,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
 
   # Generic 400 errors
 
-  @BrandRegistation__PUT_400.1_schema_not_compliant
+  @BrandRegistration__PUT_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     When the HTTPS "PUT" request is sent
@@ -56,7 +56,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__PUT_400.2_no_request_body
+  @BrandRegistration__PUT_400.2_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "PUT" request is sent
@@ -69,7 +69,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
 
   # Generic 401 errors
 
-  @BrandRegistation__PUT_401.1_no_authorization_header
+  @BrandRegistration__PUT_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "PUT" request is sent
@@ -80,7 +80,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__PUT_401.2_expired_access_token
+  @BrandRegistration__PUT_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "PUT" request is sent
@@ -91,7 +91,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__PUT_401.3_invalid_access_token
+  @BrandRegistration__PUT_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "PUT" request is sent
@@ -104,7 +104,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: PUT /registrati
 
   # Generic 403 errors
 
-  @BrandRegistation__PUT_403.1_missing_access_token_scope
+  @BrandRegistration__PUT_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:update
     When the HTTPS "PUT" request is sent

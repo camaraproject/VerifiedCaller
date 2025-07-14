@@ -13,7 +13,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
 # * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
 # * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
 
-  Background: Brand Regstration setup
+  Background: Brand Registration setup
     Given an environment at "apiRoot"
     And the resource "/brand-registration/v0.1rc1/registrations"
     And the header "Content-Type" is set to "application/json"
@@ -23,7 +23,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
 
   # Success scenarios
 
-  @BrandRegistation__POST_201.01_success_scenario_1_all_parameters_provided
+  @BrandRegistration__POST_201.01_success_scenario_1_all_parameters_provided
   Scenario: Create a brand registration for customer1
     Given the API consumer can be verified as customer1
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -43,7 +43,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
 
   # Generic 400 errors
 
-  @BrandRegistation__POST_400.1_schema_not_compliant
+  @BrandRegistration__POST_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     When the HTTPS "POST" request is sent
@@ -54,7 +54,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__POST_400.2_no_request_body
+  @BrandRegistration__POST_400.2_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "POST" request is sent
@@ -67,7 +67,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
 
   # Generic 401 errors
 
-  @BrandRegistation__POST_401.1_no_authorization_header
+  @BrandRegistration__POST_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "POST" request is sent
@@ -78,7 +78,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__POST_401.2_expired_access_token
+  @BrandRegistration__POST_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "POST" request is sent
@@ -89,7 +89,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistation__POST_401.3_invalid_access_token
+  @BrandRegistration__POST_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "POST" request is sent
@@ -102,7 +102,7 @@ Feature: Camara Brand Registration API, v0.1.0-rc.1 - Operation: POST /registrat
 
   # Generic 403 errors
 
-  @BrandRegistation__POST_403.1_missing_access_token_scope
+  @BrandRegistration__POST_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:create
     When the HTTPS "POST" request is sent
