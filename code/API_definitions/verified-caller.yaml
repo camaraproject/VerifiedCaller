@@ -206,7 +206,7 @@ components:
       description: "Request object to create a call pre-announcement"
       required:
         - "callingParticipant"
-        - "registrationId"
+        - "calledParticipant"
       properties:
         callingParticipant:
           $ref: '#/components/schemas/PhoneNumber'

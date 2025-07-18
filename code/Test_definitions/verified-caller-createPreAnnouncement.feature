@@ -55,9 +55,9 @@ Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.1 - Operation: pre-an
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @Verified_Caller_Pre-announce_400.4_registrationId_empty
-  Scenario: The mandatory registrationId value is non existent
-    Given the request body property "$.registrationId" is non existent
+  @Verified_Caller_Pre-announce_400.4_calledParticipant_empty
+  Scenario: The mandatory calledParticipant value is non existent
+    Given the request body property "$.calledParticipant" is non existent
     When the HTTPS "POST" request is sent
     Then the response status code is 400
     And the response header "x-correlator" has same value as the request header "x-correlator"
