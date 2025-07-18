@@ -6,7 +6,7 @@ info:
 
     # Introduction
 
-    Consumers of Verified Caller Pre-announcement API consumers can initiate the verification of the authenticity of a call from a pre-defined calling party, optionally to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
+    Consumers of Verified Caller Pre-announcement API can initiate the verification of the authenticity of a call from a calling party, optionally to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
 
     Verified Caller Pre-announcement API could be useful in scenarios such as:
     - Telesales
@@ -19,8 +19,8 @@ info:
     * **callingParticipant** and **calledParticipant**: A pair of E.164 numbers representing the parties in a call.
     * **registrationId** : A unique reference to the relationship between the API consumer and the service provider.
     * **strategy**: Indicator of the requested method to be applied by the service provider to verify a call, as desired by the API consumer.
-    * **timeToLive**: The period for which the verification by the service provider as indicated by the **strategy** parameter remains valid. A verification is no longer valid if the call is placed after expiry of verification. In order to reduce the risk of a spoofed call, the service provider is advised to expire the verification right away once the call is placed.
-    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, it overrides any pre-arranged displayName presented to the callee, e.g. one set using the brand-registration API request.
+    * **timeToLive**: The period for which the verification by the service provider remains valid. A call is not considered as verified if it is placed after expiry of verification. The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe a timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to expire the verification right away once the call is placed.
+    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, it overrides any pre-arranged display name presented to the callee, e.g. one set using the brand-registration API request.
 
     # API Functionality
     The API exposes the following endpoints/operations:
@@ -46,14 +46,23 @@ info:
     ## Error handling:
     - If the subject can be identified from the access token and the optional `calledParticipant` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same party is identified by these two methods, as the server is unable to make this comparison.
 
+    # Additional CAMARA error responses
+
+    The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
+
+    Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
+
+    As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
-  version: vwip
+
+  version: 0.1.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.5
+  x-camara-commonalities: 0.6
 externalDocs:
   description: Project documentation at Camara
   url: https://github.com/camaraproject/VerifiedCaller
@@ -65,14 +74,14 @@ servers:
         description: API root
 tags:
   - name: Create Pre-announcement
-    description: Create a call pre-announcement for a Calling and Called Party
+    description: Create a call pre-announcement for a Calling and optionally a Called Party
 paths:
   /pre-announce:
     post:
       tags:
         - Create Pre-announcement
       summary: Create a call pre-announcement in the service platform
-      description: Create a call pre-announcement for a Calling and Called Party that will remain valid for a specified duration.
+      description: Create a call pre-announcement for a Calling and optionaly a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
         - $ref: '#/components/parameters/x-correlator'
@@ -143,15 +152,17 @@ components:
       in: header
       description: Correlation id for the different services
       schema:
-        type: string
-        pattern: ^[a-zA-Z0-9-]{0,55}$
+        $ref: "#/components/schemas/XCorrelator"
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
-        type: string
-        pattern: ^[a-zA-Z0-9-]{0,55}$
+        $ref: "#/components/schemas/XCorrelator"
   schemas:
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
@@ -180,12 +191,12 @@ components:
     DynamicDisplayName:
       type: string
       maxLength: 32
-      description: Brand information that will be displayed to the calling party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides the displayName provided in the brand-registration API request, if brand-registration API is also in use.
+      description: Brand information that will be displayed to the calling party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides a pre-configured display name, e.g. the displayName parameter provided in the brand-registration API request.
       example: "Company X Call Center"
 
     Strategy:
       type: string
-      description: The method to be applied to verify the authent
+      description: The method to be applied to verify the authenticity of the calling party. Absence of this parameter lets the service provider choose a default strategy which the API consumer must beware.
       enum:
         - "SMS"
         - "BRAND_DISPLAY"
@@ -195,8 +206,7 @@ components:
       description: "Request object to create a call pre-announcement"
       required:
         - "callingParticipant"
-        - "registrationId"
-        - "strategy"
+        - "calledParticipant"
       properties:
         callingParticipant:
           $ref: '#/components/schemas/PhoneNumber'
@@ -367,7 +377,7 @@ components:
                   code:
                     enum:
                       - NOT_FOUND
-                      - VERIFIED_CALLER.DEVICE_NOT_FOUND
+                      - GENERIC_404_IDENTIFIER_NOT_FOUND
           examples:
             GENERIC_404_NOT_FOUND:
               summary: Generic Not Found
@@ -381,7 +391,7 @@ components:
               description: Device is not found
               value:
                 status: 404
-                code: VERIFIED_CALLER.DEVICE_NOT_FOUND
+                code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: "Call Participant {{number}} is not known to the service provider"
     Generic409:
       description: Conflict
