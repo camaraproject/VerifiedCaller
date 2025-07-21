@@ -24,7 +24,7 @@ The API definition(s) are based on
 * Identity and Consent Management r3.2
 
 ## Brand Registration v0.1.0-rc.1
-This is the first release candidate for the first unstable version of Brand Registration API
+This is the first release candidate for the first initial version of Brand Registration API
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/brand-registration.yaml&nocors)
@@ -43,11 +43,9 @@ This is the first release candidate for the first unstable version of Brand Regi
 ### Removed
 * N/A
 
-**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/commits/main/code/API_definitions/brand-registration.yaml
-
 
 ## Verified Caller Pre-Announcement v0.1.0-rc.1
-This is the first release candidate for the first unstable version of Verified Caller Preannouncement API
+This is the first release candidate for the first initial version of Verified Caller Preannouncement API
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yaml&nocors)
@@ -66,4 +64,4 @@ This is the first release candidate for the first unstable version of Verified C
 ### Removed
 * N/A
 
-**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/commits/main/code/API_definitions/verifiedcaller-preannounce.yaml
+**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/commits/r1.1
