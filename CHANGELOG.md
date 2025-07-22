@@ -48,9 +48,9 @@ This is the first release candidate for the first initial version of Brand Regis
 This is the first release candidate for the first initial version of Verified Caller Preannouncement API
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yaml&nocors)
-  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verifiedcaller-preannounce.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.1/code/API_definitions/verifiedcaller-preannounce.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verified-caller.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.1/code/API_definitions/verified-caller.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.1/code/API_definitions/verified-caller.yaml)
 
 ### Added
 * Add new endpoint to pre-announce a call to be branded by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/43
