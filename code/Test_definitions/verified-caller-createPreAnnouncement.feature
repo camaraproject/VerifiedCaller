@@ -1,7 +1,7 @@
 Feature: Camara Verified Caller Preannounce API, v0.1.0-rc.2 - Operation: pre-announce
 
 # Input to be provided by the implementation to the tests
-# References to OAS spec schemas refer to schemas specified in /code/API_definitions/verifiedcaller-preannounce.yml
+# References to OAS spec schemas refer to schemas specified in /code/API_definitions/verified-caller.yaml
 # Brand registration information formerly created
 # Implementation indications:
 # * api_root: API root of the server URL
