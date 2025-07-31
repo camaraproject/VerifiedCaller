@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Verified Caller Pre-announcement
+  title: Verified Caller
   description: |
     This API provides the ability to ...
 
     # Introduction
 
-    Consumers of Verified Caller Pre-announcement API can initiate the verification of the authenticity of a call from a calling party, optionally to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
+    Consumers of Verified Caller API can initiate the verification of the authenticity of a call from a calling party, optionally to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
 
-    Verified Caller Pre-announcement API could be useful in scenarios such as:
+    Verified Caller API could be useful in scenarios such as:
     - Telesales
     - Customer Support
     - Outreach efforts of NGOs.
