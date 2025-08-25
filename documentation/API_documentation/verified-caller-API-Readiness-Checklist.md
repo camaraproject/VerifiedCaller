@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for Verified Caller Pre-Announcement v0.1.0-rc.2 in r1.2.
+Checklist for Verified Caller v0.1.0 in r1.3.
 
 | Nr | API release assets  | alpha | release-candidate |  initial<br>public | stable<br> public | Status  | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:-----------------------------------------------------------------------------------------------------------------:|
@@ -13,7 +13,7 @@ Checklist for Verified Caller Pre-Announcement v0.1.0-rc.2 in r1.2.
 |  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |  Y   | [/code/Test_definitions](/code/Test_definitions)                 |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |  N   |                                                                                                                   |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |  N   |                                                                                                                   |
-| 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |  Y   | r1.2                                                                                                              |
+| 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |  Y   | r1.3                                                                                                              |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |  Y   | [CHANGELOG.md](/CHANGELOG.md)                                                                                     |
 | 12 | Previous public release was certified        |   O   |         O         |    O    |    M   |  N   |                                                                                                                   |
 | 13 | API description (for marketing)              |   O   |         O         |    M    |    M   |  Y   | [wiki link](https://lf-camaraproject.atlassian.net/wiki/x/WwPWB) |
