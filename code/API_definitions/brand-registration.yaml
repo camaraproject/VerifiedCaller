@@ -49,7 +49,7 @@ info:
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
-  version: 0.1.0-rc.1
+  version: 0.1.0
 
   license:
     name: Apache 2.0
@@ -59,7 +59,7 @@ externalDocs:
   description: Project documentation at Camara
   url: https://github.com/camaraproject/VerifiedCaller
 servers:
-  - url: '{apiRoot}/brand-registration/v0.1rc1'
+  - url: '{apiRoot}/brand-registration/v0.1'
     variables:
       apiRoot:
         default: http://localhost:9091
