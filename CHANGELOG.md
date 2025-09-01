@@ -17,7 +17,7 @@ The below sections record the changes for each API version in each release as fo
 # r1.3
 ## Release Notes
 
-This **pre-release** contains the definition and documentation of
+This initial public release contains the definition and documentation of
 * Brand Registration v0.1.0
 * Verified Caller v0.1.0
 
