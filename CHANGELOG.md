@@ -22,8 +22,8 @@ This **pre-release** contains the definition and documentation of
 * Verified Caller v0.1.0
 
 The API definition(s) are based on
-* Commonalities r3.2
-* Identity and Consent Management r3.2
+* Commonalities r3.3
+* Identity and Consent Management r3.3
 
 ## Brand Registration v0.1.0
 This is the first initial version of Brand Registration API.
