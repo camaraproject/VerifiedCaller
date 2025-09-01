@@ -65,7 +65,7 @@ This is the first initial version of Verified Caller API
 ### Removed
 * N/A
 
-**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/compare/r1.1...r1.3
+**Full Changelog**: https://github.com/camaraproject/VerifiedCaller/commits/r1.3
 
 # r1.2
 ## Release Notes
