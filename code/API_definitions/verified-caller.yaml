@@ -120,6 +120,8 @@ paths:
           $ref: '#/components/responses/Create404'
         '409':
           $ref: '#/components/responses/Generic409'
+        '422':
+          $ref: '#/components/responses/Create422'
         '429':
           $ref: '#/components/responses/Generic429'
         '500':
@@ -410,6 +412,32 @@ components:
                 status: 409
                 code: CONFLICT
                 message: Requested operation conflicts with existing data in the service platform
+    Create422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              summary: Service not applicable
+              description: Service not applicable for the provided identifier
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
     Generic429:
       description: Too Many Requests
       headers:
