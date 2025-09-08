@@ -2,11 +2,11 @@ openapi: 3.0.3
 info:
   title: Verified Caller
   description: |
-    This API provides the ability to verify the authenticity of a call from a calling party, optionally to a specific called party.
+    This API provides the ability to verify the authenticity of a call from a calling party to a specific called party.
 
     # Introduction
 
-    Consumers of Verified Caller API can initiate the verification of the authenticity of a call from a calling party, optionally to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
+    Consumers of Verified Caller API can initiate the verification of the authenticity of a call from a calling party to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
 
     Verified Caller API could be useful in scenarios such as:
     - Telesales
@@ -37,14 +37,7 @@ info:
 
     # Identifying the device from the access token
 
-    This API requires the API consumer to identify the called party as the subject of the API as follows:
-    - When the API is invoked using a two-legged access token, the called party will be identified from the optional `calledParticipant` object, **unless** inclusion of the parameter contradicts with applicable regulations. If 'calledParticipant' parameter is not provided, the verification service is applied only based on the identity of the caller.
-    - When a three-legged access token is used however, 'calledParticipant' MUST NOT be provided, as the subject will be uniquely identified from the access token.
-
-    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
-
-    ## Error handling:
-    - If the subject can be identified from the access token and the optional `calledParticipant` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same party is identified by these two methods, as the server is unable to make this comparison.
+    Not applicable as this API requires the API consumer to identify the called party as the subject of the API using the mandatory `calledParticipant` object.
 
     # Additional CAMARA error responses
 
@@ -74,14 +67,14 @@ servers:
         description: API root
 tags:
   - name: Create Pre-announcement
-    description: Create a call pre-announcement for a Calling and optionally a Called Party
+    description: Create a call pre-announcement for a Calling and a Called Party
 paths:
   /pre-announce:
     post:
       tags:
         - Create Pre-announcement
       summary: Create a call pre-announcement in the service platform
-      description: Create a call pre-announcement for a Calling and optionaly a Called Party that will remain valid for a specified duration.
+      description: Create a call pre-announcement for a Calling and a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
         - $ref: '#/components/parameters/x-correlator'
@@ -127,8 +120,6 @@ paths:
           $ref: '#/components/responses/Create404'
         '409':
           $ref: '#/components/responses/Generic409'
-        '422':
-          $ref: '#/components/responses/Create422'
         '429':
           $ref: '#/components/responses/Generic429'
         '500':
@@ -419,40 +410,6 @@ components:
                 status: 409
                 code: CONFLICT
                 message: Requested operation conflicts with existing data in the service platform
-    Create422:
-      description: Unprocessable Content
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 422
-                  code:
-                    enum:
-                      - SERVICE_NOT_APPLICABLE
-                      - UNNECESSARY_IDENTIFIER
-          examples:
-            GENERIC_422_SERVICE_NOT_APPLICABLE:
-              summary: Service not applicable
-              description: Service not applicable for the provided identifier
-              value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
-            GENERIC_422_UNNECESSARY_IDENTIFIER:
-              summary: Unnecessary identifier
-              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
-              value:
-                status: 422
-                code: UNNECESSARY_IDENTIFIER
-                message: The device is already identified by the access token.
     Generic429:
       description: Too Many Requests
       headers:
