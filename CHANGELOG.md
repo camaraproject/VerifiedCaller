@@ -26,7 +26,7 @@ The API definition(s) are based on
 * Identity and Consent Management r3.3
 
 ## Brand Registration v0.1.0
-This is the first initial version of Brand Registration API.
+This is the initial public version of the Brand Registration API.
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.3/code/API_definitions/brand-registration.yaml&nocors)
