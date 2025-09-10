@@ -4,7 +4,7 @@ Feature: CAMARA Verified Caller API, v0.1.0 - Operation: createPreAnnouncement
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/verified-caller.yaml
 # Brand registration information formerly created
 # Implementation indications:
-# * api_root: API root of the server URL
+# * apiRoot: API root of the server URL
 #
 # Testing assets:
 # * A calling party "callingParticipant1"

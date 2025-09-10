@@ -3,7 +3,7 @@ Feature: Camara Brand Registration API, v0.1.0 - Operation: POST /registrations
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
 # Implementation indications:
-# * api_root: API root of the server URL
+# * apiRoot: API root of the server URL
 #
 # Testing assets:
 # * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
