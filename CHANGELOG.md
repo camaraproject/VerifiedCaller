@@ -62,6 +62,7 @@ This is the first initial version of Verified Caller API
 
 ### Fixed
 * Remove occurrences of "Pre-Announce" from API name throughout the repository by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/61
+* Fix resource path version in API specification & broken links in CHANGELOG by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/57
 
 ### Removed
 * N/A
