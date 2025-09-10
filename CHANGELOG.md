@@ -34,7 +34,7 @@ This is the initial public version of the Brand Registration API.
   - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.3/code/API_definitions/brand-registration.yaml)
 
 ### Added
-* N/A
+* Add new endpoint to create, edit, query and delete a brand registration for call enrichment by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/47
 
 ### Changed
 * N/A
