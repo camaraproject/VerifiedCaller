@@ -54,7 +54,8 @@ This is the first initial version of Verified Caller API
   - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.3/code/API_definitions/verified-caller.yaml)
 
 ### Added
-* N/A
+### Added
+* Add new endpoint to pre-announce a call to be branded by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/43
 
 ### Changed
 * N/A
