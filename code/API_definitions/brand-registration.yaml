@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Brand Registration
   description: |
-    This API provides the ability to associate calling party numbers to be associated with a human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
+    This API provides the ability to associate a calling party number with a human-readable string that is displayed to the callee on their device screen instead of the calling number.
 
     # Introduction
 
