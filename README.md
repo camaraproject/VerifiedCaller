@@ -25,8 +25,22 @@ Sandbox API Repository to describe, develop, document, and test the VerifiedCall
 
 ## Release Information
 
-Pre-releases of this sub project are available in https://github.com/camaraproject/VerifiedCaller/releases
-For changes see [CHANGELOG.md](https://github.com/camaraproject/VerifiedCaller/blob/main/CHANGELOG.md)
+* Note: Please be aware that the project will have updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
+* `NEW`: Public release r1.3 of version `0.1.0` of Brand Registration and Verified Caller API is available [here](https://github.com/camaraproject/VerifiedCaller/releases/r1.3)
+
+* Brand Registration API definition **with inline documentation**:
+  * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.3/code/API_definitions/brand-registration.yaml&nocors)
+  * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.3/code/API_definitions/brand-registration.yaml)
+  * OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.3/code/API_definitions/brand-registration.yaml)
+
+* Verified Caller API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.3/code/API_definitions/verified-caller.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r1.3/code/API_definitions/verified-caller.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/VerifiedCaller/blob/r1.3/code/API_definitions/verified-caller.yaml)
+
+* Pre-releases of this sub project are available in https://github.com/camaraproject/VerifiedCaller/releases
+* The latest public release is available here: https://github.com/camaraproject/VerifiedCaller/releases/latest
+* For changes see [CHANGELOG.md](https://github.com/camaraproject/VerifiedCaller/blob/main/CHANGELOG.md)
 
 ## Contributing
 * Meetings

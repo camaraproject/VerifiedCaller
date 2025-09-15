@@ -1,10 +1,10 @@
-Feature: CAMARA Verified Caller API, v0.1.0-rc.2 - Operation: createPreAnnouncement
+Feature: CAMARA Verified Caller API, v0.1.0 - Operation: createPreAnnouncement
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/verified-caller.yaml
 # Brand registration information formerly created
 # Implementation indications:
-# * api_root: API root of the server URL
+# * apiRoot: API root of the server URL
 #
 # Testing assets:
 # * A calling party "callingParticipant1"
@@ -12,7 +12,7 @@ Feature: CAMARA Verified Caller API, v0.1.0-rc.2 - Operation: createPreAnnouncem
 
   Background:  setup
     Given an environment at "apiRoot"
-    And the resource "/verified-caller/v0.1rc2/pre-announce"
+    And the resource "/verified-caller/v0.1/pre-announce"
     And the header "Content-Type" is seVerified Caller Pre-announcet to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
