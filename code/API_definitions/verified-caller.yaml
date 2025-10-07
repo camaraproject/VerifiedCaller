@@ -51,7 +51,7 @@ info:
 
     (FAQs will be added in a later version of the documentation)
 
-  version: 0.1.0
+  version: wip
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -60,7 +60,7 @@ externalDocs:
   description: Project documentation at Camara
   url: https://github.com/camaraproject/VerifiedCaller
 servers:
-  - url: '{apiRoot}/verified-caller/v0.1'
+  - url: '{apiRoot}/verified-caller/vwip'
     variables:
       apiRoot:
         default: http://localhost:9091
