@@ -1,4 +1,4 @@
-Feature: Camara Brand Registration API, v0.1.0 - Operation: POST /registrations
+Feature: Camara Brand Registration API, vwip - Operation: POST /registrations
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
@@ -15,7 +15,7 @@ Feature: Camara Brand Registration API, v0.1.0 - Operation: POST /registrations
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
-    And the resource "/brand-registration/v0.1/registrations"
+    And the resource "/brand-registration/vwip/registrations"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
