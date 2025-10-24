@@ -1,0 +1,38 @@
+# ***\*Overview\****
+
+Due to the prevalence of online fraud and cybercrime as significant challenges in e-commerce, GSMA, mobile operators, and technical partners are prioritizing the GSMA Open Gateway initiative to address online crime. Verified Caller authenticated by operators, delivers caller business cards, significantly reducing the likelihood of fraud calls while ensuring legitimate calls are easily received by consumers. 
+
+## ***\*1.Scope\****
+
+The Verified Caller API allows to send “business card” information to the called’s mobile phone. The "business card" can cover the following aspect:
+
+- message information, e.g. calling enterprise name, calling purpose, etc.
+
+- picture information, e.g. calling enterprise logo, publicity picture, etc.
+
+- video information, e.g. publicity video, etc.
+
+  The Verified Caller service include two phases, namely Service Registration and Service Trigger. 
+
+  In fact, service registration is the pre-condition process. The invokers need to be authenticated by the operator and associate themselves with specific caller numbers. They submit their identification documents (such as business licenses, tax IDs) along with the associated caller numbers. 
+
+  NOTE-The service registration can be completed manually or automatically , not by API calling, so the registration process is not the focus of Verified Caller API.
+
+  Service Trigger phase main involves user subscription, calling control and calling status report.
+
+  
+
+## ***\*2. Release management plan\****
+
+***\*2.1 API Version 0.1.0\****
+
+Content:  "business card" cover message information in the Yaml
+
+Target time: The stable API Version 0.1.0 aims to be published before  Dec 2024
+
+***\*2.2 API Version 0.2.0\****
+
+Content:  "business card" cover message and video/ picture information in the Yaml
+
+Target time: The stable API Version 0.2.0 aims to be published before  August 2025
+
