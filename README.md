@@ -45,7 +45,7 @@ Sandbox API Repository to describe, develop, document, and test the VerifiedCall
 ## Contributing
 * Meetings
     * [Registration / Join](https://zoom-lfx.platform.linuxfoundation.org/meeting/95553339882?password=c2022918-91d5-4d3d-9c4f-14b759b16e69)
-    * Schedule: bi-weekly (odd weeks), Thursday, 9:00 AM UTC (10:00 CET/11:00 CEST)
+    * Schedule: bi-weekly (odd weeks), Thursday, 10:00 AM UTC (11:00 AM CET)
     * Minutes: Access [meeting minutes](https://lf-camaraproject.atlassian.net/l/cp/1k9fcyv1)
 * Mailing List
     * Subscribe / Unsubscribe to the mailing list of this Sub Project <https://lists.camaraproject.org/g/sp-verified-caller>.
