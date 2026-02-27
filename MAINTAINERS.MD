@@ -9,3 +9,4 @@
 | Vodafone | Cetin Alpaycetin | alpaycetin74 |
 | Vodafone | Olsi Korkuti | olsi-korkuti |
 | Orange | Gilles Renoux | GillesInnov35 |
+| Independent contributor | Santiago Troncoso | stroncoso |
