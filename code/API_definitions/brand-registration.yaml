@@ -421,8 +421,8 @@ components:
           $ref: '#/components/schemas/CampaignName'
 
     RegistrationRecords:
-        type: array
-        items:
+      type: array
+      items:
           $ref: '#/components/schemas/RegistrationRecord'
 
     ErrorInfo:
