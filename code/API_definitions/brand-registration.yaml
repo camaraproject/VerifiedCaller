@@ -423,7 +423,7 @@ components:
     RegistrationRecords:
       type: array
       items:
-          $ref: '#/components/schemas/RegistrationRecord'
+        $ref: '#/components/schemas/RegistrationRecord'
 
     ErrorInfo:
       description: Common schema for errors
@@ -485,9 +485,9 @@ components:
           schema:
             $ref: '#/components/schemas/RegistrationRecords'
           examples:
-            TWO_RECORDS:
-              summary: Two registration results returned to the client
-              description: Two registration results returned to the client
+            TWO_RECORDS_FOUND:
+              summary: Two registration records available
+              description: Two registration records returned to the client
               value:
                 - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                   phoneNumber: "+123456789"
@@ -495,13 +495,13 @@ components:
                   displayName: "Company X Calling"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
-                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                  phoneNumber: "+123456789"
-                  phoneNumberAlternate: "+123456790"
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                  phoneNumber: "+123456790"
+                  phoneNumberAlternate: "+123456791"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   customerId: "Customer2"
-                  verifyCallerAction: "DO_NOT_BRAND"
+                  verifyCallerAction: "BLOCK_UNVERIFIED"
     204NoContent:
       description: Successful response with no content
       headers:
