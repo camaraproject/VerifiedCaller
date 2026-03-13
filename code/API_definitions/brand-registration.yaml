@@ -144,6 +144,9 @@ paths:
       operationId: readRegistrations
       parameters:
         - $ref: '#/components/parameters/x-correlator'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Seek'
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecords'
@@ -319,11 +322,42 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: "#/components/schemas/XCorrelator"
+    Page:
+      name: page
+      in: query
+      description: |
+        Indicates the subset of entries to be returned, where total number of pages is determined by the number of all applicable entries and the value of the *perPage* parameter.
+        *First page is indicated with value 0.*
+      schema:
+        type: integer
+        default: 0
+    PerPage:
+      name: perPage
+      in: query
+      description: Indicates the number of entries to be returned in each response. Has no effect if total number of applicable entries < perPage.
+      schema:
+        type: integer
+        default: 10
+    Seek:
+      name: seek
+      in: query
+      description:  Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
+      schema:
+        type: string
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         $ref: "#/components/schemas/XCorrelator"
+    Content-Last-Key:
+      description: Indicates the index of the last entry provided in the response
+      schema:
+        type: string
+    X-Total-Count:
+      description: Total number of applicable entries
+      schema:
+        type: integer
   schemas:
     XCorrelator:
       type: string
@@ -480,6 +514,10 @@ components:
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
+        Content-Last-Key:
+          $ref: "#/components/headers/Content-Last-Key"
+        X-Total-Count:
+          $ref: "#/components/headers/X-Total-Count"
       content:
         application/json:
           schema:
