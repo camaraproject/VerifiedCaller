@@ -341,7 +341,7 @@ components:
     Seek:
       name: seek
       in: query
-      description:  Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
+      description: Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
       schema:
         type: string
 
