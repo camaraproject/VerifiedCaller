@@ -139,8 +139,8 @@ paths:
     get:
       tags:
         - Read Brand registration
-      summary: Read existing brand registrations of the client from the service platform
-      description: Read existing brand registrations of the client from the service platform.
+      summary: Read existing brand registrations from the service platform
+      description: Read existing brand registrations from the service platform.
       operationId: readRegistrations
       parameters:
         - $ref: '#/components/parameters/x-correlator'
