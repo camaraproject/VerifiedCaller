@@ -152,6 +152,8 @@ paths:
           $ref: '#/components/responses/SuccessfulRecords'
         '204':
           $ref: '#/components/responses/204NoContent'
+        '206':
+          $ref: '#/components/responses/SuccessfulPartialRecords'
         '400':
           $ref: '#/components/responses/Generic400'
         '401':
@@ -514,10 +516,6 @@ components:
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
-        Content-Last-Key:
-          $ref: "#/components/headers/Content-Last-Key"
-        X-Total-Count:
-          $ref: "#/components/headers/X-Total-Count"
       content:
         application/json:
           schema:
@@ -545,6 +543,39 @@ components:
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
+    SuccessfulPartialRecords:
+      description: |
+        Success response with one or more brand registration records.
+        Used if the request expects a paginated response.
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+        Content-Last-Key:
+          $ref: "#/components/headers/Content-Last-Key"
+        X-Total-Count:
+          $ref: "#/components/headers/X-Total-Count"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistrationRecords'
+          examples:
+            TWO_RECORDS_FOUND:
+              summary: Two registration records available
+              description: Two registration records returned to the client
+              value:
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                  phoneNumber: "+123456789"
+                  terminatingCountryCode: 44
+                  displayName: "Company X Calling"
+                  customerId: "Customer1"
+                  verifyCallerAction: "DO_NOT_BRAND"
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                  phoneNumber: "+123456790"
+                  phoneNumberAlternate: "+123456791"
+                  terminatingCountryCode: 44
+                  displayName: "Company Y Calling"
+                  customerId: "Customer2"
+                  verifyCallerAction: "BLOCK_UNVERIFIED"
     Generic400:
       description: Bad Request
       headers:
