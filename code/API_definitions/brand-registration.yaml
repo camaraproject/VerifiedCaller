@@ -25,6 +25,7 @@ info:
 
     - `/registrations` :
       - **POST** operation creates a new registration and returns a registration identifier
+      - **GET** operation reads existing registrations from the brand registration service
     - `/registrations/{registrationId}` :
       - **PUT** operation updates an existing registration identified by the registrationId in the brand registration service
       - **GET** operation reads an existing registration identified by the registrationId from the brand registration service
@@ -135,6 +136,42 @@ paths:
       security:
         - openId:
             - brand-registration:create
+    get:
+      tags:
+        - Read Brand registration
+      summary: Read existing brand registrations from the service platform
+      description: Read existing brand registrations from the service platform.
+      operationId: readRegistrations
+      parameters:
+        - $ref: '#/components/parameters/x-correlator'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
+        - $ref: '#/components/parameters/Seek'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulRecords'
+        '204':
+          $ref: '#/components/responses/204NoContent'
+        '206':
+          $ref: '#/components/responses/SuccessfulPartialRecords'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '404':
+          $ref: '#/components/responses/Generic404'
+        '429':
+          $ref: '#/components/responses/Generic429'
+        '500':
+          $ref: '#/components/responses/Generic500'
+        '503':
+          $ref: '#/components/responses/Generic503'
+
+      security:
+        - openId:
+            - brand-registration:read
 
   /registrations/{registrationId}:
     get:
@@ -287,11 +324,42 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: "#/components/schemas/XCorrelator"
+    Page:
+      name: page
+      in: query
+      description: |
+        Indicates the subset of entries to be returned, where total number of pages is determined by the number of all applicable entries and the value of the *perPage* parameter.
+        *First page is indicated with value 0.*
+      schema:
+        type: integer
+        default: 0
+    PerPage:
+      name: perPage
+      in: query
+      description: Indicates the number of entries to be returned in each response. Has no effect if total number of applicable entries < perPage.
+      schema:
+        type: integer
+        default: 10
+    Seek:
+      name: seek
+      in: query
+      description: Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
+      schema:
+        type: string
+
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         $ref: "#/components/schemas/XCorrelator"
+    Content-Last-Key:
+      description: Indicates the index of the last entry provided in the response
+      schema:
+        type: string
+    X-Total-Count:
+      description: Total number of applicable entries
+      schema:
+        type: integer
   schemas:
     XCorrelator:
       type: string
@@ -388,6 +456,11 @@ components:
         campaignName:
           $ref: '#/components/schemas/CampaignName'
 
+    RegistrationRecords:
+      type: array
+      items:
+        $ref: '#/components/schemas/RegistrationRecord'
+
     ErrorInfo:
       description: Common schema for errors
       type: object
@@ -438,11 +511,71 @@ components:
                 displayName: "Company Y Calling"
                 customerId: "Customer2"
                 verifyCallerAction: "DO_NOT_BRAND"
+    SuccessfulRecords:
+      description: Success response with one or more brand registration records
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistrationRecords'
+          examples:
+            TWO_RECORDS_FOUND:
+              summary: Two registration records available
+              description: Two registration records returned to the client
+              value:
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                  phoneNumber: "+123456789"
+                  terminatingCountryCode: 44
+                  displayName: "Company X Calling"
+                  customerId: "Customer1"
+                  verifyCallerAction: "DO_NOT_BRAND"
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                  phoneNumber: "+123456790"
+                  phoneNumberAlternate: "+123456791"
+                  terminatingCountryCode: 44
+                  displayName: "Company Y Calling"
+                  customerId: "Customer2"
+                  verifyCallerAction: "BLOCK_UNVERIFIED"
     204NoContent:
       description: Successful response with no content
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
+    SuccessfulPartialRecords:
+      description: |
+        Success response with one or more brand registration records.
+        Used if the request expects a paginated response.
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+        Content-Last-Key:
+          $ref: "#/components/headers/Content-Last-Key"
+        X-Total-Count:
+          $ref: "#/components/headers/X-Total-Count"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RegistrationRecords'
+          examples:
+            TWO_RECORDS_FOUND:
+              summary: Two registration records available
+              description: Two registration records returned to the client
+              value:
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                  phoneNumber: "+123456789"
+                  terminatingCountryCode: 44
+                  displayName: "Company X Calling"
+                  customerId: "Customer1"
+                  verifyCallerAction: "DO_NOT_BRAND"
+                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                  phoneNumber: "+123456790"
+                  phoneNumberAlternate: "+123456791"
+                  terminatingCountryCode: 44
+                  displayName: "Company Y Calling"
+                  customerId: "Customer2"
+                  verifyCallerAction: "BLOCK_UNVERIFIED"
     Generic400:
       description: Bad Request
       headers:
