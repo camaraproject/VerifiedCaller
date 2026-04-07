@@ -17,6 +17,7 @@ info:
     # Relevant terms and definitions
     * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
     * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
+    * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
     # API Functionality
@@ -108,6 +109,7 @@ paths:
                   phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
+                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
 
@@ -282,6 +284,7 @@ paths:
                   phoneNumberAlternate: "+123456790"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
+                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
 
@@ -388,6 +391,18 @@ components:
       description: Brand information that will be displayed for the calling party
       example: "Company X Call Center"
 
+    DisplayAsset:
+      type: string
+      format: uri
+      description: >
+        Resource URI for a visual asset (e.g. a logo, image or video) that is to be displayed to the called party.
+        The URI MAY be in IMS-style and include semicolon-separated URI parameters in accordance
+        with SIP / RFC 3261 conventions (e.g. ';purpose=icon').
+        This URI is a logical identifier inside the service provider's network and is not guaranteed to be
+        resolvable by general-purpose HTTP clients.
+        Support of the DisplayAsset depends on the service provider and called party's device.
+      example: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
+
     VerifyCallerAction:
       type: string
       description: >-
@@ -421,6 +436,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
+        displayAsset:
+          $ref: '#/components/schemas/DisplayAsset'
         customerId:
           $ref: '#/components/schemas/CustomerId'
         verifyCallerAction:
@@ -447,6 +464,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         displayName:
           $ref: '#/components/schemas/DisplayName'
+        displayAsset:
+          $ref: '#/components/schemas/DisplayAsset'
         customerId:
           $ref: '#/components/schemas/CustomerId'
         verifyCallerAction:
@@ -509,6 +528,7 @@ components:
                 phoneNumberAlternate: "+123456790"
                 terminatingCountryCode: 44
                 displayName: "Company Y Calling"
+                displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                 customerId: "Customer2"
                 verifyCallerAction: "DO_NOT_BRAND"
     SuccessfulRecords:
@@ -529,6 +549,7 @@ components:
                   phoneNumber: "+123456789"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
+                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
                 - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
@@ -574,6 +595,7 @@ components:
                   phoneNumberAlternate: "+123456791"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
+                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "BLOCK_UNVERIFIED"
     Generic400:
