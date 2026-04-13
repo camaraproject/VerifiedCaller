@@ -16,6 +16,7 @@ info:
 
     # Relevant terms and definitions
     * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
+    * **status**: Status of the registration.
     * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
@@ -380,6 +381,12 @@ components:
       description: Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
+    Status:
+      type: string
+      description: Status of the registration
+      enum: [pending, active, inactive]
+      example: "pending"
+
     CustomerId:
       type: string
       description: Unique customer identifier for a brand
@@ -462,6 +469,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         phoneNumberAlternate:
           $ref: '#/components/schemas/PhoneNumber'
+        status:
+          $ref: '#/components/schemas/Status'
         displayName:
           $ref: '#/components/schemas/DisplayName'
         displayAsset:
@@ -515,6 +524,7 @@ components:
               value:
                 registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                 phoneNumber: "+123456789"
+                status: "pending"
                 terminatingCountryCode: 44
                 displayName: "Company X Calling"
                 customerId: "Customer1"
@@ -526,6 +536,7 @@ components:
                 registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                 phoneNumber: "+123456789"
                 phoneNumberAlternate: "+123456790"
+                status: "pending"
                 terminatingCountryCode: 44
                 displayName: "Company Y Calling"
                 displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
