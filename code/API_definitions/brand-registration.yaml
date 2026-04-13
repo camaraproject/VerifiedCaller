@@ -386,7 +386,7 @@ components:
       description: Status of the registration
       enum: [pending, active, inactive]
       example: "pending"
-      
+
     CustomerId:
       type: string
       description: Unique customer identifier for a brand
