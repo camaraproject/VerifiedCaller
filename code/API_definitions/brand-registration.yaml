@@ -662,14 +662,16 @@ components:
           example: "BRAND_DISPLAY"
         displayNameUsed:
           $ref: '#/components/schemas/DisplayName'
-        preAnnounceCorrelator:
-          allOf:
-            - $ref: '#/components/schemas/XCorrelator'
-            - description: |
-                Optional. The `x-correlator` value from the originating `/pre-announce`
-                request when pre-announcement was used to initiate the branded call.
-                Absent when the call was branded automatically without pre-announcement
-                (e.g. via `verifyCallerAction` configured at registration).
+        preAnnouncementId:
+          type: string
+          format: uuid
+          description: |
+            Optional. The identifier of the originating pre-announcement, as returned
+            in the `AnnouncementInfo` response of `POST /pre-announce` (verified-caller API).
+            Present when pre-announcement was used to initiate the branded call.
+            Absent when the call was branded automatically without pre-announcement
+            (e.g. via `verifyCallerAction` configured at registration).
+          example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
     CloudEvent:
       type: object
@@ -1253,4 +1255,4 @@ components:
         data:
           strategy: "BRAND_DISPLAY"
           displayNameUsed: "Company X Calling"
-          preAnnounceCorrelator: "b4c4b8a0-1234-5678-9abc-def012345678"
+          preAnnouncementId: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
