@@ -21,6 +21,10 @@ info:
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
+    * **Notification URL and token**: Developers may provide a callback URL (`sink`) for receiving an async response.
+    This is an optional parameter. If `sink` is included, it is RECOMMENDED for the client to provide as well the `sinkCredential`
+    property to protect the notification endpoint. In the current version,`sinkCredential.credentialType` MUST be set to `ACCESSTOKEN` if provided.
+    
     # API Functionality
 
     The API exposes the following endpoints/operations:
@@ -57,7 +61,7 @@ info:
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.7.0
 externalDocs:
   description: Project documentation at Camara
   url: https://github.com/camaraproject/VerifiedCaller
@@ -76,6 +80,8 @@ tags:
     description: Read Existing Brand Registration Information for a Calling Party
   - name: Delete Brand registration
     description: Delete Existing Brand Registration Information for a Calling Party
+  - name: Call branded notifications callback
+    description: Notifications callback invoked by the API provider when a call is successfully branded for a registration that opted in with `sink`.
 paths:
   /registrations:
     post:
@@ -113,6 +119,81 @@ paths:
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
+              INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN:
+                summary: Registration with notifications (ACCESSTOKEN credential)
+                description: |
+                  Create a registration and opt in for CloudEvent notifications.
+                  The API provider will call the `sink` URL with a bearer token when a call is branded.
+                value:
+                  phoneNumber: "+123456789"
+                  terminatingCountryCode: 44
+                  displayName: "Company X Calling"
+                  customerId: "Customer1"
+                  verifyCallerAction: "DO_NOT_BRAND"
+                  sink: "https://endpoint.example.com/sink"
+                  sinkCredential:
+                    credentialType: "ACCESSTOKEN"
+                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    accessTokenExpiresUtc: "2026-07-03T12:27:08.312Z"
+                    accessTokenType: "bearer"
+              INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT:
+                summary: Registration with notifications (PRIVATE_KEY_JWT credential)
+                description: |
+                  Create a registration and opt in for CloudEvent notifications using PRIVATE_KEY_JWT.
+                  Authorization server details (token endpoint, client ID, JWKS URL) are shared out-of-band
+                  between the consumer and the API provider during onboarding.
+                value:
+                  phoneNumber: "+123456789"
+                  terminatingCountryCode: 44
+                  displayName: "Company X Calling"
+                  customerId: "Customer1"
+                  verifyCallerAction: "DO_NOT_BRAND"
+                  sink: "https://endpoint.example.com/sink"
+                  sinkCredential:
+                    credentialType: "PRIVATE_KEY_JWT"
+
+      callbacks:
+        notifications:
+          "{$request.body#/sink}":
+            post:
+              tags:
+                - Call branded notifications callback
+              summary: Call branded notifications callback
+              description: |
+                Important: this endpoint is to be implemented by the API consumer.
+                The API provider will call this endpoint whenever a call associated with
+                a brand registration that opted in with `sink` is successfully branded.
+              operationId: postCallBrandedNotification
+              parameters:
+                - $ref: '#/components/parameters/x-correlator'
+              requestBody:
+                required: true
+                content:
+                  application/cloudevents+json:
+                    schema:
+                      $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+                    examples:
+                      CALL_BRANDED_EVENT:
+                        $ref: '#/components/examples/CALL_BRANDED_EVENT'
+              responses:
+                '204':
+                  description: Successful notification
+                  headers:
+                    x-correlator:
+                      $ref: '#/components/headers/x-correlator'
+                '400':
+                  $ref: '#/components/responses/Generic400'
+                '401':
+                  $ref: '#/components/responses/Generic401'
+                '403':
+                  $ref: '#/components/responses/Generic403'
+                '410':
+                  $ref: '#/components/responses/Generic410'
+                '429':
+                  $ref: '#/components/responses/Generic429'
+              security:
+                - {}
+                - notificationsBearerAuth: []
 
       responses:
         '201':
@@ -321,6 +402,13 @@ components:
       description: OpenID Connect authentication
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    notificationsBearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: "{$request.body#/sinkCredential.credentialType}"
+      description: |
+        Bearer token for notification delivery. Token format is determined
+        by `sinkCredential.credentialType` in the subscription request.
   parameters:
     x-correlator:
       name: x-correlator
@@ -453,6 +541,17 @@ components:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaignName:
           $ref: '#/components/schemas/CampaignName'
+        sink:
+          type: string
+          format: uri
+          maxLength: 2048
+          pattern: ^https:\/\/.+$
+          description: |
+            The HTTPS URL where event notifications for this registration will be delivered.
+            Omit this field (and `sinkCredential`) to create the registration without event notifications.
+          example: "https://endpoint.example.com/sink"
+        sinkCredential:
+          $ref: '#/components/schemas/SinkCredential'
 
     RegistrationRecord:
       type: object
@@ -483,6 +582,14 @@ components:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaignName:
           $ref: '#/components/schemas/CampaignName'
+        sink:
+          type: string
+          format: uri
+          maxLength: 2048
+          description: |
+            The sink URL registered for event notifications on this registration, if any.
+            `sinkCredential` is deliberately not echoed in responses for security reasons.
+          example: "https://endpoint.example.com/sink"
 
     RegistrationRecords:
       type: array
@@ -506,6 +613,183 @@ components:
         message:
           type: string
           description: Detailed error description
+
+    BrandRegistrationEventType:
+      type: string
+      description: |
+        Enum of event type strings emitted by the Brand Registration API.
+        Follows the CAMARA reverse-DNS convention `org.camaraproject.<api-name>.<event-version>.<event-name>`.
+      enum:
+        - org.camaraproject.brand-registration.v0.call-branded
+
+    BrandRegistrationNotificationEvent:
+      description: |
+        Notification event group for the Brand Registration API.
+        Extends the CloudEvent envelope and constrains `type` to the set of event types
+        defined by this API. Adding a new event type only requires updating
+        `BrandRegistrationEventType` and the discriminator mapping below — the CloudEvent
+        base never changes.
+      allOf:
+        - $ref: '#/components/schemas/CloudEvent'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/BrandRegistrationEventType'
+      discriminator:
+        propertyName: type
+        mapping:
+          org.camaraproject.brand-registration.v0.call-branded: '#/components/schemas/EventCallBranded'
+
+    EventCallBranded:
+      description: Event emitted when a call associated with a brand registration has been successfully branded.
+      allOf:
+        - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/CallBrandedEventData'
+
+    CallBrandedEventData:
+      type: object
+      description: |
+        Event payload describing a successfully branded call.
+        The CloudEvent envelope's `time` carries when the call was branded.
+      required:
+        - registrationId
+      properties:
+        registrationId:
+          $ref: '#/components/schemas/RegistrationId'
+        strategy:
+          type: string
+          enum:
+            - SMS
+            - BRAND_DISPLAY
+          description: Branding strategy applied to the call.
+          example: "BRAND_DISPLAY"
+        displayNameUsed:
+          $ref: '#/components/schemas/DisplayName'
+        preAnnouncementId:
+          type: string
+          format: uuid
+          description: |
+            Optional. The identifier of the originating pre-announcement, as returned
+            in the `AnnouncementInfo` response of `POST /pre-announce` (verified-caller API).
+            Present when pre-announcement was used to initiate the branded call.
+            Absent when the call was branded automatically without pre-announcement
+            (e.g. no `verifyCallerAction` was configured at registration).
+          example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
+
+    CloudEvent:
+      type: object
+      description: |
+        CloudEvents 1.0 specification envelope.
+        Stable base for all event notifications emitted by this API.
+      required:
+        - id
+        - source
+        - specversion
+        - type
+        - time
+      properties:
+        id:
+          type: string
+          maxLength: 256
+          description: Identifier of this event, unique within the source context.
+        source:
+          $ref: '#/components/schemas/Source'
+        type:
+          type: string
+          maxLength: 512
+          description: |
+            Identifies the event type. CAMARA APIs use reverse-DNS notation:
+            `org.camaraproject.<api-name>.<event-version>.<event-name>`.
+        specversion:
+          type: string
+          description: Version of the CloudEvents specification the event conforms to.
+          enum:
+            - "1.0"
+        datacontenttype:
+          type: string
+          description: Media type of the event payload encoding; MUST be `application/json` for CAMARA APIs.
+          enum:
+            - application/json
+        data:
+          type: object
+          description: Event details payload. Structure is defined by each concrete event schema.
+        time:
+          type: string
+          format: date-time
+          description: Timestamp (RFC 3339, UTC) when the event occurred.
+          example: "2026-04-22T14:30:00Z"
+
+    Source:
+      type: string
+      format: uri-reference
+      minLength: 1
+      maxLength: 2048
+      description: |
+        Identifies the context in which the event happened. For Brand Registration
+        events, this MUST be the URL of the brand-registrations collection of the
+        API provider, in the format
+        `{apiRoot}/brand-registration/{version}/registrations`.
+        The specific `registrationId` the event pertains to is carried in `data.registrationId`.
+      example: "https://service-provider.com/brand-registration/v0/registrations"
+
+    SinkCredential:
+      type: object
+      description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
+      properties:
+        credentialType:
+          type: string
+          enum:
+            - ACCESSTOKEN
+            - PRIVATE_KEY_JWT
+          description: The type of the credential - MUST be set to ACCESSTOKEN or PRIVATE_KEY_JWT.
+      discriminator:
+        propertyName: credentialType
+        mapping:
+          ACCESSTOKEN: '#/components/schemas/AccessTokenCredential'
+          PRIVATE_KEY_JWT: '#/components/schemas/PrivateKeyJWTCredential'
+      required:
+        - credentialType
+
+    AccessTokenCredential:
+      type: object
+      description: An access token credential. This type of credential is meant to be used by API Consumers that have limited capabilities to handle authorization requests.
+      allOf:
+        - $ref: '#/components/schemas/SinkCredential'
+        - type: object
+          properties:
+            accessToken:
+              type: string
+              maxLength: 4096
+              description: REQUIRED. An access token granting access to the target resource.
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              maxLength: 64
+              description: |
+                REQUIRED. An absolute (UTC) timestamp at which the token shall be considered expired.
+                It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have a time zone.
+              example: "2026-07-03T12:27:08.312Z"
+            accessTokenType:
+              type: string
+              enum:
+                - bearer
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+          required:
+            - accessToken
+            - accessTokenExpiresUtc
+            - accessTokenType
+
+    PrivateKeyJWTCredential:
+      type: object
+      description: |
+        Use PRIVATE_KEY_JWT to obtain an access token. The authorization server information needed
+        for this type of sink credential (token endpoint, client ID, JWKS URL) is shared upfront
+        between the client and the CAMARA entity.
+      allOf:
+        - $ref: '#/components/schemas/SinkCredential'
 
   responses:
     SuccessfulRecord:
@@ -627,6 +911,10 @@ components:
                   code:
                     enum:
                       - INVALID_ARGUMENT
+                      - INVALID_PROTOCOL
+                      - INVALID_CREDENTIAL
+                      - INVALID_TOKEN
+                      - INVALID_SINK
           examples:
             GENERIC_400_INVALID_ARGUMENT:
               summary: Invalid argument
@@ -635,6 +923,34 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_INVALID_PROTOCOL:
+              summary: Invalid protocol
+              description: Invalid protocol for event notifications
+              value:
+                status: 400
+                code: INVALID_PROTOCOL
+                message: Only HTTPS is supported for notification delivery.
+            GENERIC_400_INVALID_CREDENTIAL:
+              summary: Invalid credential
+              description: Invalid sink credential type
+              value:
+                status: 400
+                code: INVALID_CREDENTIAL
+                message: Only ACCESSTOKEN or PRIVATE_KEY_JWT credential types are supported.
+            GENERIC_400_INVALID_TOKEN:
+              summary: Invalid token
+              description: The access token provided in sinkCredential is invalid
+              value:
+                status: 400
+                code: INVALID_TOKEN
+                message: The access token provided in sinkCredential is not valid.
+            GENERIC_400_INVALID_SINK:
+              summary: Invalid sink
+              description: The sink URL is invalid for the specified protocol
+              value:
+                status: 400
+                code: INVALID_SINK
+                message: The sink URL is not valid for the specified protocol.
     Generic401:
       description: Unauthorized
       headers:
@@ -823,6 +1139,32 @@ components:
                 status: 409
                 code: CONFLICT
                 message: Requested operation conflicts with existing data in the service platform
+    Generic410:
+      description: Gone
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 410
+                  code:
+                    enum:
+                      - GONE
+          examples:
+            GENERIC_410_GONE:
+              summary: Gone
+              description: The target notification sink is no longer available
+              value:
+                status: 410
+                code: GONE
+                message: The target resource is no longer available.
     CreateOrUpdateRegistrationUnprocessableEntity422:
       description: Unprocessable Content
       headers:
@@ -905,3 +1247,20 @@ components:
                 status: 503
                 code: UNAVAILABLE
                 message: "Service unavailable"
+
+  examples:
+    CALL_BRANDED_EVENT:
+      summary: Call branded event
+      description: Notification emitted when a call associated with a brand registration has been successfully branded.
+      value:
+        id: "83a0cf3a-f3ae-4f3b-9d3b-1e19c6e7f8a0"
+        source: "https://service-provider.com/brand-registration/v0/registrations"
+        specversion: "1.0"
+        type: "org.camaraproject.brand-registration.v0.call-branded"
+        datacontenttype: "application/json"
+        time: "2026-04-22T14:30:00Z"
+        data:
+          registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+          strategy: "BRAND_DISPLAY"
+          displayNameUsed: "Company X Calling"
+          preAnnouncementId: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
