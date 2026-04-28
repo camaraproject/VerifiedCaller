@@ -21,6 +21,10 @@ info:
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
+    * **Notification URL and token**: Developers may provide a callback URL (`sink`) for receiving an async response.
+    This is an optional parameter. If `sink` is included, it is RECOMMENDED for the client to provide as well the `sinkCredential`
+    property to protect the notification endpoint. In the current version,`sinkCredential.credentialType` MUST be set to `ACCESSTOKEN` if provided.
+    
     # API Functionality
 
     The API exposes the following endpoints/operations:
