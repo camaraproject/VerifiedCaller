@@ -649,10 +649,12 @@ components:
       type: object
       description: |
         Event payload describing a successfully branded call.
-        The CloudEvent envelope's `source` carries the registration URL
-        (which encodes the `registrationId`) and `time` carries when the
-        call was branded — see the parent `BrandRegistrationNotificationEvent`.
+        The CloudEvent envelope's `time` carries when the call was branded.
+      required:
+        - registrationId
       properties:
+        registrationId:
+          $ref: '#/components/schemas/RegistrationId'
         strategy:
           type: string
           enum:
@@ -670,7 +672,7 @@ components:
             in the `AnnouncementInfo` response of `POST /pre-announce` (verified-caller API).
             Present when pre-announcement was used to initiate the branded call.
             Absent when the call was branded automatically without pre-announcement
-            (e.g. via `verifyCallerAction` configured at registration).
+            (e.g. no `verifyCallerAction` was configured at registration).
           example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
     CloudEvent:
@@ -723,10 +725,11 @@ components:
       maxLength: 2048
       description: |
         Identifies the context in which the event happened. For Brand Registration
-        events, this MUST be the GET-able URL of the specific registration the
-        event pertains to, in the format
-        `{apiRoot}/brand-registration/{version}/registrations/{registrationId}`.
-      example: "https://service-provider.com/brand-registration/v0/registrations/ea77c42f-fa5e-4612-cb43-d502ae794832"
+        events, this MUST be the URL of the brand-registrations collection of the
+        API provider, in the format
+        `{apiRoot}/brand-registration/{version}/registrations`.
+        The specific `registrationId` the event pertains to is carried in `data.registrationId`.
+      example: "https://service-provider.com/brand-registration/v0/registrations"
 
     SinkCredential:
       type: object
@@ -1247,12 +1250,13 @@ components:
       description: Notification emitted when a call associated with a brand registration has been successfully branded.
       value:
         id: "83a0cf3a-f3ae-4f3b-9d3b-1e19c6e7f8a0"
-        source: "https://service-provider.com/brand-registration/v0/registrations/ea77c42f-fa5e-4612-cb43-d502ae794832"
+        source: "https://service-provider.com/brand-registration/v0/registrations"
         specversion: "1.0"
         type: "org.camaraproject.brand-registration.v0.call-branded"
         datacontenttype: "application/json"
         time: "2026-04-22T14:30:00Z"
         data:
+          registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
           strategy: "BRAND_DISPLAY"
           displayNameUsed: "Company X Calling"
           preAnnouncementId: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
