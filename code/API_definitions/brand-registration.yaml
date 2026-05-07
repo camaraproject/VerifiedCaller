@@ -620,6 +620,7 @@ components:
         Follows the CAMARA reverse-DNS convention `org.camaraproject.<api-name>.<event-version>.<event-name>`.
       enum:
         - org.camaraproject.brand-registration.v0.call-branded
+        - org.camaraproject.brand-registration.v0.status-changed
 
     BrandRegistrationNotificationEvent:
       description: |
@@ -638,6 +639,7 @@ components:
         propertyName: type
         mapping:
           org.camaraproject.brand-registration.v0.call-branded: '#/components/schemas/EventCallBranded'
+          org.camaraproject.brand-registration.v0.status-changed: '#/components/schemas/EventStatusChanged'
 
     EventCallBranded:
       description: Event emitted when a call associated with a brand registration has been successfully branded.
@@ -647,6 +649,15 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/CallBrandedEventData'
+
+    EventStatusChanged:
+      description: Event emitted when a call associated with a brand registration status changed.
+      allOf:
+        - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/StatusChangedEventData'
 
     CallBrandedEventData:
       type: object
@@ -677,6 +688,24 @@ components:
             Absent when the call was branded automatically without pre-announcement
             (e.g. no `verifyCallerAction` was configured at registration).
           example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
+
+    StatusChangedEventData:
+      type: object
+      description: |
+        Event payload describing a Registration status changed.
+        The CloudEvent envelope's `time` carries when the status has been changed.
+      required:
+        - registrationId
+      properties:
+        registrationId:
+          $ref: '#/components/schemas/RegistrationId'
+        status:
+          type: string
+          enum:
+            - SMS
+            - BRAND_DISPLAY
+          description: Branding strategy applied to the call.
+          example: "active"
 
     CloudEvent:
       type: object
