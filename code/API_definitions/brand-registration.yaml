@@ -701,11 +701,9 @@ components:
           $ref: '#/components/schemas/RegistrationId'
         status:
           type: string
-          enum:
-            - SMS
-            - BRAND_DISPLAY
-          description: Branding strategy applied to the call.
-          example: "active"
+          enum: [pending, active, inactive]
+          description: Status of the registration.
+          example: "pending"
 
     CloudEvent:
       type: object
