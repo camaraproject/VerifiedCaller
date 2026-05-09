@@ -223,13 +223,40 @@ paths:
       tags:
         - Read Brand registration
       summary: Read existing brand registrations from the service platform
-      description: Read existing brand registrations from the service platform.
+      description: |
+        Read existing brand registrations from the service platform.
+
+        ## Filtering
+
+        The following query parameters are RECOMMENDED filters for this
+        operation. They are all optional. API providers MAY implement any
+        subset of them based on their capabilities; the supported set for a
+        given provider is documented on that provider's Exposition Gateway
+        "Getting Started" page (filter support is not intended to be
+        discovered through HTTP error responses).
+
+        - `customerId` - filter by enterprise/brand owner identifier.
+        - `displayName` - filter by the display name registered for the brand.
+        - `status` - filter by registration status.
+        - `terminatingCountryCode` - filter by terminating country code.
+
+        When more than one filter is provided, results MUST match all of
+        them (logical AND).
+
+        Regardless of the filters supplied, an authenticated client only
+        ever receives registrations it owns; filters narrow the result set,
+        they never expose another tenant's data. In particular, `customerId`
+        is interpreted within the scope of the authenticated client.
       operationId: readRegistrations
       parameters:
         - $ref: '#/components/parameters/x-correlator'
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/PerPage'
         - $ref: '#/components/parameters/Seek'
+        - $ref: '#/components/parameters/CustomerIdFilter'
+        - $ref: '#/components/parameters/DisplayNameFilter'
+        - $ref: '#/components/parameters/StatusFilter'
+        - $ref: '#/components/parameters/TerminatingCountryCodeFilter'
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecords'
@@ -437,6 +464,36 @@ components:
       description: Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
       schema:
         type: string
+    CustomerIdFilter:
+      name: customerId
+      in: query
+      required: false
+      description: |
+        Optional filter. Restrict results to registrations matching the given `customerId`.
+        Always interpreted within the scope of the authenticated client.
+      schema:
+        $ref: '#/components/schemas/CustomerId'
+    DisplayNameFilter:
+      name: displayName
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations matching the given `displayName`.
+      schema:
+        $ref: '#/components/schemas/DisplayName'
+    StatusFilter:
+      name: status
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations in the given `status`.
+      schema:
+        $ref: '#/components/schemas/Status'
+    TerminatingCountryCodeFilter:
+      name: terminatingCountryCode
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations matching the given `terminatingCountryCode`.
+      schema:
+        $ref: '#/components/schemas/TerminatingCountryCode'
 
   headers:
     x-correlator:
