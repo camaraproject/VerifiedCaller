@@ -701,10 +701,7 @@ components:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
         status:
-          type: string
-          enum: [pending, active, inactive]
-          description: Status of the registration.
-          example: "pending"
+          $ref: '#/components/schemas/Status'
 
     CloudEvent:
       type: object
