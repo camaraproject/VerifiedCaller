@@ -651,7 +651,7 @@ components:
               $ref: '#/components/schemas/CallBrandedEventData'
 
     EventStatusChanged:
-      description: Event emitted when a call associated with a brand registration status changed.
+      description: Event emitted when the status of a brand registration changes.
       allOf:
         - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
         - type: object
@@ -696,6 +696,7 @@ components:
         The CloudEvent envelope's `time` carries when the status has been changed.
       required:
         - registrationId
+        - status
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
