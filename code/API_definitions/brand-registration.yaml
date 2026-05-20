@@ -535,6 +535,7 @@ components:
 
     CustomerId:
       type: string
+      maxLength: 64
       description: Unique customer identifier for a brand
       example: "Customer1"
 
