@@ -16,7 +16,7 @@ repository:
   # Initialized to the latest release; update when planning the next release.
   # - New release cycle (increment first number, reset second to 1)
   # - Progression in same cycle (increment second number)
-  target_release_tag: r1.4
+  target_release_tag: r2.1
 
   # Release type being prepared (must be set before release can be triggered)
   # Options: none | pre-release-alpha | pre-release-rc | public-release | maintenance-release
@@ -34,7 +34,7 @@ dependencies:
 apis:
   - api_name: brand-registration
     target_api_version: 0.2.0
-    target_api_status: public
+    target_api_status: alpha
     main_contacts:
       - alpaycetin74
       - olsi-korkuti
@@ -42,7 +42,7 @@ apis:
       - GillesInnov35
   - api_name: verified-caller
     target_api_version: 0.2.0
-    target_api_status: public
+    target_api_status: alpha
     main_contacts:
       - alpaycetin74
       - olsi-korkuti
