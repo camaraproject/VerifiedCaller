@@ -17,7 +17,7 @@ info:
     # Relevant terms and definitions
     * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
     * **status**: Status of the registration.
-    * **expiredAt**: The date, in RFC 3339 / ISO 8601 compliant format "YYYY-MM-DD", from which the Brand Registration will expired. Registration status will be moved to expired.
+    * **expiresAt**: The date in RFC 3339 / ISO 8601 compliant format when the brand registration is scheduled to expire. Registration status is moved to ``expired``.
     * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
@@ -104,7 +104,7 @@ paths:
                 description: Create a registration for a device, identified by a phone number
                 value:
                   phoneNumber: "+123456789"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   customerId: "Customer1"
@@ -115,7 +115,7 @@ paths:
                 value:
                   phoneNumber: "+123456789"
                   phoneNumberAlternate: "+123456790"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
@@ -128,7 +128,7 @@ paths:
                   The API provider will call the `sink` URL with a bearer token when a call is branded.
                 value:
                   phoneNumber: "+123456789"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   customerId: "Customer1"
@@ -147,7 +147,7 @@ paths:
                   between the consumer and the API provider during onboarding.
                 value:
                   phoneNumber: "+123456789"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   customerId: "Customer1"
@@ -245,7 +245,7 @@ paths:
         - `customerId` - filter by enterprise/brand owner identifier.
         - `displayName` - filter by the display name registered for the brand.
         - `status` - filter by registration status.
-        - `expiredAt` - filter by expiredAt date.
+        - `expiresAt` - filter by expiresAt date.
         - `terminatingCountryCode` - filter by terminating country code.
 
         When more than one filter is provided, results MUST match all of
@@ -264,7 +264,7 @@ paths:
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
-        - $ref: '#/components/parameters/ExpiredAtFilter'
+        - $ref: '#/components/parameters/ExpiresAtFilter'
         - $ref: '#/components/parameters/TerminatingCountryCodeFilter'
       responses:
         '200':
@@ -389,7 +389,7 @@ paths:
                 description: Update registration for a device, identified by a phone number
                 value:
                   phoneNumber: "+123456789"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   customerId: "Customer1"
@@ -400,7 +400,7 @@ paths:
                 value:
                   phoneNumber: "+123456789"
                   phoneNumberAlternate: "+123456790"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
@@ -498,13 +498,13 @@ components:
       description: Optional filter. Restrict results to registrations in the given `status`.
       schema:
         $ref: '#/components/schemas/Status'
-    ExpiredAtFilter:
-      name: expiredAt
+    ExpiresAtFilter:
+      name: expiresAt
       in: query
       required: false
-      description: Optional filter. Restrict results to registrations matching the given expiredAt date.
+      description: Optional filter. Restrict results to registrations matching the given expiresAt date.
       schema:
-        $ref: '#/components/schemas/ExpiredAt'
+        $ref: '#/components/schemas/ExpiresAt'
     TerminatingCountryCodeFilter:
       name: terminatingCountryCode
       in: query
@@ -549,7 +549,7 @@ components:
       enum: [pending, active, inactive, expired]
       example: "pending"
 
-    ExpiredAt:
+    ExpiresAt:
       type: string
       description: The date, in RFC 3339 / ISO 8601 compliant format "YYYY-MM-DD", from which the Brand Registration will expired.
       format: date
@@ -610,8 +610,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         phoneNumberAlternate:
           $ref: '#/components/schemas/PhoneNumber'
-        expiredAt:
-          $ref: '#/components/schemas/ExpiredAt'
+        expiresAt:
+          $ref: '#/components/schemas/ExpiresAt'
         displayName:
           $ref: '#/components/schemas/DisplayName'
         displayAsset:
@@ -653,8 +653,8 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         status:
           $ref: '#/components/schemas/Status'
-        expiredAt:
-          $ref: '#/components/schemas/ExpiredAt'
+        expiresAt:
+          $ref: '#/components/schemas/ExpiresAt'
         displayName:
           $ref: '#/components/schemas/DisplayName'
         displayAsset:
@@ -919,7 +919,7 @@ components:
                 registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                 phoneNumber: "+123456789"
                 status: "pending"
-                expiredAt: "2023-07-03"
+                expiresAt: "2023-07-03"
                 terminatingCountryCode: 44
                 displayName: "Company X Calling"
                 customerId: "Customer1"
@@ -932,7 +932,7 @@ components:
                 phoneNumber: "+123456789"
                 phoneNumberAlternate: "+123456790"
                 status: "pending"
-                expiredAt: "2023-07-03"
+                expiresAt: "2023-07-03"
                 terminatingCountryCode: 44
                 displayName: "Company Y Calling"
                 displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
@@ -955,7 +955,7 @@ components:
                 - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                   phoneNumber: "+123456789"
                   status: "pending"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
@@ -965,7 +965,7 @@ components:
                   phoneNumber: "+123456790"
                   phoneNumberAlternate: "+123456791"
                   status: "pending"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   customerId: "Customer2"
@@ -998,7 +998,7 @@ components:
                 - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
                   phoneNumber: "+123456789"
                   status: "pending"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company X Calling"
                   customerId: "Customer1"
@@ -1007,7 +1007,7 @@ components:
                   phoneNumber: "+123456790"
                   phoneNumberAlternate: "+123456791"
                   status: "pending"
-                  expiredAt: "2023-07-03"
+                  expiresAt: "2023-07-03"
                   terminatingCountryCode: 44
                   displayName: "Company Y Calling"
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
