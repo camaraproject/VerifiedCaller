@@ -73,7 +73,7 @@ paths:
   /pre-announce:
     post:
       tags:
-        - Create Pre-announcement
+        - Create Preannouncement
       summary: Create a call pre-announcement in the service platform
       description: Create a call pre-announcement for a Calling and a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
@@ -200,6 +200,7 @@ components:
     PreAnnouncementId:
       type: string
       format: uuid
+      maxLength: 256
       description: Unique identifier of a pre-announcement created as a result of the POST operation. Reserved for future use.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
