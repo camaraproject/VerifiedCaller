@@ -65,9 +65,9 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root
+        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Create Pre-announcement
+  - name: Create Preannouncement
     description: Create a call pre-announcement for a Calling and a Called Party
 paths:
   /pre-announce:
@@ -113,7 +113,7 @@ paths:
                   strategy: "BRAND_DISPLAY"
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Re: Your Complaint"                  
+                  dynamicDisplayName: "Company X Re: Your Complaint"
               USING_REGISTERED_BRAND_DISPLAY_WITH_CALL_REASON:
                 summary: The pre-registered displayName and a call specific reason is displayed
                 description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller, while providing more context to the callee with a call specific reason.
@@ -136,7 +136,7 @@ paths:
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
                   dynamicDisplayName: "Company X Complaint Desk"
-                  callReason: "Your support ticket from 21/01/2026"
+                  callReason: "Your support ticket 21/01/2026"
       responses:
         '201':
           $ref: '#/components/responses/Create201'
@@ -186,12 +186,15 @@ components:
   schemas:
     XCorrelator:
       type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
       pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
       example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
+      maxLength: 16
       example: "+123456789"
 
     PreAnnouncementId:
@@ -202,6 +205,7 @@ components:
 
     TimeToLive:
       type: integer
+      format: int32
       minimum: 1
       maximum: 86400
       description: This parameter specifies for how long the pre-announcement is valid, in units of seconds. Calls processed after the call pre-announcement expiry shall be treated as not announced. If not specified, the service provider applies a default value. The service provider may enforce an upper bound of their choosing while validating the request.
@@ -210,6 +214,7 @@ components:
     RegistrationId:
       type: string
       format: uuid
+      maxLength: 256
       description: Unique identifier of a relatonship created between the API consumer and the service platform.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
@@ -257,6 +262,7 @@ components:
     ExpiresAt:
       type: string
       format: date-time
+      maxLength: 64
       description: |
        Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
@@ -282,12 +288,17 @@ components:
       properties:
         status:
           type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
           description: HTTP status code returned along with this error response
         code:
           type: string
+          maxLength: 96
           description: Code given to this error
         message:
           type: string
+          maxLength: 512
           description: Detailed error description
 
   responses:
