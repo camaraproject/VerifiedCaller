@@ -21,6 +21,7 @@ info:
     * **strategy**: Indicator of the requested method to be applied by the service provider to verify a call, as desired by the API consumer.
     * **timeToLive**: The period for which the verification by the service provider remains valid. A call is not considered as verified if it is placed after expiry of verification. The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe a timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to expire the verification right away once the call is placed.
     * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, it overrides any pre-arranged display name presented to the callee, e.g. one set using the brand-registration API request.
+    * **callReason**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, a call reason is presented to the callee in addition to the display name. An operator, interconnect or device MAY not support this parameter
 
     # API Functionality
     The API exposes the following endpoints/operations:
@@ -94,17 +95,48 @@ paths:
                   strategy: "SMS"
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-              USING_BRAND_DISPLAY:
-                summary: A displayName is displayed to the callee to verify authenticity of the caller
-                description: A displayName is displayed to the callee to verify authenticity of the caller
+              USING_REGISTERED_BRAND_DISPLAY:
+                summary: The pre-registered displayName is displayed
+                description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller.
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
                   strategy: "BRAND_DISPLAY"
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Re: Your Complaint"
-
+              USING_DYNAMIC_BRAND_DISPLAY:
+                summary: A call specific displayName is displayed
+                description: A displayName set for the specific call is displayed to the callee to provide a more fine-tuned context.
+                value:
+                  callingParticipant: "+123456791"
+                  calledParticipant: "+123456792"
+                  strategy: "BRAND_DISPLAY"
+                  timeToLive: 45
+                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  dynamicDisplayName: "Company X Re: Your Complaint"                  
+              USING_REGISTERED_BRAND_DISPLAY_WITH_CALL_REASON:
+                summary: The pre-registered displayName and a call specific reason is displayed
+                description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller, while providing more context to the callee with a call specific reason.
+                value:
+                  callingParticipant: "+123456791"
+                  calledParticipant: "+123456792"
+                  strategy: "BRAND_DISPLAY"
+                  timeToLive: 45
+                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  callReason: "Re: Your loan application"
+              USING_DYNAMIC_BRAND_DISPLAY_WITH_CALL_REASON:
+                summary: A displayName and call reason both set for the specific call are displayed.
+                description: |
+                              A displayName set for the specific call is displayed to the callee to verify authenticity of the caller, while providing even more context to the callee with a call specific reason.
+                              This usage leverages both display name and call reason to provide the most fine-tuned information to the callee.
+                value:
+                  callingParticipant: "+123456791"
+                  calledParticipant: "+123456792"
+                  strategy: "BRAND_DISPLAY"
+                  timeToLive: 45
+                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  dynamicDisplayName: "Company X Complaint Desk"
+                  callReason: "Your support ticket from 21/01/2026"
       responses:
         '201':
           $ref: '#/components/responses/Create201'
@@ -184,8 +216,14 @@ components:
     DynamicDisplayName:
       type: string
       maxLength: 32
-      description: Brand information that will be displayed to the calling party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides a pre-configured display name, e.g. the displayName parameter provided in the brand-registration API request.
+      description: Brand information that will be displayed to the called party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides a pre-configured display name, e.g. the displayName parameter provided in the brand-registration API request.
       example: "Company X Call Center"
+
+    CallReason:
+      type: string
+      maxLength: 32
+      description: Call reason that will be displayed to the called party in addition to the display name if strategy is 'BRAND_DISPLAY'.
+      example: "Re: Your loan application"
 
     Strategy:
       type: string
@@ -213,6 +251,8 @@ components:
           $ref: '#/components/schemas/RegistrationId'
         dynamicDisplayName:
           $ref: '#/components/schemas/DynamicDisplayName'
+        callReason:
+          $ref: '#/components/schemas/CallReason'
 
     ExpiresAt:
       type: string
