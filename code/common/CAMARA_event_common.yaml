@@ -11,7 +11,7 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: wip
-  x-camara-commonalities: 0.8.0-rc.2
+  x-camara-commonalities: 0.8.0
 
 components:
   securitySchemes:
@@ -316,6 +316,7 @@ components:
               description: REQUIRED. An access token is a token granting access to the target resource.
               type: string
               maxLength: 4096
+              writeOnly: true
             accessTokenExpiresUtc:
               type: string
               format: date-time
@@ -329,6 +330,7 @@ components:
             accessTokenType:
               description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
               type: string
+              writeOnly: true
               enum:
                 - bearer
           required:
@@ -338,9 +340,30 @@ components:
 
     PrivateKeyJWTCredential:
       type: object
-      description: Use PRIVATE_KEY_JWT to get an access token. The authorization server information needed for this type of sink credential (token endpoint, client ID, JWKS URL) is shared upfront between the client and the CAMARA entity. This type of credential is to be used by clients that have an authorization server.
+      description: Use PRIVATE_KEY_JWT to get an access token. This type of credential is to be used by clients that have an authorization server.
       allOf:
         - $ref: "#/components/schemas/SinkCredential"
+        - type: object
+          properties:
+            clientId:
+              description: The client ID used to authenticate when requesting an access token using PRIVATE_KEY_JWT.
+              type: string
+              maxLength: 128
+              writeOnly: true
+            tokenUri:
+              description: The URI where to request an access token using PRIVATE_KEY_JWT.
+              type: string
+              format: uri
+              maxLength: 2048
+              pattern: ^https:\/\/.+$
+              writeOnly: true
+            jwksUri:
+              description: The URI used to request the public key to verify that the JWT assertion was signed by PRIVATE_KEY_JWT.
+              type: string
+              format: uri
+              maxLength: 2048
+              pattern: ^https:\/\/.+$
+              readOnly: true
 
     # ─────────────────────────────────────────────────────────────────────────
     # Section 5: Subscription lifecycle data
