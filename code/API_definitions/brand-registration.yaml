@@ -260,7 +260,6 @@ paths:
         - $ref: '#/components/parameters/x-correlator'
         - $ref: '#/components/parameters/Page'
         - $ref: '#/components/parameters/PerPage'
-        - $ref: '#/components/parameters/Seek'
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
@@ -457,24 +456,23 @@ components:
       name: page
       in: query
       description: |
-        Indicates the subset of entries to be returned, where total number of pages is determined by the number of all applicable entries and the value of the *perPage* parameter.
-        *First page is indicated with value 0.*
+        The requested page number. Pages are 1-indexed.
+        Values below the minimum MUST be rejected with `400 INVALID_ARGUMENT`.
       schema:
         type: integer
-        default: 0
+        minimum: 1
+        default: 1
     PerPage:
       name: perPage
       in: query
-      description: Indicates the number of entries to be returned in each response. Has no effect if total number of applicable entries < perPage.
+      description: |
+        Number of resources to return per page.
+        Out-of-range values MUST be rejected with `400 INVALID_ARGUMENT`.
       schema:
         type: integer
-        default: 10
-    Seek:
-      name: seek
-      in: query
-      description: Indicates the last entry read, to create the next/previous subset of entries in the response of the current query.
-      schema:
-        type: string
+        minimum: 1
+        maximum: 100
+        default: 20
     CustomerIdFilter:
       name: customerId
       in: query
@@ -518,14 +516,16 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: "#/components/schemas/XCorrelator"
-    Content-Last-Key:
-      description: Indicates the index of the last entry provided in the response
-      schema:
-        type: string
     X-Total-Count:
-      description: Total number of applicable entries
+      description: Total number of resources matching the query. Mirrors `pagination.totalCount` in the response body.
       schema:
         type: integer
+        minimum: 0
+    X-Total-Pages:
+      description: Total number of pages. Mirrors `pagination.totalPages` in the response body.
+      schema:
+        type: integer
+        minimum: 0
   schemas:
     XCorrelator:
       type: string
@@ -677,9 +677,48 @@ components:
           example: "https://endpoint.example.com/sink"
 
     RegistrationRecords:
-      type: array
-      items:
-        $ref: '#/components/schemas/RegistrationRecord'
+      type: object
+      description: Paginated response wrapping a list of brand registration records.
+      required:
+        - registrations
+        - pagination
+      properties:
+        registrations:
+          type: array
+          items:
+            $ref: '#/components/schemas/RegistrationRecord'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+
+    Pagination:
+      type: object
+      description: |
+        Pagination metadata for paginated responses, as defined in CAMARA Commonalities §4.1.
+      required:
+        - page
+        - perPage
+      properties:
+        page:
+          type: integer
+          minimum: 1
+          description: Current page number (1-indexed).
+        perPage:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Number of resources returned per page.
+        totalCount:
+          type: integer
+          minimum: 0
+          description: |
+            Total number of resources matching the query.
+            MAY be omitted when computing the full count is prohibitively expensive.
+        totalPages:
+          type: integer
+          minimum: 0
+          description: |
+            Total number of pages.
+            MAY be omitted when computing the full count is prohibitively expensive.
 
     ErrorInfo:
       description: Common schema for errors
@@ -952,24 +991,30 @@ components:
               summary: Two registration records available
               description: Two registration records returned to the client
               value:
-                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                  phoneNumber: "+123456789"
-                  status: "pending"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
-                  phoneNumber: "+123456790"
-                  phoneNumberAlternate: "+123456791"
-                  status: "pending"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company Y Calling"
-                  customerId: "Customer2"
-                  verifyCallerAction: "BLOCK_UNVERIFIED"
+                registrations:
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                    phoneNumber: "+123456789"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company X Calling"
+                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
+                    customerId: "Customer1"
+                    verifyCallerAction: "DO_NOT_BRAND"
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                    phoneNumber: "+123456790"
+                    phoneNumberAlternate: "+123456791"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company Y Calling"
+                    customerId: "Customer2"
+                    verifyCallerAction: "BLOCK_UNVERIFIED"
+                pagination:
+                  page: 1
+                  perPage: 20
+                  totalCount: 2
+                  totalPages: 1
     204NoContent:
       description: Successful response with no content
       headers:
@@ -982,10 +1027,10 @@ components:
       headers:
         x-correlator:
           $ref: "#/components/headers/x-correlator"
-        Content-Last-Key:
-          $ref: "#/components/headers/Content-Last-Key"
         X-Total-Count:
           $ref: "#/components/headers/X-Total-Count"
+        X-Total-Pages:
+          $ref: "#/components/headers/X-Total-Pages"
       content:
         application/json:
           schema:
@@ -995,24 +1040,30 @@ components:
               summary: Two registration records available
               description: Two registration records returned to the client
               value:
-                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                  phoneNumber: "+123456789"
-                  status: "pending"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
-                  phoneNumber: "+123456790"
-                  phoneNumberAlternate: "+123456791"
-                  status: "pending"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company Y Calling"
-                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
-                  customerId: "Customer2"
-                  verifyCallerAction: "BLOCK_UNVERIFIED"
+                registrations:
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+                    phoneNumber: "+123456789"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company X Calling"
+                    customerId: "Customer1"
+                    verifyCallerAction: "DO_NOT_BRAND"
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
+                    phoneNumber: "+123456790"
+                    phoneNumberAlternate: "+123456791"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company Y Calling"
+                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
+                    customerId: "Customer2"
+                    verifyCallerAction: "BLOCK_UNVERIFIED"
+                pagination:
+                  page: 1
+                  perPage: 20
+                  totalCount: 2
+                  totalPages: 1
     Generic400:
       description: Bad Request
       headers:
