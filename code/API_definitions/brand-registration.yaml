@@ -22,6 +22,8 @@ info:
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
+    * **quota**: Maximum number of branded calls allowed for the registration.
+    * **quotaThreshold**: Number of branded calls at which customer is notifed that the quota threshold alert has been reached.
     * **Notification URL and token**:  The API consumer may provide a callback URL (`sink`) on which notifications about events related to given brand registration(eg. calls with brand information) can be received from the API provider. This is an optional parameter. The notification will be sent as a CloudEvent compliant message.
     If `sink` is included, it is RECOMMENDED for the client to provide as well the `sinkCredential` property to protect the notification endpoint. In the current version, `sinkCredential.credentialType` MUST be set to `ACCESSTOKEN` if `sinkCredential` is provided or to `PRIVATE_KEY_JWT` if authentication information is pre-shared.
 
@@ -598,6 +600,22 @@ components:
       description: Logical name to group a set of calling party numbers under a brand for a specific purpose, e.g. special charging
       example: "Company X New Year Sales"
 
+    Quota:
+      type: integer
+      format: int32
+      description: Maximum number of branded calls allowed for the registration
+      minimum: 1
+      maximum: 1000000000
+      example: 100000
+
+    QuotaThresholdAlert:
+      type: integer
+      format: int32
+      description: Number of branded calls at which customer is notifed that the quota threshold alert has been reached.
+      minimum: 1
+      maximum: 1000000000
+      example: 100000
+
     CreateOrUpdateRegistrationRequest:
       type: object
       description: "Request object to create or update (replace) a brand registration"
@@ -667,6 +685,10 @@ components:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaignName:
           $ref: '#/components/schemas/CampaignName'
+        quota:
+          $ref: '#/components/schemas/Quota'
+        quotaThresholdAlert:
+          $ref: '#/components/schemas/QuotaThresholdAlert'
         sink:
           type: string
           format: uri
@@ -765,6 +787,8 @@ components:
         mapping:
           org.camaraproject.brand-registration.v0.call-branded: '#/components/schemas/EventCallBranded'
           org.camaraproject.brand-registration.v0.status-changed: '#/components/schemas/EventStatusChanged'
+          org.camaraproject.brand-registration.v0.quota-threshold-reached: '#/components/schemas/EventQuotathresholdReached'
+          org.camaraproject.brand-registration.v0.quota-exhausted: '#/components/schemas/EventQuotaExhausted'
 
     EventCallBranded:
       description: Event emitted when a call associated with a brand registration has been successfully branded.
@@ -783,6 +807,24 @@ components:
           properties:
             data:
               $ref: '#/components/schemas/StatusChangedEventData'
+
+    EventQuotathresholdReached:
+      description: Event emitted when the quota threshold alert of branded calls has been reached.
+      allOf:
+        - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/QuotaThresholdReachedEventData'
+
+    EventQuotaExhausted:
+      description: Event emitted when the quota of branded calls has been exhausted.
+      allOf:
+        - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/QuotatExhaustedEventData'
 
     CallBrandedEventData:
       type: object
@@ -827,6 +869,34 @@ components:
           $ref: '#/components/schemas/RegistrationId'
         status:
           $ref: '#/components/schemas/Status'
+
+    QuotaThresholdReachedEventData:
+      type: object
+      description: |
+        Event payload describing a quota threshold alert of branded calls has been reached. The branded calls quota for the concerned registration will be reached soon.
+        The CloudEvent envelope's `time` carries when the status has been changed.
+      required:
+        - registrationId
+        - quotaThresholdAlert
+      properties:
+        registrationId:
+          $ref: '#/components/schemas/RegistrationId'
+        status:
+          $ref: '#/components/schemas/QuotaThresholdAlert'
+
+    QuotatExhaustedEventData:
+      type: object
+      description: |
+        Event payload describing a branded calls quota has been exhausted. The upcoming phone calls will no longer be branded.
+        The CloudEvent envelope's `time` carries when the status has been changed.
+      required:
+        - registrationId
+        - quotaThresholdAlert
+      properties:
+        registrationId:
+          $ref: '#/components/schemas/RegistrationId'
+        status:
+          $ref: '#/components/schemas/Quota'
 
     CloudEvent:
       type: object
@@ -963,6 +1033,8 @@ components:
                 displayName: "Company X Calling"
                 customerId: "Customer1"
                 verifyCallerAction: "DO_NOT_BRAND"
+                quota: 100000
+                quotaThreshold: 95000
             RECORD_TWO_PHONE_NUMBERS:
               summary: Device identified by phoneNumber & phoneNumberAlternate
               description: A registration for a device, identified by both a phone number and a phone number alternate
@@ -977,6 +1049,8 @@ components:
                 displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                 customerId: "Customer2"
                 verifyCallerAction: "DO_NOT_BRAND"
+                quota: 100000
+                quotaThreshold: 95000
     SuccessfulRecords:
       description: Success response with one or more brand registration records
       headers:
@@ -1001,6 +1075,8 @@ components:
                     displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                     customerId: "Customer1"
                     verifyCallerAction: "DO_NOT_BRAND"
+                    quota: 100000
+                    quotaThreshold: 95000
                   - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
                     phoneNumber: "+123456790"
                     phoneNumberAlternate: "+123456791"
@@ -1010,6 +1086,8 @@ components:
                     displayName: "Company Y Calling"
                     customerId: "Customer2"
                     verifyCallerAction: "BLOCK_UNVERIFIED"
+                    quota: 100000
+                    quotaThreshold: 95000
                 pagination:
                   page: 1
                   perPage: 20
@@ -1059,6 +1137,8 @@ components:
                     displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                     customerId: "Customer2"
                     verifyCallerAction: "BLOCK_UNVERIFIED"
+                    quota: 100000
+                    quotaThreshold: 95000
                 pagination:
                   page: 1
                   perPage: 20
@@ -1449,3 +1529,31 @@ components:
         data:
           registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
           status: "pending"
+
+    QUOTA_EXHAUSTED_EVENT:
+      summary: Branded calls quota exhausted event
+      description: Notification emitted when branded calls quota has been exhausted.
+      value:
+        id: "83a0cf3a-f3ae-4f3b-9d3b-1e19c6e7f8a0"
+        source: "https://service-provider.com/brand-registration/v0/registrations"
+        specversion: "1.0"
+        type: "org.camaraproject.brand-registration.v0.quota-exhausted"
+        datacontenttype: "application/json"
+        time: "2026-04-22T14:30:00Z"
+        data:
+          registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+          quota: 100000
+
+    QUOTA_THRESHOLD_REACHED_EVENT:
+      summary: Quota threshold alert of branded calls reached event
+      description: Notification emitted when quota threshold alert of branded calls has been reached.
+      value:
+        id: "83a0cf3a-f3ae-4f3b-9d3b-1e19c6e7f8a0"
+        source: "https://service-provider.com/brand-registration/v0/registrations"
+        specversion: "1.0"
+        type: "org.camaraproject.brand-registration.v0.quota-threshold-reached"
+        datacontenttype: "application/json"
+        time: "2026-04-22T14:30:00Z"
+        data:
+          registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
+          quotaThresholsAlert: 950000
