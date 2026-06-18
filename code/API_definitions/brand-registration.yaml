@@ -809,7 +809,7 @@ components:
               $ref: '#/components/schemas/StatusChangedEventData'
 
     EventQuotathresholdReached:
-      description: Event emitted when the quota threshold alert of branded calls has been reached.
+      description: Event emitted when the quota threshold of branded calls has been reached.
       allOf:
         - $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
         - type: object
@@ -873,7 +873,7 @@ components:
     QuotaThresholdReachedEventData:
       type: object
       description: |
-        Event payload describing a quota threshold alert of branded calls has been reached. The branded calls quota for the concerned registration will be reached soon.
+        Event payload describing a quota threshold of branded calls has been reached. The branded calls quota for the concerned registration will be reached soon.
         The CloudEvent envelope's `time` carries when the status has been changed.
       required:
         - registrationId
@@ -1545,8 +1545,8 @@ components:
           quota: 100000
 
     QUOTA_THRESHOLD_REACHED_EVENT:
-      summary: Quota threshold alert of branded calls reached event
-      description: Notification emitted when quota threshold alert of branded calls has been reached.
+      summary: Quota threshold of branded calls reached event
+      description: Notification emitted when quota threshold of branded calls has been reached.
       value:
         id: "83a0cf3a-f3ae-4f3b-9d3b-1e19c6e7f8a0"
         source: "https://service-provider.com/brand-registration/v0/registrations"
@@ -1556,4 +1556,4 @@ components:
         time: "2026-04-22T14:30:00Z"
         data:
           registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-          quotaThresholsAlert: 950000
+          quotaThreshold: 95000
