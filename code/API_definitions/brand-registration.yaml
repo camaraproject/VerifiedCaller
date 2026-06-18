@@ -883,7 +883,7 @@ components:
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
-        status:
+        quotaThreshold:
           $ref: '#/components/schemas/QuotaThreshold'
 
     QuotatExhaustedEventData:
@@ -897,7 +897,7 @@ components:
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
-        status:
+        quota:
           $ref: '#/components/schemas/Quota'
 
     CloudEvent:
