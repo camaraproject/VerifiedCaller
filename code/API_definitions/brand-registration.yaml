@@ -23,7 +23,7 @@ info:
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
     * **quota**: Maximum number of branded calls allowed for the registration.
-    * **quotaThreshold**: Number of branded calls at which customer is notifed that the quota threshold alert has been reached.
+    * **quotaThreshold**: Number of branded calls at which customer is notified that a quota threshold has been reached.
     * **Notification URL and token**:  The API consumer may provide a callback URL (`sink`) on which notifications about events related to given brand registration(eg. calls with brand information) can be received from the API provider. This is an optional parameter. The notification will be sent as a CloudEvent compliant message.
     If `sink` is included, it is RECOMMENDED for the client to provide as well the `sinkCredential` property to protect the notification endpoint. In the current version, `sinkCredential.credentialType` MUST be set to `ACCESSTOKEN` if `sinkCredential` is provided or to `PRIVATE_KEY_JWT` if authentication information is pre-shared.
 
@@ -608,10 +608,10 @@ components:
       maximum: 1000000000
       example: 100000
 
-    QuotaThresholdAlert:
+    QuotaThreshold:
       type: integer
       format: int32
-      description: Number of branded calls at which customer is notifed that the quota threshold alert has been reached.
+      description: Number of branded calls at which customer is notifed that the quota threshold has been reached.
       minimum: 1
       maximum: 1000000000
       example: 100000
@@ -687,8 +687,8 @@ components:
           $ref: '#/components/schemas/CampaignName'
         quota:
           $ref: '#/components/schemas/Quota'
-        quotaThresholdAlert:
-          $ref: '#/components/schemas/QuotaThresholdAlert'
+        quotaThreshold:
+          $ref: '#/components/schemas/QuotaThreshold'
         sink:
           type: string
           format: uri
@@ -877,12 +877,12 @@ components:
         The CloudEvent envelope's `time` carries when the status has been changed.
       required:
         - registrationId
-        - quotaThresholdAlert
+        - quotaThreshold
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
         status:
-          $ref: '#/components/schemas/QuotaThresholdAlert'
+          $ref: '#/components/schemas/QuotaThreshold'
 
     QuotatExhaustedEventData:
       type: object
@@ -891,7 +891,7 @@ components:
         The CloudEvent envelope's `time` carries when the status has been changed.
       required:
         - registrationId
-        - quotaThresholdAlert
+        - quota
       properties:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
