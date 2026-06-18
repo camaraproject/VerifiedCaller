@@ -769,7 +769,7 @@ components:
         - org.camaraproject.brand-registration.v0.call-branded
         - org.camaraproject.brand-registration.v0.status-changed
         - org.camaraproject.brand-registration.v0.quota-threshold-reached
-        - org.camaraproject.brand-registration.v0.quota-exhausted        
+        - org.camaraproject.brand-registration.v0.quota-exhausted
 
     BrandRegistrationNotificationEvent:
       description: |
