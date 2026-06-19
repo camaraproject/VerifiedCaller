@@ -626,7 +626,7 @@ components:
 
     CallPurpose:
       type: string
-      description: Calls' Purpose classification of the registration. This list of purposes can be completed by the operator with new purposes they wish to propose and make visible to the API consumer.
+      description: Calls' Purpose classification of the registration. This list of purposes can be completed by the API provider with new purposes they wish to propose and make visible to the API consumer.
       maxLength: 50
       example: "Survey"
       enum:
