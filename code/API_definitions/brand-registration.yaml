@@ -24,6 +24,7 @@ info:
     * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
     * **quota**: Maximum number of branded calls allowed for the registration.
     * **quotaThreshold**: Number of branded calls at which customer is notified that a quota threshold has been reached.
+    * **callPurpose**: Calls' Purpose classification of the registration.
     * **Notification URL and token**:  The API consumer may provide a callback URL (`sink`) on which notifications about events related to given brand registration(eg. calls with brand information) can be received from the API provider. This is an optional parameter. The notification will be sent as a CloudEvent compliant message.
     If `sink` is included, it is RECOMMENDED for the client to provide as well the `sinkCredential` property to protect the notification endpoint. In the current version, `sinkCredential.credentialType` MUST be set to `ACCESSTOKEN` if `sinkCredential` is provided or to `PRIVATE_KEY_JWT` if authentication information is pre-shared.
 
@@ -111,6 +112,7 @@ paths:
                   displayName: "Company X Calling"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
               INPUT_TWO_PHONE_NUMBERS:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
                 description: Create a registration for a device, identified by a phone number & phone number alternate
@@ -123,6 +125,7 @@ paths:
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
               INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN:
                 summary: Registration with notifications (ACCESSTOKEN credential)
                 description: |
@@ -135,6 +138,7 @@ paths:
                   displayName: "Company X Calling"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
                   sink: "https://endpoint.example.com/sink"
                   sinkCredential:
                     credentialType: "ACCESSTOKEN"
@@ -154,6 +158,7 @@ paths:
                   displayName: "Company X Calling"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
                   sink: "https://endpoint.example.com/sink"
                   sinkCredential:
                     credentialType: "PRIVATE_KEY_JWT"
@@ -249,6 +254,7 @@ paths:
         - `status` - filter by registration status.
         - `expiresAt` - filter by expiresAt date.
         - `terminatingCountryCode` - filter by terminating country code.
+        - `callPurpose` - filter by call purpose.
 
         When more than one filter is provided, results MUST match all of
         them (logical AND).
@@ -267,6 +273,7 @@ paths:
         - $ref: '#/components/parameters/StatusFilter'
         - $ref: '#/components/parameters/ExpiresAtFilter'
         - $ref: '#/components/parameters/TerminatingCountryCodeFilter'
+        - $ref: '#/components/parameters/CallPurposeFilter'
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecords'
@@ -395,6 +402,7 @@ paths:
                   displayName: "Company X Calling"
                   customerId: "Customer1"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
               INPUT_TWO_PHONE_NUMBERS:
                 summary: Device identified by phoneNumber & phoneNumberAlternate
                 description: Update registration for a device, identified by a phone number & phone number alternate
@@ -407,6 +415,7 @@ paths:
                   displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                   customerId: "Customer2"
                   verifyCallerAction: "DO_NOT_BRAND"
+                  callPurpose: "Survey"
 
       responses:
         '200':
@@ -512,6 +521,13 @@ components:
       description: Optional filter. Restrict results to registrations matching the given `terminatingCountryCode`.
       schema:
         $ref: '#/components/schemas/TerminatingCountryCode'
+    CallPurposeFilter:
+      name: callPurpose
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations matching the given call Purpose.
+      schema:
+        $ref: '#/components/schemas/CallPurpose'
 
   headers:
     x-correlator:
@@ -608,6 +624,20 @@ components:
       maximum: 1000000000
       example: 100000
 
+    CallPurpose:
+      type: string
+      description: Calls' Purpose classification of the registration. This list of purposes can be completed by the API provider with new purposes they wish to propose and make visible to the API consumer.
+      maxLength: 50
+      example: "Survey"
+      enum:
+        - "Customer-Service"
+        - "Survey"
+        - "Telemarketing"
+        - "Debt-Collection"
+        - "Charity"
+        - "Informational"
+        - "Do-Not-Originate"
+
     QuotaThreshold:
       type: integer
       format: int32
@@ -642,6 +672,8 @@ components:
           $ref: '#/components/schemas/TerminatingCountryCode'
         campaignName:
           $ref: '#/components/schemas/CampaignName'
+        callPurpose:
+          $ref: '#/components/schemas/CallPurpose'
         sink:
           type: string
           format: uri
@@ -689,6 +721,8 @@ components:
           $ref: '#/components/schemas/Quota'
         quotaThreshold:
           $ref: '#/components/schemas/QuotaThreshold'
+        callPurpose:
+          $ref: '#/components/schemas/CallPurpose'
         sink:
           type: string
           format: uri
@@ -1037,6 +1071,7 @@ components:
                 verifyCallerAction: "DO_NOT_BRAND"
                 quota: 100000
                 quotaThreshold: 95000
+                callPurpose: "Survey"
             RECORD_TWO_PHONE_NUMBERS:
               summary: Device identified by phoneNumber & phoneNumberAlternate
               description: A registration for a device, identified by both a phone number and a phone number alternate
@@ -1053,6 +1088,7 @@ components:
                 verifyCallerAction: "DO_NOT_BRAND"
                 quota: 100000
                 quotaThreshold: 95000
+                callPurpose: "Survey"
     SuccessfulRecords:
       description: Success response with one or more brand registration records
       headers:
@@ -1079,6 +1115,7 @@ components:
                     verifyCallerAction: "DO_NOT_BRAND"
                     quota: 100000
                     quotaThreshold: 95000
+                    callPurpose: "Survey"
                   - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
                     phoneNumber: "+123456790"
                     phoneNumberAlternate: "+123456791"
@@ -1090,6 +1127,7 @@ components:
                     verifyCallerAction: "BLOCK_UNVERIFIED"
                     quota: 100000
                     quotaThreshold: 95000
+                    callPurpose: "Survey"
                 pagination:
                   page: 1
                   perPage: 20
@@ -1141,6 +1179,7 @@ components:
                     verifyCallerAction: "BLOCK_UNVERIFIED"
                     quota: 100000
                     quotaThreshold: 95000
+                    callPurpose: "Survey"
                 pagination:
                   page: 1
                   perPage: 20
