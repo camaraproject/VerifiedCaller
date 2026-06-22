@@ -277,8 +277,8 @@ paths:
       operationId: readRegistrations
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/Page'
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/PerPage'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/page'
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/perPage'
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
