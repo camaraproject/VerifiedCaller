@@ -474,6 +474,7 @@ components:
         Values below the minimum MUST be rejected with `400 INVALID_ARGUMENT`.
       schema:
         type: integer
+        format: int32
         minimum: 1
         default: 1
     PerPage:
@@ -484,6 +485,7 @@ components:
         Out-of-range values MUST be rejected with `400 INVALID_ARGUMENT`.
       schema:
         type: integer
+        format: int32
         minimum: 1
         maximum: 100
         default: 20
@@ -541,11 +543,13 @@ components:
       description: Total number of resources matching the query. Mirrors `pagination.totalCount` in the response body.
       schema:
         type: integer
+        format: int32
         minimum: 0
     X-Total-Pages:
       description: Total number of pages. Mirrors `pagination.totalPages` in the response body.
       schema:
         type: integer
+        format: int32
         minimum: 0
   schemas:
     XCorrelator:
@@ -617,6 +621,7 @@ components:
 
     TerminatingCountryCode:
       type: integer
+      format: int32
       description: Country Code of the called number in E.164 format
       example: 44
 
@@ -766,21 +771,25 @@ components:
       properties:
         page:
           type: integer
+          format: int32
           minimum: 1
           description: Current page number (1-indexed).
         perPage:
           type: integer
+          format: int32
           minimum: 1
           maximum: 100
           description: Number of resources returned per page.
         totalCount:
           type: integer
+          format: int32
           minimum: 0
           description: |
             Total number of resources matching the query.
             MAY be omitted when computing the full count is prohibitively expensive.
         totalPages:
           type: integer
+          format: int32
           minimum: 0
           description: |
             Total number of pages.
@@ -796,6 +805,9 @@ components:
       properties:
         status:
           type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
           description: HTTP status code returned along with this error response
         code:
           type: string
