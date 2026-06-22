@@ -315,6 +315,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 256
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
@@ -350,6 +351,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 256
       responses:
         '204':
           $ref: '#/components/responses/204NoContent'
@@ -385,6 +387,7 @@ paths:
           required: true
           schema:
             type: string
+            maxLength: 256
       requestBody:
         required: true
         content:
@@ -547,17 +550,21 @@ components:
   schemas:
     XCorrelator:
       type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
       pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
       example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
+      maxLength: 16
       example: "+123456789"
 
     RegistrationId:
       type: string
       format: uuid
+      maxLength: 256
       description: Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
@@ -572,6 +579,7 @@ components:
       description: The date, in RFC 3339 / ISO 8601 compliant format "YYYY-MM-DD", from which the Brand Registration will expired.
       format: date
       example: "2023-07-03"
+      maxLength: 10
 
     CustomerId:
       type: string
@@ -595,6 +603,7 @@ components:
         This URI is a logical identifier inside the service provider's network and is not guaranteed to be
         resolvable by general-purpose HTTP clients.
         Support of the DisplayAsset depends on the service provider and called party's device.
+      maxLength: 2048
       example: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
 
     VerifyCallerAction:
@@ -615,6 +624,7 @@ components:
       type: string
       description: Logical name to group a set of calling party numbers under a brand for a specific purpose, e.g. special charging
       example: "Company X New Year Sales"
+      maxLength: 64
 
     Quota:
       type: integer
@@ -790,9 +800,11 @@ components:
         code:
           type: string
           description: Code given to this error
+          maxLength: 96
         message:
           type: string
           description: Detailed error description
+          maxLength: 512
 
     BrandRegistrationEventType:
       type: string
@@ -884,6 +896,7 @@ components:
         preAnnouncementId:
           type: string
           format: uuid
+          maxLength: 256
           description: |
             Optional. The identifier of the originating pre-announcement, as returned
             in the `AnnouncementInfo` response of `POST /pre-announce` (verified-caller API).
@@ -975,6 +988,7 @@ components:
           type: string
           format: date-time
           description: Timestamp (RFC 3339, UTC) when the event occurred.
+          maxLength: 64
           example: "2026-04-22T14:30:00Z"
 
     Source:
