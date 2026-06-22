@@ -476,6 +476,7 @@ components:
         type: integer
         format: int32
         minimum: 1
+        maximum: 1000
         default: 1
     PerPage:
       name: perPage
@@ -545,12 +546,14 @@ components:
         type: integer
         format: int32
         minimum: 0
+        maximum: 100000
     X-Total-Pages:
       description: Total number of pages. Mirrors `pagination.totalPages` in the response body.
       schema:
         type: integer
         format: int32
         minimum: 0
+        maximum: 1000
   schemas:
     XCorrelator:
       type: string
@@ -622,6 +625,8 @@ components:
     TerminatingCountryCode:
       type: integer
       format: int32
+      minimum: 1
+      maximum: 999
       description: Country Code of the called number in E.164 format
       example: 44
 
@@ -756,6 +761,8 @@ components:
       properties:
         registrations:
           type: array
+          maxItems: 1000
+          description: An array of registration objects returned in this response
           items:
             $ref: '#/components/schemas/RegistrationRecord'
         pagination:
@@ -773,6 +780,7 @@ components:
           type: integer
           format: int32
           minimum: 1
+          maximum: 1000
           description: Current page number (1-indexed).
         perPage:
           type: integer
@@ -784,6 +792,7 @@ components:
           type: integer
           format: int32
           minimum: 0
+          maximum: 100000
           description: |
             Total number of resources matching the query.
             MAY be omitted when computing the full count is prohibitively expensive.
@@ -791,6 +800,7 @@ components:
           type: integer
           format: int32
           minimum: 0
+          maximum: 1000
           description: |
             Total number of pages.
             MAY be omitted when computing the full count is prohibitively expensive.
