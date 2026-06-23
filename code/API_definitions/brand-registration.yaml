@@ -756,7 +756,7 @@ components:
           items:
             $ref: '#/components/schemas/RegistrationRecord'
         pagination:
-          ref: "../common/CAMARA_common.yaml#/components/schemas/Pagination'
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/Pagination"
 
     Pagination:
       type: object
