@@ -430,7 +430,7 @@ paths:
         '403':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Update404'
+          $ref: '#/components/responses/Update404'
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
         '422':
