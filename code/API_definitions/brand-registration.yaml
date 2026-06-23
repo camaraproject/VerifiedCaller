@@ -844,7 +844,7 @@ components:
         `BrandRegistrationEventType` and the discriminator mapping below — the CloudEvent
         base never changes.
       allOf:
-        - $ref: './CAMARA_event_common.yaml#/components/schemas/CloudEvent'
+        - $ref: '#/components/schemas/CloudEvent'
         - type: object
           properties:
             type:
