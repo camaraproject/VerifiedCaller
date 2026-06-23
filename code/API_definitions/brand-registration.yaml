@@ -204,17 +204,17 @@ paths:
                   description: Successful notification
                   headers:
                     x-correlator:
-                      $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+                      $ref: '#/components/headers/x-correlator'
                 '400':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+                  $ref: '#/components/responses/Generic400'
                 '401':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+                  $ref: '#/components/responses/Generic401'
                 '403':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
+                  $ref: '#/components/responses/Generic403'
                 '410':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic410'
+                  $ref: '#/components/responses/Generic410'
                 '429':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+                  $ref: '#/components/responses/Generic429'
               security:
                 - {}
                 - notificationsBearerAuth: []
@@ -223,23 +223,23 @@ paths:
         '201':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
           $ref: '#/components/responses/Create404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '#/components/responses/Generic409'
         '422':
-          $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Generic503'
 
       security:
         - openId:
@@ -276,9 +276,9 @@ paths:
         is interpreted within the scope of the authenticated client.
       operationId: readRegistrations
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/page'
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/perPage'
+        - $ref: '#/components/parameters/x-correlator'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/PerPage'
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
@@ -293,19 +293,19 @@ paths:
         '206':
           $ref: '#/components/responses/SuccessfulPartialRecords'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/Generic404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Generic503'
 
       security:
         - openId:
@@ -331,19 +331,19 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/Generic404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Generic503'
 
       security:
         - openId:
@@ -367,19 +367,19 @@ paths:
         '204':
           $ref: '#/components/responses/204NoContent'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/Generic404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Generic503'
 
       security:
         - openId:
@@ -435,23 +435,23 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
           $ref: '#/components/responses/Update404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '#/components/responses/Generic409'
         '422':
-          $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Generic503'
 
       security:
         - openId:
@@ -471,6 +471,36 @@ components:
         Bearer token for notification delivery. Token format is determined
         by `sinkCredential.credentialType` in the subscription request.
   parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        $ref: "#/components/schemas/XCorrelator"
+    Page:
+      name: page
+      in: query
+      description: |
+        The requested page number. Pages are 1-indexed.
+        Values below the minimum MUST be rejected with `400 INVALID_ARGUMENT`.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 1000
+        default: 1
+    PerPage:
+      name: perPage
+      in: query
+      description: |
+        Number of resources to return per page.
+        Out-of-range values MUST be rejected with `400 INVALID_ARGUMENT`.
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 20
     CustomerIdFilter:
       name: customerId
       in: query
@@ -637,9 +667,9 @@ components:
         - "terminatingCountryCode"
       properties:
         phoneNumber:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         phoneNumberAlternate:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         expiresAt:
           $ref: '#/components/schemas/ExpiresAt'
         displayName:
@@ -680,9 +710,9 @@ components:
         registrationId:
           $ref: '#/components/schemas/RegistrationId'
         phoneNumber:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         phoneNumberAlternate:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         status:
           $ref: '#/components/schemas/Status'
         expiresAt:
