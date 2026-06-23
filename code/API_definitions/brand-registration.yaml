@@ -212,7 +212,7 @@ paths:
         '201':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: ../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
         '403':
