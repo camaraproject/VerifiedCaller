@@ -467,30 +467,6 @@ components:
         Bearer token for notification delivery. Token format is determined
         by `sinkCredential.credentialType` in the subscription request.
   parameters:
-    Page:
-      name: page
-      in: query
-      description: |
-        The requested page number. Pages are 1-indexed.
-        Values below the minimum MUST be rejected with `400 INVALID_ARGUMENT`.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 1000
-        default: 1
-    PerPage:
-      name: perPage
-      in: query
-      description: |
-        Number of resources to return per page.
-        Out-of-range values MUST be rejected with `400 INVALID_ARGUMENT`.
-      schema:
-        type: integer
-        format: int32
-        minimum: 1
-        maximum: 100
-        default: 20
     CustomerIdFilter:
       name: customerId
       in: query
@@ -552,12 +528,6 @@ components:
         minimum: 0
         maximum: 1000
   schemas:
-    XCorrelator:
-      type: string
-      description: Correlator string, UUID format recommended but any string matching the pattern can be used
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      maxLength: 256
-      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
       type: string
@@ -764,43 +734,6 @@ components:
             $ref: '#/components/schemas/RegistrationRecord'
         pagination:
           $ref: "../common/CAMARA_common.yaml#/components/schemas/Pagination"
-
-    Pagination:
-      type: object
-      description: |
-        Pagination metadata for paginated responses, as defined in CAMARA Commonalities §4.1.
-      required:
-        - page
-        - perPage
-      properties:
-        page:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 1000
-          description: Current page number (1-indexed).
-        perPage:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 100
-          description: Number of resources returned per page.
-        totalCount:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 100000
-          description: |
-            Total number of resources matching the query.
-            MAY be omitted when computing the full count is prohibitively expensive.
-        totalPages:
-          type: integer
-          format: int32
-          minimum: 0
-          maximum: 1000
-          description: |
-            Total number of pages.
-            MAY be omitted when computing the full count is prohibitively expensive.
 
     ErrorInfo:
       description: Common schema for errors
@@ -1276,58 +1209,7 @@ components:
                 status: 400
                 code: INVALID_SINK
                 message: The sink URL is not valid for the specified protocol.
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 401
-                  code:
-                    enum:
-                      - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              summary: Unauthenticated
-              description: Request cannot be authenticated
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials.
-    Generic403:
-      description: Forbidden
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 403
-                  code:
-                    enum:
-                      - PERMISSION_DENIED
-          examples:
-            GENERIC_403_PERMISSION_DENIED:
-              summary: Permission denied
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
+
     Create404:
       description: Not found
       headers:
@@ -1404,92 +1286,6 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
-    Generic404:
-      description: Not found
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 404
-                  code:
-                    enum:
-                      - NOT_FOUND
-                      - BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-          examples:
-            GENERIC_404_NOT_FOUND:
-              summary: Generic Not Found
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "{{resource}} is not found"
-            BRAND_REGISTRATION_404_REGISTRATION_NOT_FOUND:
-              summary: Registration not found
-              description: The brand registration service is not able to identify the registration
-              value:
-                status: 404
-                code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-                message: 'The brand registration service is not able to identify an existing registration'
-    Generic409:
-      description: Conflict
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 409
-                  code:
-                    enum:
-                      - CONFLICT
-          examples:
-            GENERIC_409_CONFLICT:
-              summary: Conflict
-              description: Requested operation conflicts with existing data in the service platform
-              value:
-                status: 409
-                code: CONFLICT
-                message: Requested operation conflicts with existing data in the service platform
-    Generic410:
-      description: Gone
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 410
-                  code:
-                    enum:
-                      - GONE
-          examples:
-            GENERIC_410_GONE:
-              summary: Gone
-              description: The target notification sink is no longer available
-              value:
-                status: 410
-                code: GONE
-                message: The target resource is no longer available.
     CreateOrUpdateRegistrationUnprocessableEntity422:
       description: Unprocessable Content
       headers:
@@ -1516,62 +1312,6 @@ components:
                 status: 422
                 code: SERVICE_NOT_APPLICABLE
                 message: The service is not available for the provided identifier.
-    Generic429:
-      description: Too Many Requests
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_429_QUOTA_EXCEEDED:
-              description: Request is rejected due to exceeding a business quota limit
-              value:
-                status: 429
-                code: QUOTA_EXCEEDED
-                message: Either out of resource quota or reaching rate limiting.
-            GENERIC_429_TOO_MANY_REQUESTS:
-              description: API Server request limit is overpassed
-              value:
-                status: 429
-                code: TOO_MANY_REQUESTS
-                message: Either out of resource quota or reaching rate limiting.
-    Generic500:
-      description: Internal server error
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_500_INTERNAL:
-              summary: Generic Internal
-              description: Problem in Server side. Regular Server Exception
-              value:
-                status: 500
-                code: INTERNAL
-                message: "Internal server error"
-    Generic503:
-      description: Service unavailable
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_503_UNAVAILABLE:
-              summary: Generic Unavailable
-              description: Service is not available. Temporary situation usually related to maintenance process in the server side
-              value:
-                status: 503
-                code: UNAVAILABLE
-                message: "Service unavailable"
 
   examples:
     CALL_BRANDED_EVENT:
