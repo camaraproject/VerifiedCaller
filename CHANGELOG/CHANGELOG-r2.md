@@ -89,7 +89,18 @@ Changes documented below are compared to version 0.1.0.
 
 ### Added
 
-* N/A
+* Create a resource for an API consumer to retrieve their registration information by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/78
+* Support for visual assets (e.g. logo, image, video) to display in the callee's device. by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/81
+* Add Status to Registration Response by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/83
+* Add call-branded event notifications to brand-registration API by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/86
+* Enhance brand-registration.yaml with new event schemas by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/93
+* Add optional filter query parameters to GET /registrations (#87) by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/94
+* Update brand-registration.yaml by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/103
+* Introduce callReason parameter by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/104
+* Align GET /registrations pagination with Commonalities by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/113
+* Enhance brand registration API with quota fields by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/114
+* Add callPurpose field to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/115
+* Commonalities 8.0.0 alignment   common artifacts by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/119
 
 ### Changed
 
@@ -97,7 +108,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Fixed
 
-* N/A
+* Fix linter warnings before release by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/117
 
 ### Removed
 
