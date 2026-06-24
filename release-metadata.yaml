@@ -1,0 +1,16 @@
+repository:
+  repository_name: VerifiedCaller
+  release_tag: r2.1
+  release_type: pre-release-alpha
+  release_date: null
+  src_commit_sha: f41f6799a9b64fc33f811aea2b33c0efaa529c86
+apis:
+- api_name: brand-registration
+  api_version: 0.2.0-alpha.1
+  api_title: Brand Registration
+- api_name: verified-caller
+  api_version: 0.2.0-alpha.1
+  api_title: Verified Caller
+dependencies:
+  commonalities_release: r4.3 (0.8.0)
+  identity_consent_management_release: r4.2 (0.5.0)
