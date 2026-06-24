@@ -96,7 +96,6 @@ Changes documented below are compared to version 0.1.0.
 * Enhance brand-registration.yaml with new event schemas by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/93
 * Add optional filter query parameters to GET /registrations (#87) by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/94
 * Update brand-registration.yaml by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/103
-* Introduce callReason parameter by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/104
 * Align GET /registrations pagination with Commonalities by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/113
 * Enhance brand registration API with quota fields by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/114
 * Add callPurpose field to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/115
@@ -131,7 +130,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Added
 
-* N/A
+* Introduce callReason parameter by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/104
 
 ### Changed
 
