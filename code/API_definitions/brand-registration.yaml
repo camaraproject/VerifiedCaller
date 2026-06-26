@@ -899,50 +899,6 @@ components:
         quota:
           $ref: '#/components/schemas/Quota'
 
-    CloudEvent:
-      type: object
-      description: |
-        CloudEvents 1.0 specification envelope.
-        Stable base for all event notifications emitted by this API.
-      required:
-        - id
-        - source
-        - specversion
-        - type
-        - time
-      properties:
-        id:
-          type: string
-          maxLength: 256
-          description: Identifier of this event, unique within the source context.
-        source:
-          $ref: '#/components/schemas/Source'
-        type:
-          type: string
-          maxLength: 512
-          description: |
-            Identifies the event type. CAMARA APIs use reverse-DNS notation:
-            `org.camaraproject.<api-name>.<event-version>.<event-name>`.
-        specversion:
-          type: string
-          description: Version of the CloudEvents specification the event conforms to.
-          enum:
-            - "1.0"
-        datacontenttype:
-          type: string
-          description: Media type of the event payload encoding; MUST be `application/json` for CAMARA APIs.
-          enum:
-            - application/json
-        data:
-          type: object
-          description: Event details payload. Structure is defined by each concrete event schema.
-        time:
-          type: string
-          format: date-time
-          description: Timestamp (RFC 3339, UTC) when the event occurred.
-          maxLength: 64
-          example: "2026-04-22T14:30:00Z"
-
     Source:
       type: string
       format: uri-reference
