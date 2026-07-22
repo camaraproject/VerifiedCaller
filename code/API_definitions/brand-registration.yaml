@@ -261,8 +261,10 @@ paths:
         - `customerId` - filter by enterprise/brand owner identifier.
         - `displayName` - filter by the display name registered for the brand.
         - `status` - filter by registration status.
-        - `createdAt` - filter by createdAt date-time.
-        - `updatedAt` - filter by updatedAt date-time.
+        - `createdAt.lte` - filter by lower createdAt date-time.
+        - `createdAt.gte` - filter by greater createdAt date-time.
+        - `updatedAt.lte` - filter by lower updatedAt date-time.
+        - `updatedAt.gte` - filter by greater updatedAt date-time.
         - `expiresAt` - filter by expiresAt date.
         - `terminatingCountryCode` - filter by terminating country code.
         - `callPurpose` - filter by call purpose.
@@ -282,8 +284,10 @@ paths:
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
-        - $ref: '#/components/parameters/CreatedAtFilter'
-        - $ref: '#/components/parameters/UpdatedAtFilter'
+        - $ref: '#/components/parameters/CreatedAtBeforeFilter'
+        - $ref: '#/components/parameters/CreatedAtAfterFilter'
+        - $ref: '#/components/parameters/UpdatedAtBeforeFilter'
+        - $ref: '#/components/parameters/UpdatedAtAfterFilter'
         - $ref: '#/components/parameters/ExpiresAtFilter'
         - $ref: '#/components/parameters/TerminatingCountryCodeFilter'
         - $ref: '#/components/parameters/CallPurposeFilter'
@@ -496,18 +500,32 @@ components:
       description: Optional filter. Restrict results to registrations in the given `status`.
       schema:
         $ref: '#/components/schemas/Status'
-    CreatedAtFilter:
-      name: createdAt
+    CreatedAtBeforeFilter:
+      name: createdAt.lte
       in: query
       required: false
-      description: Optional filter. Restrict results to registrations matching the given createdAt date-time.
+      description: Optional filter. Restrict results to registrations for which creation date-time is lower or equal than the given createdAt date-time.
       schema:
         $ref: '#/components/schemas/CreatedAt'
-    UpdatedAtFilter:
-      name: updatedAt
+    CreatedAtAfterFilter:
+      name: createdAt.gte
       in: query
       required: false
-      description: Optional filter. Restrict results to registrations matching the given updatedAt date-time.
+      description: Optional filter. Restrict results to registrations for which creation date-time is greater or equal than the given createdAt date-time.
+      schema:
+        $ref: '#/components/schemas/CreatedAt'
+    UpdatedAtBeforeFilter:
+      name: updatedAt.lte
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations for which last update date-time is lower or equal than the given updatedAt date-time.
+      schema:
+        $ref: '#/components/schemas/UpdatedAt'
+    UpdatedAtAfterFilter:
+      name: updatedAt.gte
+      in: query
+      required: false
+      description: Optional filter. Restrict results to registrations for which last update date-time is greater or equal than the given updatedAt date-time.
       schema:
         $ref: '#/components/schemas/UpdatedAt'
     ExpiresAtFilter:
