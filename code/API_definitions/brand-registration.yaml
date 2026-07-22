@@ -84,15 +84,15 @@ servers:
         default: http://localhost:9091
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Create Brand registration
+  - name: Create Brand Registration
     description: Create Brand Registration Information for a Calling Party
-  - name: Update Brand registration
+  - name: Update Brand Registration
     description: Update Existing Brand Registration Information for a Calling Party
-  - name: Read Brand registration
+  - name: Read Brand Registration
     description: Read Existing Brand Registration Information for a Calling Party
-  - name: Delete Brand registration
+  - name: Delete Brand Registration
     description: Delete Existing Brand Registration Information for a Calling Party
-  - name: Call branded notifications callback
+  - name: Call Branded Notifications Callback
     description: Notifications callback invoked by the API provider when a call is successfully branded for a registration that opted in with `sink`.
 paths:
   /registrations:
@@ -197,6 +197,11 @@ paths:
                         $ref: '#/components/examples/CALL_BRANDED_EVENT'
                       BRAND_REGISTRATION_STATUS_EVENT:
                         $ref: '#/components/examples/BRAND_REGISTRATION_STATUS_EVENT'
+                      QUOTA_EXHAUSTED_EVENT:
+                        $ref: '#/components/examples/QUOTA_EXHAUSTED_EVENT'
+                      QUOTA_THRESHOLD_REACHED_EVENT:
+                        $ref: '#/components/examples/QUOTA_THRESHOLD_REACHED_EVENT'
+
               responses:
                 '204':
                   description: Successful notification
@@ -1140,64 +1145,6 @@ components:
                   perPage: 20
                   totalCount: 2
                   totalPages: 1
-    Generic400:
-      description: Bad Request
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 400
-                  code:
-                    enum:
-                      - INVALID_ARGUMENT
-                      - INVALID_PROTOCOL
-                      - INVALID_CREDENTIAL
-                      - INVALID_TOKEN
-                      - INVALID_SINK
-          examples:
-            GENERIC_400_INVALID_ARGUMENT:
-              summary: Invalid argument
-              description: Invalid Argument. Generic Syntax Exception
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param.
-            GENERIC_400_INVALID_PROTOCOL:
-              summary: Invalid protocol
-              description: Invalid protocol for event notifications
-              value:
-                status: 400
-                code: INVALID_PROTOCOL
-                message: Only HTTPS is supported for notification delivery.
-            GENERIC_400_INVALID_CREDENTIAL:
-              summary: Invalid credential
-              description: Invalid sink credential type
-              value:
-                status: 400
-                code: INVALID_CREDENTIAL
-                message: Only ACCESSTOKEN or PRIVATE_KEY_JWT credential types are supported.
-            GENERIC_400_INVALID_TOKEN:
-              summary: Invalid token
-              description: The access token provided in sinkCredential is invalid
-              value:
-                status: 400
-                code: INVALID_TOKEN
-                message: The access token provided in sinkCredential is not valid.
-            GENERIC_400_INVALID_SINK:
-              summary: Invalid sink
-              description: The sink URL is invalid for the specified protocol
-              value:
-                status: 400
-                code: INVALID_SINK
-                message: The sink URL is not valid for the specified protocol.
 
     Create404:
       description: Not found
