@@ -728,7 +728,7 @@ components:
             Omit this field (and `sinkCredential`) to create the registration without event notifications.
           example: "https://endpoint.example.com/sink"
         sinkCredential:
-          $ref: '#/components/schemas/SinkCredential'
+          $ref: '../common/CAMARA_event_common.yaml#/components/schemas/SinkCredential'
 
     RegistrationRecord:
       type: object
