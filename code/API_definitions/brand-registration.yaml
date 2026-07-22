@@ -98,7 +98,7 @@ paths:
   /registrations:
     post:
       tags:
-        - Create Brand registration
+        - Create Brand Registration
       summary: Register new brand information in the service platform
       description: Register new brand information with optional call verification request.
       operationId: createRegistration
@@ -177,7 +177,7 @@ paths:
           "{$request.body#/sink}":
             post:
               tags:
-                - Call branded notifications callback
+                - Call Branded Notifications Callback
               summary: Call branded notifications callback
               description: |
                 Important: this endpoint is to be implemented by the API consumer.
@@ -249,7 +249,7 @@ paths:
             - brand-registration:create
     get:
       tags:
-        - Read Brand registration
+        - Read Brand Registration
       summary: Read existing brand registrations from the service platform
       description: |
         Read existing brand registrations from the service platform.
@@ -361,7 +361,7 @@ paths:
             - brand-registration:read
     delete:
       tags:
-        - Delete Brand registration
+        - Delete Brand Registration
       summary: Delete an existing brand registration from the service platform
       description: Delete an existing brand registration from the service platform
       operationId: deleteRegistration
@@ -397,7 +397,7 @@ paths:
             - brand-registration:delete
     put:
       tags:
-        - Update Brand registration
+        - Update Brand Registration
       summary: Update an existing brand registration in the service platform
       description: Update an existing brand registration
       operationId: updateRegistration
