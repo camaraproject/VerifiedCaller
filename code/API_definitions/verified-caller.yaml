@@ -53,17 +53,13 @@ info:
 
     This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
     <!-- CAMARA:MANDATORY:request-body-strictness:END -->
-
-  version: wip
+  version: 0.2.0-rc.1
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.6
-externalDocs:
-  description: Project documentation at Camara
-  url: https://github.com/camaraproject/VerifiedCaller
+  x-camara-commonalities: 0.8.0
 servers:
-  - url: '{apiRoot}/verified-caller/vwip'
+  - url: '{apiRoot}/verified-caller/v0.2rc1'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -71,6 +67,9 @@ servers:
 tags:
   - name: Create Preannouncement
     description: Create a call pre-announcement for a Calling and a Called Party
+externalDocs:
+  description: Project documentation at Camara
+  url: https://github.com/camaraproject/VerifiedCaller
 paths:
   /pre-announce:
     post:
@@ -80,7 +79,7 @@ paths:
       description: Create a call pre-announcement for a Calling and a Called Party that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
-        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
@@ -92,96 +91,92 @@ paths:
                 summary: A short message is sent to the callee to verify authenticity of the caller
                 description: A short message is sent to the callee to verify authenticity of the caller
                 value:
-                  callingParticipant: "+123456789"
-                  calledParticipant: "+123456792"
-                  strategy: "SMS"
+                  callingParticipant: '+123456789'
+                  calledParticipant: '+123456792'
+                  strategy: SMS
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
               USING_REGISTERED_BRAND_DISPLAY:
                 summary: The pre-registered displayName is displayed
                 description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
               USING_DYNAMIC_BRAND_DISPLAY:
                 summary: A call specific displayName is displayed
                 description: A displayName set for the specific call is displayed to the callee to provide a more fine-tuned context.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Re: Your Complaint"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  dynamicDisplayName: 'Company X Re: Your Complaint'
               USING_REGISTERED_BRAND_DISPLAY_WITH_CALL_REASON:
                 summary: The pre-registered displayName and a call specific reason is displayed
                 description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller, while providing more context to the callee with a call specific reason.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  callReason: "Re: Your loan application"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  callReason: 'Re: Your loan application'
               USING_DYNAMIC_BRAND_DISPLAY_WITH_CALL_REASON:
                 summary: A displayName and call reason both set for the specific call are displayed.
                 description: |
-                              A displayName set for the specific call is displayed to the callee to verify authenticity of the caller, while providing even more context to the callee with a call specific reason.
-                              This usage leverages both display name and call reason to provide the most fine-tuned information to the callee.
+                  A displayName set for the specific call is displayed to the callee to verify authenticity of the caller, while providing even more context to the callee with a call specific reason.
+                  This usage leverages both display name and call reason to provide the most fine-tuned information to the callee.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Complaint Desk"
-                  callReason: "Your support ticket 21/01/2026"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  dynamicDisplayName: Company X Complaint Desk
+                  callReason: Your support ticket 21/01/2026
       responses:
         '201':
           $ref: '#/components/responses/Create201'
         '204':
           $ref: '#/components/responses/Create204'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '#/components/responses/Generic400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '#/components/responses/Generic401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '#/components/responses/Generic403'
         '404':
           $ref: '#/components/responses/Create404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '#/components/responses/Generic409'
         '422':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic422'
+          $ref: '#/components/responses/Generic422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '#/components/responses/Generic429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Generic500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
-
+          $ref: '#/components/responses/Generic503'
       security:
         - openId:
             - verified-caller:create
-
 components:
   securitySchemes:
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
-
   schemas:
     PreAnnouncementId:
       type: string
       format: uuid
       maxLength: 256
       description: Unique identifier of a pre-announcement created as a result of the POST operation. Reserved for future use.
-      example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
-
+      example: 9e765f76-8037-4e5f-ba5d-e0c87c09a320
     TimeToLive:
       type: integer
       format: int32
@@ -189,45 +184,40 @@ components:
       maximum: 86400
       description: This parameter specifies for how long the pre-announcement is valid, in units of seconds. Calls processed after the call pre-announcement expiry shall be treated as not announced. If not specified, the service provider applies a default value. The service provider may enforce an upper bound of their choosing while validating the request.
       example: 60
-
     RegistrationId:
       type: string
       format: uuid
       maxLength: 256
       description: Unique identifier of a relatonship created between the API consumer and the service platform.
-      example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
-
+      example: 9e765f76-8037-4e5f-ba5d-e0c87c09a320
     DynamicDisplayName:
       type: string
       maxLength: 32
       description: Brand information that will be displayed to the called party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides a pre-configured display name, e.g. the displayName parameter provided in the brand-registration API request.
-      example: "Company X Call Center"
-
+      example: Company X Call Center
     CallReason:
       type: string
       maxLength: 32
       description: Call reason that will be displayed to the called party in addition to the display name if strategy is 'BRAND_DISPLAY'.
-      example: "Re: Your loan application"
-
+      example: 'Re: Your loan application'
     Strategy:
       type: string
       maxLength: 32
       description: The method to be applied to verify the authenticity of the calling party. Absence of this parameter lets the service provider choose a default strategy which the API consumer must beware.
       enum:
-        - "SMS"
-        - "BRAND_DISPLAY"
-
+        - SMS
+        - BRAND_DISPLAY
     CreatePreAnnouncementRequest:
       type: object
-      description: "Request object to create a call pre-announcement"
+      description: Request object to create a call pre-announcement
       required:
-        - "callingParticipant"
-        - "calledParticipant"
+        - callingParticipant
+        - calledParticipant
       properties:
         callingParticipant:
-          $ref: '../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         calledParticipant:
-          $ref: '../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         strategy:
           $ref: '#/components/schemas/Strategy'
         timeToLive:
@@ -238,32 +228,63 @@ components:
           $ref: '#/components/schemas/DynamicDisplayName'
         callReason:
           $ref: '#/components/schemas/CallReason'
-
     ExpiresAt:
       type: string
       format: date-time
       maxLength: 64
       description: |
-       Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
-       It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-       Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
-      example: "2023-07-03T12:27:08.312Z"
-
+        Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
+        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+      example: '2023-07-03T12:27:08.312Z'
     AnnouncementInfo:
       type: object
-      description: "Object to represent the creation of a single pre-announcement in the service platform"
+      description: Object to represent the creation of a single pre-announcement in the service platform
       properties:
         preAnnouncementId:
           $ref: '#/components/schemas/PreAnnouncementId'
         expiresAt:
           $ref: '#/components/schemas/ExpiresAt'
-
+    XCorrelator:
+      type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: ^\+[1-9][0-9]{4,14}$
+      maxLength: 16
+      example: '+123456789'
+    ErrorInfo:
+      type: object
+      description: A structured error response providing details about a failed request, including the HTTP status code, an error code, and a human-readable message
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP response status code
+        code:
+          type: string
+          maxLength: 96
+          description: A human-readable code to describe the error
+        message:
+          type: string
+          maxLength: 512
+          description: A human-readable description of what the event represents
   responses:
     Create201:
       description: Successful creation of a pre-announcement
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -273,24 +294,23 @@ components:
               summary: Success response with optional parameters
               description: Successful pre-announcement of a call. The service platform includes optional parameter(s) to inform the client.
               value:
-                preAnnouncementId: "be5105dc-9b0e-437b-a03e-6e6ffb5e50c0"
-                expiresAt: "2023-07-03T12:27:08.312Z"
-
+                preAnnouncementId: be5105dc-9b0e-437b-a03e-6e6ffb5e50c0
+                expiresAt: '2023-07-03T12:27:08.312Z'
     Create204:
       description: Successful creation of a pre-announcement with no content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
     Create404:
       description: Not found
       headers:
         x-correlator:
-          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -307,11 +327,287 @@ components:
               value:
                 status: 404
                 code: NOT_FOUND
-                message: "{{resource}} is not found"
+                message: '{{resource}} is not found'
             DEVICE_NOT_FOUND:
               summary: Device not found
               description: Device is not found
               value:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: "Call Participant {{number}} is not known to the service provider"
+                message: Call Participant {{number}} is not known to the service provider
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: 400
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated and a new authentication is required
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+                      - INVALID_TOKEN_CONTEXT
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: Request body is not consistent with access token.
+    Generic409:
+      description: Conflict
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 409
+                  code:
+                    enum:
+                      - ABORTED
+                      - ALREADY_EXISTS
+                      - CONFLICT
+                      - INCOMPATIBLE_STATE
+          examples:
+            GENERIC_409_ABORTED:
+              description: The resource is undergoing modification by another process
+              value:
+                status: 409
+                code: ABORTED
+                message: Resource is being modified by another operation. Please wait, and retry if appropriate.
+            GENERIC_409_ALREADY_EXISTS:
+              description: Trying to create an existing resource
+              value:
+                status: 409
+                code: ALREADY_EXISTS
+                message: The resource that a client tried to create already exists.
+            GENERIC_409_CONFLICT:
+              description: Duplication of an existing resource
+              value:
+                status: 409
+                code: CONFLICT
+                message: A specified resource duplicate entry found.
+            GENERIC_409_INCOMPATIBLE_STATE:
+              description: |
+                The status of the referenced resource is not compatible.
+              value:
+                status: 409
+                code: INCOMPATIBLE_STATE
+                message: Resource must be in AVAILABLE state to extend. Current state is UNAVAILABLE.
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNSUPPORTED_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
+    Generic429:
+      description: Too Many Requests
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 429
+                  code:
+                    enum:
+                      - QUOTA_EXCEEDED
+                      - TOO_MANY_REQUESTS
+          examples:
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
+              value:
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Out of resource quota.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
+              value:
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Rate limit reached.
+    Generic500:
+      description: Internal Server Error
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 500
+                  code:
+                    enum:
+                      - INTERNAL
+          examples:
+            GENERIC_500_INTERNAL:
+              description: Problem in Server side. Regular Server Exception
+              value:
+                status: 500
+                code: INTERNAL
+                message: Unknown server error. Typically a server bug.
+    Generic503:
+      description: Service Unavailable
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 503
+                  code:
+                    enum:
+                      - UNAVAILABLE
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              description: Service is not available. Temporary situation usually related to maintenance process in the server side
+              value:
+                status: 503
+                code: UNAVAILABLE
+                message: Service Unavailable.
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
