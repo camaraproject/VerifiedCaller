@@ -43,11 +43,11 @@ Sandbox API Repository to describe, develop, document, and test the VerifiedCall
 
 ### Upcoming Release Preview
 
-* Pre-release: [r2.1](https://github.com/camaraproject/VerifiedCaller/releases/tag/r2.1) (alpha)
-  * **brand-registration 0.2.0-alpha.1**
-  [[YAML]](https://github.com/camaraproject/VerifiedCaller/blob/r2.1/code/API_definitions/brand-registration.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.1/code/API_definitions/brand-registration.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.1/code/API_definitions/brand-registration.yaml)
-  * **verified-caller 0.2.0-alpha.1**
-  [[YAML]](https://github.com/camaraproject/VerifiedCaller/blob/r2.1/code/API_definitions/verified-caller.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.1/code/API_definitions/verified-caller.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.1/code/API_definitions/verified-caller.yaml)
+* Pre-release: [r2.2](https://github.com/camaraproject/VerifiedCaller/releases/tag/r2.2) (release candidate)
+  * **brand-registration 0.2.0-rc.1**
+  [[YAML]](https://github.com/camaraproject/VerifiedCaller/blob/r2.2/code/API_definitions/brand-registration.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.2/code/API_definitions/brand-registration.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.2/code/API_definitions/brand-registration.yaml)
+  * **verified-caller 0.2.0-rc.1**
+  [[YAML]](https://github.com/camaraproject/VerifiedCaller/blob/r2.2/code/API_definitions/verified-caller.yaml)  [[ReDoc]](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.2/code/API_definitions/verified-caller.yaml&nocors)  [[Swagger]](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/VerifiedCaller/r2.2/code/API_definitions/verified-caller.yaml)
 
 
 _The above section is automatically synchronized by CAMARA project-administration._
