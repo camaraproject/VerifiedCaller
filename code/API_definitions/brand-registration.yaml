@@ -15,7 +15,7 @@ info:
     - Calls placed by authorities or government institutions for official matters.
 
     # Relevant terms and definitions
-    * **phoneNumber** and **phoneNumberAlternate**: A pair of E.164 numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
+    * **phoneNumber** and **phoneNumberAlternate**: A pair of phone numbers representing the caller. Depending on the caller's networks access setup , only phoneNumber or both phoneNumber & phoneNumberAlternate may be used to uniquely identify the caller. The values typically correspond to parameters used in telecom signalling protocols, e.g. PAI and FROM headers in SIP.
     * **status**: Status of the registration.
     * **expiresAt**: The date in RFC 3339 / ISO 8601 compliant format when the brand registration is scheduled to expire. Registration status is moved to ``expired``.
     * **createdAt**: Timestamp at which the Brand Registration has been created. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
@@ -572,7 +572,7 @@ components:
         maximum: 1000
   schemas:
     PhoneNumber:
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be in international format according to ITU-T E.164 standard.
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
       maxLength: 16
@@ -651,7 +651,7 @@ components:
       format: int32
       minimum: 1
       maximum: 999
-      description: Country Code of the called number in E.164 format
+      description: Country Code of the called number according to ITU-T E.164 format
       example: 44
 
     CampaignName:
