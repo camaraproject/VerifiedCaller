@@ -25,7 +25,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   @BrandRegistration__POST_201.01_success_scenario_1_all_parameters_provided
   Scenario: Create a brand registration for customer1
-    Given the API consumer can be verified as customer1, or as legitimately acting on behalf of customer1
+    Given the brand's owner can be verified as customer1
     And request property "$.phoneNumber" is set to phoneNumber1
     And request property "$.phoneNumberAlternate" is present and set to phoneNumberAlternate1
     And request property "$.displayName" is set to displayName1
