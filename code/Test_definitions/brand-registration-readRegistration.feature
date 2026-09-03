@@ -1,4 +1,4 @@
-Feature: Camara Brand Registration API, vwip - Operation: GET
+Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
@@ -6,7 +6,7 @@ Feature: Camara Brand Registration API, vwip - Operation: GET
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * A pre-existing brand registration "registrationId1" that can be successfully associated with the API consumer by the service provider
+# * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
 # * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
 # * An E.164 telephony number "phoneNumber1" that is owned by the customer "customerId1"
 # * An optional E.164 telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
@@ -25,7 +25,7 @@ Feature: Camara Brand Registration API, vwip - Operation: GET
 
   @BrandRegistration__GET_200.01_success_scenario_1_all_parameters_read
   Scenario: Read an existing brand registration
-    Given the API consumer can be associated with a registration "registrationId1" in the service provider
+    Given the brand's owner can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:read
     When the HTTPS "GET" request is sent
