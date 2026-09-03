@@ -34,7 +34,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
-  
+
   # Generic 400 errors
 
   @Verified_Caller_Pre-announce_400.1_schema_not_compliant
