@@ -16,7 +16,7 @@ info:
 
     # Relevant terms and definitions
 
-    * **callingParticipant** and **calledParticipant**: A pair of E.164 numbers representing the parties in a call.
+    * **callingParticipant** and **calledParticipant**: A pair of phone numbers representing the parties in a call.
     * **registrationId** : A unique reference to the relationship between the API consumer and the service provider.
     * **strategy**: Indicator of the requested method to be applied by the service provider to verify a call, as desired by the API consumer.
     * **timeToLive**: The period for which the verification by the service provider remains valid. A call is not considered as verified if it is placed after expiry of verification. The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe a timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to expire the verification right away once the call is placed.
