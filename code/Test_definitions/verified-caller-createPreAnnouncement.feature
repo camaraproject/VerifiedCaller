@@ -13,12 +13,27 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
   Background:  setup
     Given an environment at "apiRoot"
     And the resource "/verified-caller/vwip/pre-announce"
-    And the header "Content-Type" is seVerified Caller Pre-announcet to "application/json"
+    And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request body is compliant with the RequestBody schema defined by "/components/schemas/CreatePreAnnouncementRequest"
 
   # Success scenarios
+
+  @Verified_Caller_Pre-announce_201.1_success_scenario_1_brand_display_strategy
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
   # Generic 400 errors
 
