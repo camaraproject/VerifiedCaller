@@ -6,29 +6,31 @@ info:
 
     # Introduction
 
-    A brand's owner (henceforth the "API customer") can use the Verified Caller API to demonstrate the authenticity of a call they place to a callee from one of their legitimate phone numbers within a specific duration. 
+    A brand's owner (henceforth the "API customer") can use the Verified Caller API to demonstrate the authenticity of a call they place to a callee from one of their legitimate phone numbers.
     A relationship between the API customer and the service provider has to be already established, so that the service provider is aware of the API customer's legitimate phone numbers and brand(s).
     This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API customer and the service provider.
     The API customer can choose to consume API directly, or via a third party (typically called a "service integrator") that acts on behalf of the API customer.
-    In the latter case, the API consumer/client is a different entity that legitimately acts on behalf of the API customer.
+    In the former case, the API customer and the API consumer/client are the same. In the latter case, the API consumer/client is a different entity that legitimately acts on behalf of the API customer.
 
-
-
-  
     Verified Caller API could be useful in scenarios such as:
     - Telesales
     - Customer Support
     - Outreach efforts of NGOs.
     - Calls placed by authorities or government institutions for official matters.
 
-    # Relevant terms and definitions
+    When the brand's owner decides to place a call, they consume (directly or via an integrator) the Verified Caller API to inform the service provider of their intent, whereby they populate the request parameters as follows:
+    * **callingParticipant**: Which one of the API customer's phone numbers will be used to originate the call. 
+    * **calledParticipant**: To which phone number the call will be placed.
+    * **strategy**: How the authenticity of the call shall be demonstrated to the callee. 
+      * *BRAND_DISPLAY* : A brand (a user-friendly text) is displayed to the callee on their device screen. This strategy is typically chosen when the Verified Caller API is used together with the Brand Registration API.
+      * *SMS* : A short message is sent to the callee to inform them about the legitimacy of the call.
+    * **timeToLive**: The period for which the brand owner's call intent remains valid. A call *not* placed within the *timeToLive* duration is not considered as verified by the service provider. In that case, the service provider may drop the call or continue without performing the action specified via the *strategy* parameter (If used, the Brand Registration API provides the API customer a means to indicate the preferred action). The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe the timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to verify exactly one call per API request. In other words, a 2nd, 3rd,.. etc. call between the same phone nubers *should* not be considered as verified even made within the *timeToLive* period.
+    * **registrationId** : A unique reference to the relationship between the API consumer and the service provider. The API consumer may provide this value to help the service provider to fetch information related to their pre-established relationship more effectively.
+    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to override any pre-arranged display name presented to the callee, e.g. one set using the Brand Registation API request.
+    * **callReason**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to present a *call reason* is to the callee in addition to the display name to provide additional context about the call. An operator, interconnect or device MAY not support this parameter.
 
-    * **callingParticipant** and **calledParticipant**: A pair of phone numbers representing the parties in a call.
-    * **registrationId** : A unique reference to the relationship between the API consumer and the service provider.
-    * **strategy**: Indicator of the requested method to be applied by the service provider to verify a call, as desired by the API consumer.
-    * **timeToLive**: The period for which the verification by the service provider remains valid. A call is not considered as verified if it is placed after expiry of verification. The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe a timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to expire the verification right away once the call is placed.
-    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, it overrides any pre-arranged display name presented to the callee, e.g. one set using the brand-registration API request.
-    * **callReason**: If strategy is 'BRAND_DISPLAY' and this parameter is provided, a call reason is presented to the callee in addition to the display name. An operator, interconnect or device MAY not support this parameter
+
+    # Relevant terms and definitions
 
     # API Functionality
     The API exposes the following endpoints/operations:
@@ -67,7 +69,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-camara-commonalities: 0.6
 externalDocs:
-  description: Product documentation at Camara
+  description: Product documentation at CAMARA
   url: https://github.com/camaraproject/VerifiedCaller
 servers:
   - url: '{apiRoot}/verified-caller/vwip'
