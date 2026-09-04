@@ -2,12 +2,19 @@ openapi: 3.0.3
 info:
   title: Verified Caller
   description: |
-    This API provides the ability to verify the authenticity of a call from a calling party to a specific called party.
+    This API provides the ability to verify the authenticity of a call from a specific calling party to a specific called party.
 
     # Introduction
 
-    Consumers of Verified Caller API can initiate the verification of the authenticity of a call from a calling party to a specific called party. A relationship between the API consumer and the service provider has to be already established for a calling party. This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API consumer and the service provider.
+    A brand's owner (henceforth the "API customer") can use the Verified Caller API to demonstrate the authenticity of a call they place to a callee from one of their legitimate phone numbers within a specific duration. 
+    A relationship between the API customer and the service provider has to be already established, so that the service provider is aware of the API customer's legitimate phone numbers and brand(s).
+    This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API customer and the service provider.
+    The API customer can choose to consume API directly, or via a third party (typically called a "service integrator") that acts on behalf of the API customer.
+    In the latter case, the API consumer/client is a different entity that legitimately acts on behalf of the API customer.
 
+
+
+  
     Verified Caller API could be useful in scenarios such as:
     - Telesales
     - Customer Support
