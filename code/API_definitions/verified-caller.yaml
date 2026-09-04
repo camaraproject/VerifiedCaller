@@ -2,13 +2,13 @@ openapi: 3.0.3
 info:
   title: Verified Caller
   description: |
-    This API provides the ability to verify the authenticity of a call from a specific calling party to a specific called party.
+    This API provides the ability to verify the authenticity of a call from a specific caller to a specific callee. Within the context of this API, *verification of authenticity* of a phone call is to demonstrate to the callee that the call indeed has been placed by the legitimate owner of a phone number.
 
     # Introduction
 
     A brand's owner (henceforth the "API customer") can use the Verified Caller API to demonstrate the authenticity of a call they place to a callee from one of their legitimate phone numbers.
     A relationship between the API customer and the service provider has to be already established, so that the service provider is aware of the API customer's legitimate phone numbers and brand(s).
-    This can be achieved by using the brand-registration API, or another mechanism agreed upon by the API customer and the service provider.
+    This can be achieved by using the Brand Registration API, or another mechanism agreed upon by the API customer and the service provider.
     The API customer can choose to consume API directly, or via a third party (typically called a "service integrator") that acts on behalf of the API customer.
     In the former case, the API customer and the API consumer/client are the same. In the latter case, the API consumer/client is a different entity that legitimately acts on behalf of the API customer.
 
@@ -18,21 +18,27 @@ info:
     - Outreach efforts of NGOs.
     - Calls placed by authorities or government institutions for official matters.
 
-    When the brand's owner decides to place a call, they consume (directly or via an integrator) the Verified Caller API to inform the service provider of their intent, whereby they populate the request parameters as follows:
-    * **callingParticipant**: Which one of the API customer's phone numbers will be used to originate the call. 
-    * **calledParticipant**: To which phone number the call will be placed.
-    * **strategy**: How the authenticity of the call shall be demonstrated to the callee. 
-      * *BRAND_DISPLAY* : A brand (a user-friendly text) is displayed to the callee on their device screen. This strategy is typically chosen when the Verified Caller API is used together with the Brand Registration API.
-      * *SMS* : A short message is sent to the callee to inform them about the legitimacy of the call.
-    * **timeToLive**: The period for which the brand owner's call intent remains valid. A call *not* placed within the *timeToLive* duration is not considered as verified by the service provider. In that case, the service provider may drop the call or continue without performing the action specified via the *strategy* parameter (If used, the Brand Registration API provides the API customer a means to indicate the preferred action). The service provider may choose to reject a request based on the requested timeToLive value, or apply a different value than requested by the API consumer. The service provider shall observe the timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to verify exactly one call per API request. In other words, a 2nd, 3rd,.. etc. call between the same phone nubers *should* not be considered as verified even made within the *timeToLive* period.
-    * **registrationId** : A unique reference to the relationship between the API consumer and the service provider. The API consumer may provide this value to help the service provider to fetch information related to their pre-established relationship more effectively.
-    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to override any pre-arranged display name presented to the callee, e.g. one set using the Brand Registation API request.
-    * **callReason**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to present a *call reason* is to the callee in addition to the display name to provide additional context about the call. An operator, interconnect or device MAY not support this parameter.
-
 
     # Relevant terms and definitions
+    * **Brand** : A user-friendly text to represent the identity of a caller to a callee.
+    * **API customer**: An entity that owns one or more phone numbers with associated brands. The API customer uses the API to demonstrate the authenticity of the calls it places. The API customer is not necessarily the entity that actually consumes the API.
+    * **API consumer/client**: An entity that programatically consumes the API on behalf of the API customer.
+    * **Service integrator**: A typically commercial entity that consumes the API on behalf of the API customer to relieve them of the technical implementations. A service integrator may serve several API customers for a specific API exposed by different service providers.
+    * **Service provider**: An entity that provides the telephony service together with the call verification capabilities. The service provider is also assumed to expose the Verified Caller API (i.e. act as API Provider).
 
     # API Functionality
+    When the brand's owner decides to place a call, they consume (directly or via an integrator) the Verified Caller API to inform the service provider of their intent. Within the context of this API, this action is called a *pre-announcement* for a call. The API request parameters are populated as follows:
+    * **callingParticipant**: Which one of the API customer's phone numbers will be used to originate the call.
+    * **calledParticipant**: To which phone number the call will be placed.
+    * **strategy**: How the authenticity of the call shall be demonstrated to the callee.
+      * *BRAND_DISPLAY* : A brand (a user-friendly text) is displayed to the callee on their device screen. This strategy is typically chosen when the Verified Caller API is used together with the Brand Registration API.
+      * *SMS* : A short message is sent to the callee to inform them about the legitimacy of the call.
+    * **timeToLive**: The period for which the brand owner's call intent remains valid. A call *not* placed within the *timeToLive* duration shall not be considered as verified by the service provider. In that case, the service provider may continue the call without performing the action specified via the *strategy* parameter, or drop the call (If used, the Brand Registration API provides the API customer a means to indicate the preferred behavior). The service provider may choose to reject an API request based on the timeToLive value, or apply a different value than requested. The service provider shall observe the timeToLive value for all accepted requests. In order to reduce the risk of a spoofed call, the service provider is advised to verify exactly one phone call per API request. In other words, a 2nd, 3rd,.. etc. call between the same phone nubers *should* not be considered as verified even if made within the *timeToLive* period.
+    * **registrationId** : A unique reference to the relationship between the API customer and the service provider. If provided, this value may help the service provider to fetch information related to their pre-established relationship more effectively.
+    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to override any pre-arranged display name presented to the callee, e.g. one set using the Brand Registation API request.
+    * **callReason**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to present a *call reason* is to the callee in addition to the display name to provide additional context about the call. It is assumed the *call reason* is displayed in another section of the device's screen to accompany the *brand*. An operator, interconnect or device MAY not support this parameter.
+
+
     The API exposes the following endpoints/operations:
     - `/pre-announce` :
       - **POST** operation creates a new pre-announcement for a call
@@ -79,14 +85,14 @@ servers:
         description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
   - name: Create Preannouncement
-    description: Create a call pre-announcement for a Calling and a Called Party
+    description: Create a pre-announcement for a call between two phone numbers that is intended to take place within a specific period
 paths:
   /pre-announce:
     post:
       tags:
         - Create Preannouncement
-      summary: Create a call pre-announcement in the service platform
-      description: Create a call pre-announcement for a Calling and a Called Party that will remain valid for a specified duration.
+      summary: Create a call pre-announcement in the service provider
+      description: Create a pre-announcement for call between two phone numbers that will remain valid for a specified duration.
       operationId: createPreAnnouncement
       parameters:
         - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
@@ -98,8 +104,8 @@ paths:
               $ref: '#/components/schemas/CreatePreAnnouncementRequest'
             examples:
               USING_SMS:
-                summary: A short message is sent to the callee to verify authenticity of the caller
-                description: A short message is sent to the callee to verify authenticity of the caller
+                summary: A short message is sent to the callee to demonstrate the authenticity of the caller
+                description: A short message is sent to the callee to demonstrate the authenticity of the caller
                 value:
                   callingParticipant: "+123456789"
                   calledParticipant: "+123456792"
@@ -107,8 +113,8 @@ paths:
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
               USING_REGISTERED_BRAND_DISPLAY:
-                summary: The pre-registered displayName is displayed
-                description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller.
+                summary: A pre-registered brand is displayed.
+                description: The brand set in the registration phase is displayed to the callee to demonstrate the authenticity of the caller.
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
@@ -116,8 +122,8 @@ paths:
                   timeToLive: 45
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
               USING_DYNAMIC_BRAND_DISPLAY:
-                summary: A call specific displayName is displayed
-                description: A displayName set for the specific call is displayed to the callee to provide a more fine-tuned context.
+                summary: A call specific brand is displayed
+                description: A brand set for the specific call is displayed to the callee to provide a more fine-tuned context.
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
@@ -126,8 +132,8 @@ paths:
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
                   dynamicDisplayName: "Company X Re: Your Complaint"
               USING_REGISTERED_BRAND_DISPLAY_WITH_CALL_REASON:
-                summary: The pre-registered displayName and a call specific reason is displayed
-                description: The displayName set in the registration phase is displayed to the callee to verify authenticity of the caller, while providing more context to the callee with a call specific reason.
+                summary: The pre-registered brand and a call specific reason is displayed
+                description: The brand set in the registration phase is displayed to the callee to demonstrate the authenticity of the caller, while providing more context to the callee with a call specific reason.
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
@@ -136,10 +142,10 @@ paths:
                   registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
                   callReason: "Re: Your loan application"
               USING_DYNAMIC_BRAND_DISPLAY_WITH_CALL_REASON:
-                summary: A displayName and call reason both set for the specific call are displayed.
+                summary: A brand and a call reason, both set for the specific call are displayed.
                 description: |
-                              A displayName set for the specific call is displayed to the callee to verify authenticity of the caller, while providing even more context to the callee with a call specific reason.
-                              This usage leverages both display name and call reason to provide the most fine-tuned information to the callee.
+                              A brand set for the specific call is displayed to the callee to demonstrate the authenticity of the caller, while providing even more context to the callee with a call specific reason.
+                              This usage leverages both brand and call reason to provide the most fine-tuned information to the callee.
                 value:
                   callingParticipant: "+123456791"
                   calledParticipant: "+123456792"
@@ -196,32 +202,32 @@ components:
       format: int32
       minimum: 1
       maximum: 86400
-      description: This parameter specifies for how long the pre-announcement is valid, in units of seconds. Calls processed after the call pre-announcement expiry shall be treated as not announced. If not specified, the service provider applies a default value. The service provider may enforce an upper bound of their choosing while validating the request.
+      description: This parameter specifies for how long the pre-announcement shall be considered valid by the service provider, in units of seconds. If not specified, the service provider applies a default value. The service provider may enforce a lower and/or upper bound of their choosing while validating the API request.
       example: 60
 
     RegistrationId:
       type: string
       format: uuid
       maxLength: 256
-      description: Unique identifier of a relatonship created between the API consumer and the service platform.
+      description: Unique identifier of a relatonship created between the API customer and the service provider.
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
     DynamicDisplayName:
       type: string
       maxLength: 32
-      description: Brand information that will be displayed to the called party if strategy is 'BRAND_DISPLAY'. If provided, this value overrides a pre-configured display name, e.g. the displayName parameter provided in the brand-registration API request.
+      description: If provided, this value overrides a pre-configured brand and provides call specific brand.
       example: "Company X Call Center"
 
     CallReason:
       type: string
       maxLength: 32
-      description: Call reason that will be displayed to the called party in addition to the display name if strategy is 'BRAND_DISPLAY'.
+      description: A call specific reason that will be displayed to the callee *in addition* to the brand.
       example: "Re: Your loan application"
 
     Strategy:
       type: string
       maxLength: 32
-      description: The method to be applied to verify the authenticity of the calling party. Absence of this parameter lets the service provider choose a default strategy which the API consumer must beware.
+      description: The method to be applied to demonstrate the authenticity of the caller. Absence of this parameter lets the service provider choose a default strategy which the API customer must beware.
       enum:
         - "SMS"
         - "BRAND_DISPLAY"
@@ -253,14 +259,14 @@ components:
       format: date-time
       maxLength: 64
       description: |
-       Date when the validity of call verification will expire. The call must be placed up to this date for the service provider to verfiy it. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
+       Timestamp when the pre-announcement for a call will expire. The call must be placed up to this timestamp for the service provider to consider it as authentic. The service provider may inlcude it especially if the API consumer did not specify a timeToLive in the request, or the service provider chose to apply a different value than requested.
        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
       example: "2023-07-03T12:27:08.312Z"
 
     AnnouncementInfo:
       type: object
-      description: "Object to represent the creation of a single pre-announcement in the service platform"
+      description: Object to represent the creation of a single pre-announcement in the service provider
       properties:
         preAnnouncementId:
           $ref: '#/components/schemas/PreAnnouncementId'
@@ -280,7 +286,7 @@ components:
           examples:
             SUCCESSFUL_CREATION:
               summary: Success response with optional parameters
-              description: Successful pre-announcement of a call. The service platform includes optional parameter(s) to inform the client.
+              description: Successful pre-announcement of a call. The service provider may includes optional parameter(s) to inform the client.
               value:
                 preAnnouncementId: "be5105dc-9b0e-437b-a03e-6e6ffb5e50c0"
                 expiresAt: "2023-07-03T12:27:08.312Z"
