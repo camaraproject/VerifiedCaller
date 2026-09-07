@@ -215,7 +215,7 @@ components:
     DynamicDisplayName:
       type: string
       maxLength: 32
-      description: If provided, this value overrides a pre-configured brand and provides call specific brand.
+      description: If provided, this value overrides the pre-registered brand with this call specific brand.
       example: "Company X Call Center"
 
     CallReason:
