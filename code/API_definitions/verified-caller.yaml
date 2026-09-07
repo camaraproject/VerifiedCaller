@@ -19,13 +19,13 @@ info:
 
     # Relevant terms and definitions
     * **Brand owner** :  A company owning the brand.
-    * **Brand** : A user-friendly text used to present the identity of a calling party (the brand owner) to a called party, i.e. displaying the brand name instead of the phone number. 
+    * **Brand** : A user-friendly text used to present the identity of a calling party (the brand owner) to a called party, i.e. displaying the brand name instead of the phone number.
     * **Service provider**: An entity that provides the telephony service together with the call verification capabilities. The service provider is also assumed to expose the Verified Caller API (i.e. act as API Provider).
 
     # API Functionality
     When a brand owner decides to place a call, they need to inform the service provider of their intent. This action is called a *pre-announcement* for a call. The /pre-announce end-point of the Verified Caller API is used to transmit the brand owner's intent to the service provider.
-    
-The API request parameters are populated as follows:
+
+    The API request parameters are populated as follows:
     * **callingParticipant**: the brand owner's registered phone number to be used to make the call.
     * **calledParticipant**: To which phone number the call will be placed.
     * **strategy**: How the authenticity of the call shall be demonstrated to the calledParticipant.
