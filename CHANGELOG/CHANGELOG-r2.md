@@ -114,8 +114,6 @@ Changes documented below are compared to version 0.1.0.
 ### Fixed
 
 * Align GET /registrations pagination with Commonalities by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/113
-* Fix linter warnings before release by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/117
-* Resolve linter hints in api specs by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/130
 
 ### Removed
 
