@@ -220,7 +220,7 @@ components:
     CallReason:
       type: string
       maxLength: 32
-      description: A call specific reason that will be displayed to the callee *in addition* to the brand.
+      description: A call specific reason that will be displayed to the calledParticipant *in addition* to the brand.
       example: "Re: Your loan application"
 
     Strategy:
