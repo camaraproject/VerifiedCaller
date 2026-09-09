@@ -23,7 +23,7 @@ info:
     * **displayName**: A human-readable string that is to be displayed to the callee on their device screen instead of the calling number.
     * **displayAsset**: A visual asset (e.g. a logo, image or video) that is to be displayed to the callee on their device screen instead of the calling number. Support of the visual asset depends on the service provider and callee's device. If the service provider does not support the parameter, it SHALL clearly document the limitation and SHOULD silently ignore the parameter if received.
     * **customerId** : A string to represent the owner of the displayName, e.g. a commercial brand or an institution.
-    * **verifyCallerAction**: An instruction applied during actual call setup. Indicates the action to be taken by the service provider if the authenticity of the caller cannot be established using VerifiedCaller API capabilities.
+    * **verifyCallerAction**: Optional parameter to indicate if the service provider shall verify a call before branding. If the parameter is not provided, every call from a registered phone number is branded. If the parameter is provided, the brand owner must call the Verified Caller API /pre-announce endpoint before each call they intend to make. In this case the service provider shall only brand verified calls. Parameter value indicates the action to be taken by the service provider if the call is not verified. In case of 'DO_NOT_BRAND', service provider shall continue the call without branding. In case of 'BLOCK_UNVERIFIED', service provider shall drop the call.
     * **quota**: Maximum number of branded calls allowed for the registration.
     * **quotaThreshold**: Number of branded calls at which customer is notified that a quota threshold has been reached.
     * **callPurpose**: Calls' Purpose classification of the registration.
@@ -75,7 +75,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   x-camara-commonalities: 0.7.0
 externalDocs:
-  description: Product documentation at Camara
+  description: Product documentation at CAMARA
   url: https://github.com/camaraproject/VerifiedCaller
 servers:
   - url: '{apiRoot}/brand-registration/vwip'
