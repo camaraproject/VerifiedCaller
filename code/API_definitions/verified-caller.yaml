@@ -35,7 +35,7 @@ info:
       * In order to reduce the risk of a spoofed call, the service provider is advised to verify exactly one phone call per Verified Caller API request. In other words, a 2nd, 3rd,.. etc. call for the same phone numbers of a given pre-announcement *should* not be verified even if made within the *timeToLive* period.
 
     * **registrationId** : A unique reference identifying the brand information registered by a brand owner with a service provider. If provided, this Id is used by the service provider to fetch the information related to a brand owner.
-    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to override any pre-arranged display name presented to the callingParticipant, e.g. the one set using the Brand Registration API.
+    * **dynamicDisplayName**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to override any pre-arranged display name presented to the calledParticipant, e.g. the one set using the Brand Registration API.
     * **callReason**: If strategy is 'BRAND_DISPLAY', this parameter may be provided to present a *call reason* to the callee in addition to the display name to provide additional context about the call. It is assumed the *call reason* is displayed in another section of the device's screen to accompany the *brand*. An operator, interconnect or device MAY not support this parameter.
 
 
