@@ -2,7 +2,7 @@ repository:
   repository_name: VerifiedCaller
   release_tag: r2.2
   release_type: pre-release-rc
-  release_date: null
+  release_date: '2026-09-10T13:07:50Z'
   src_commit_sha: e81b70fcfcb8e289daffb9e1667eac404b9aa097
 apis:
 - api_name: brand-registration
