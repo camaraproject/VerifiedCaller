@@ -111,7 +111,7 @@ Changes documented below are compared to version 0.1.0.
 * Enhance brand registration API with quota fields by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/114
 * Add callPurpose field to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/115
 * Add createdAt and updatedAt fields to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/129
-* Improve test documentation by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/142
+* Improve descriptions in API specification by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/143
 
 ### Changed
 
