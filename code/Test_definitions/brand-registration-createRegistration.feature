@@ -1,4 +1,4 @@
-Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
+Feature: CAMARA Brand Registration API, v0.2.0-rc.1 - Operation: createRegistration
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in /code/API_definitions/brand-registration.yml
@@ -15,7 +15,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
-    And the resource "/brand-registration/vwip/registrations"
+    And the resource "/brand-registration/v0.2rc1/registrations"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
