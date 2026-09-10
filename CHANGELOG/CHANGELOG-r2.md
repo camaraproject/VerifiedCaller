@@ -100,7 +100,18 @@ Changes documented below are compared to version 0.1.0.
 
 ### Added
 
-* N/A
+* Create a resource for an API consumer to retrieve their registration information by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/78
+* Support for visual assets (e.g. logo, image, video) to display in the callee's device. by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/81
+* Add Status to Registration Response by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/83
+* Add call-branded event notifications to brand-registration API by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/86
+* Enhance brand-registration.yaml with new event schemas by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/93
+* Add optional filter query parameters to GET /registrations (#87) by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/94
+* Add maxLength constraint to CustomerId schema (#97) by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/99
+* Update brand-registration.yaml: new property "expiredAt", new status enum "expired", new filter "expiredAt" in GET operation by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/103
+* Enhance brand registration API with quota fields by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/114
+* Add callPurpose field to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/115
+* Add createdAt and updatedAt fields to brand registration by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/129
+* Improve test documentation by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/142
 
 ### Changed
 
@@ -108,7 +119,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Fixed
 
-* N/A
+* Align GET /registrations pagination with Commonalities by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/113
 
 ### Removed
 
@@ -130,8 +141,9 @@ Changes documented below are compared to version 0.1.0.
 * N/A
 
 ### Added
-
-* N/A
+* Introduce callReason parameter by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/104
+* Improve test documentation by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/142
+* Improve descriptions in API specification by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/143
 
 ### Changed
 
