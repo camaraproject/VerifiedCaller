@@ -20,7 +20,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
 
   # Success scenarios
 
-  @Verified_Caller_Pre-announce_201.1_success_scenario_1_brand_display_strategy
+  @Verified_Caller_Pre-announce_201.1_success_scenario_with_brand_display_strategy
   Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
@@ -34,6 +34,101 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
+
+  @Verified_Caller_Pre-announce_201.2_success_scenario_with_brand_sms_strategy
+  Scenario: Create a pre-announcement using sms strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "SMS"
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
+
+  @Verified_Caller_Pre-announce_201.3_success_scenario_with_brand_display_strategy_and_dynamic_display_name
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And request property "$.dynamicDisplayName" is present and set to a syntactically valid string
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
+
+  @Verified_Caller_Pre-announce_201.4_success_scenario_with_brand_display_strategy_and_call_reason
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And request property "$.callReason" is present and set to a syntactically valid string
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
+
+  @Verified_Caller_Pre-announce_201.5_success_scenario_with_brand_display_strategy_and_dynamic_display_name_and_call_reason
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And request property "$.dynamicDisplayName" is present and set to a syntactically valid string
+    And request property "$.callReason" is present and set to a syntactically valid string
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
+
+  @Verified_Caller_Pre-announce_201.6_success_scenario_with_brand_display_strategy_and_user_defined_time_to_live
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And request property "$.timeToLive" is present and set to a syntactically valid value
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+
+  @Verified_Caller_Pre-announce_201.7_success_scenario_with_brand_display_strategy_and_user_defined_time_to_live_overrridden_by_service_provider
+  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+    Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And request property "$.timeToLive" is present and set to a syntactically valid value
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 201
+    And the response body complies with the schema at "#/components/schemas/AnnouncementInfo"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2, corresponding to a different timeToLive value from the one in user's request.
 
   # Generic 400 errors
 
@@ -73,6 +168,22 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
   @Verified_Caller_Pre-announce_400.4_calledParticipant_empty
   Scenario: The mandatory calledParticipant value is non existent
     Given the request body property "$.calledParticipant" is non existent
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @Verified_Caller_Pre-announce_400.5_timeToLive_rejected_by_service_provider
+  Scenario: The mandatory calledParticipant value is non existent
+    Given the request body property "$.timeToLive" is present and set to a syntactically valid value that is not acceptable at service provider's discretion
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And one of the scopes associated with the access token is verified-caller:create
     When the HTTPS "POST" request is sent
     Then the response status code is 400
     And the response header "x-correlator" has same value as the request header "x-correlator"
