@@ -35,7 +35,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response header "Content-Type" is "application/json"
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
-  @Verified_Caller_Pre-announce_201.2_success_scenario_with_brand_sms_strategy
+  @Verified_Caller_Pre-announce_201.2_success_scenario_with_sms_strategy
   Scenario: Create a pre-announcement using sms strategy for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
@@ -51,7 +51,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
   @Verified_Caller_Pre-announce_201.3_success_scenario_with_brand_display_strategy_and_dynamic_display_name
-  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+  Scenario: Create a pre-announcement using brand_display strategy and a dynamic display name for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
@@ -67,7 +67,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
   @Verified_Caller_Pre-announce_201.4_success_scenario_with_brand_display_strategy_and_call_reason
-  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+  Scenario: Create a pre-announcement using brand_display strategy and a call reason for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
@@ -83,7 +83,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
   @Verified_Caller_Pre-announce_201.5_success_scenario_with_brand_display_strategy_and_dynamic_display_name_and_call_reason
-  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+  Scenario: Create a pre-announcement using brand_display strategy and both a dynamic display name and a call reason for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
@@ -100,7 +100,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And response property "$.expiresAt" is present and indicates for how long the service provider authorizes brand name delivery if phoneNumber1 places a call to phoneNumber2.
 
   @Verified_Caller_Pre-announce_201.6_success_scenario_with_brand_display_strategy_and_user_defined_time_to_live
-  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+  Scenario: Create a pre-announcement using brand_display strategy and a user defined timeToLive value for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
@@ -115,7 +115,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response header "Content-Type" is "application/json"
 
   @Verified_Caller_Pre-announce_201.7_success_scenario_with_brand_display_strategy_and_user_defined_time_to_live_overrridden_by_service_provider
-  Scenario: Create a pre-announcement using brand_display strategy for a brand previously registered with id registrationId1
+  Scenario: Create a pre-announcement using brand_display strategy and a user defined timeToLive value overridden by the service provider for a brand previously registered with id registrationId1
     Given the registration with id registrationId1 is present in service provider's system and can be verified against the brand's owner
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
@@ -177,7 +177,7 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response property "$.message" contains a user friendly text
 
   @Verified_Caller_Pre-announce_400.5_timeToLive_rejected_by_service_provider
-  Scenario: The mandatory calledParticipant value is non existent
+  Scenario: The timeToLive value specified by the user is not accepted by the service provider
     Given the request body property "$.timeToLive" is present and set to a syntactically valid value that is not acceptable at service provider's discretion
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
