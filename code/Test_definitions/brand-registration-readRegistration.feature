@@ -23,8 +23,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Success scenarios
 
-  @BrandRegistration__GET_200.01_success_scenario_1_all_parameters_read
-  Scenario: Read an existing brand registration
+  @BrandRegistration__GET_200.01_success_scenario_all_parameters_read
+  Scenario: Read an existing brand registration that has all parameters configured
     Given the brand's owner can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:read
@@ -40,6 +40,16 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And response property "$.customerId" is present and set to customerId1 value as previously set by the API consumer
     And response property "$.verifyCallerAction" is present and set to verifyCallerAction1 value as previously set by the API consumer
     And response property "$.registrationId" is equal to the registrationId1 in the request URI
+    And response property "$.status" is present and reflects the current lifecycle status of the registration
+    And response property "$.createdAt" is present and reflects the time the registration has been created by the API consumer
+    And response property "$.updatedAt" is present and reflects the most recent time the registration has been updated by the API consumer
+    And response property "$.expiresAt" is present and set to the expiresAt1 value as previously set by the API consumer
+    And response property "$.displayAsset" is present and set to the displayAsset1 value as previously set by the API consumer
+    And response property "$.campaignName" is present and and set to the campaignName1 value as previously set by the API consumer
+    And response property "$.quota" is present and reflects the quota value previously established between the API consumer and the service provider
+    And response property "$.quotaThreshold" is present and reflects the quotaThreshold value previously established between the API consumer and the service provider
+    And response property "$.callPurpose" is present and set to the callPurpose1 value as previously set by the API consumer
+    And response property "$.sink" is present and set to the sink1 value as previously set by the API consumer
 
   # Generic 400 errors
 
@@ -100,4 +110,19 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
-    And the response property "$.message" is user friendly
+    And the response property "$.message" contains a user friendly text
+
+  # Generic 404 errors
+
+  @BrandRegistration__GET_404.1_registration_not_found
+  Scenario: Registration not found
+    Given the brand's owner cannot be associated with a registration "registrationId2" in the service provider
+    And URI parameter "registrationId" is set to registrationId2
+    And one of the scopes associated with the access token is brand-registration:read
+    When the HTTPS "GET" request is sent
+    Then the response status code is 404
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 404
+    And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
