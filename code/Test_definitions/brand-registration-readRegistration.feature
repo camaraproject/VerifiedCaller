@@ -7,12 +7,6 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 #
 # Testing assets:
 # * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
-# * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
-# * An E.164 telephony number "phoneNumber1" that is owned by the customer "customerId1"
-# * An optional E.164 telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
-# * A display name "displayName1" that is to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
-# * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
-# * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -24,7 +18,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
   # Success scenarios
 
   @BrandRegistration__GET_200.01_success_scenario_all_parameters_read
-  Scenario: Read an existing brand registration that has all parameters configured
+  Scenario: Read an existing brand registration where all possible parameters are returned in the API response
     Given the brand's owner can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:read
