@@ -14,7 +14,6 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
 
-
   # Success scenarios
 
   @BrandRegistration__GET_200.01_success_scenario_all_registrations_read
@@ -104,7 +103,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     When the HTTPS "GET" request is sent
     Then the response status code is 200
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
-    And the response header "x-correlator" has same value as the request header "x-correlator"	
+    And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
 	And the response property "$.registrations" is present and contains no elements
 	And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
@@ -289,4 +288,3 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
-
