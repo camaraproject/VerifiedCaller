@@ -27,8 +27,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 7 elements that reflect data of registrationId_1 through registrationId_7 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 1
+    And the response property "$.registrations" is present and contains 7 elements that reflect data of registrationId_1 through registrationId_7 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 1
 
   @BrandRegistration__GET_200.02_success_scenario_some_registrations_read_with_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is not paginated
@@ -43,8 +43,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 3 elements that reflect data of registrationId_1 and registrationId_3 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 3 and "$.pagination.totalPages" = 1
+    And the response property "$.registrations" is present and contains 3 elements that reflect data of registrationId_1 and registrationId_3 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 3 and "$.pagination.totalPages" = 1
 
   @BrandRegistration__GET_200.03_success_scenario_some_registrations_read_with_multiple_filters_combined
   Scenario: Read existing registrations of a brand owner where multiple filters are defined and response is not paginated
@@ -52,7 +52,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And only registrations "registrationId_1" through "registrationId_3" have "$.terminatingCountryCode" property set to terminatingCountryCode1
     And only registrations "registrationId_2" through "registrationId_4" have "$.callPurpose" property set to callPurpose1
     And Request URI parameter terminatingCountryCode is present and set to value terminatingCountryCode1
-	And Request URI parameter callPurpose is present and set to value callPurpose1
+    And Request URI parameter callPurpose is present and set to value callPurpose1
     And header parameter "page" is set to 1
     And header parameter "perpage" is set to perpage1 where perpage1 >= 7
     And one of the scopes associated with the access token is brand-registration:read
@@ -61,8 +61,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_2 and registrationId_3 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 2 and "$.pagination.totalPages" = 1
+    And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_2 and registrationId_3 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = perpage1 and "$.pagination.totalCount" = 2 and "$.pagination.totalPages" = 1
 
   @BrandRegistration__GET_200.04_success_scenario_no_registrations_found
   Scenario: Read existing registrations of a brand owner where no filter is defined and no results are found
@@ -75,8 +75,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains no elements
-	And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
+    And the response property "$.registrations" is present and contains no elements
+    And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
 
   @BrandRegistration__GET_200.05_success_scenario_no_registrations_found_page_out_of_bounds
   Scenario: Read existing registrations of a brand owner where no filter is defined and no results are found as requested page is out of bounds
@@ -89,8 +89,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains no elements
-	And the response property "$.pagination" is present where "$.pagination.page" = 5 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
+    And the response property "$.registrations" is present and contains no elements
+    And the response property "$.pagination" is present where "$.pagination.page" = 5 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
 
   @BrandRegistration__GET_200.06_success_scenario_no_registrations_found_with_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and no matching results found
@@ -105,8 +105,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains no elements
-	And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
+    And the response property "$.registrations" is present and contains no elements
+    And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
 
   @BrandRegistration__GET_200.07_success_scenario_no_registrations_found_with_combined_filter
   Scenario: Read existing registrations of a brand owner where multiple filters are defined and no matching results found
@@ -123,8 +123,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response headwith "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains no elements
-	And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
+    And the response property "$.registrations" is present and contains no elements
+    And the response property "$.pagination" is present where "$.pagination.page" = page1 and "$.pagination.perPage" = perPage1 and "$.pagination.totalCount" = 0 and "$.pagination.totalPages" = 0
 
   @BrandRegistration__GET_206.01_success_scenario_first_page_of_results_read
   Scenario: Read existing registrations of a brand owner where no filter is defined and response is paginated and first page is returned
@@ -137,8 +137,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_1 and registrationId_2 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_1 and registrationId_2 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
@@ -153,8 +153,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_3 and registrationId_4 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 2 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_3 and registrationId_4 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 2 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
@@ -169,8 +169,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 1 element that reflects data of registrationId_7 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 4 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 1 element that reflects data of registrationId_7 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 4 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
@@ -178,7 +178,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and first page is returned
     Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
-	And Request URI parameter customerId is present and set to value customerId1
+    And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 1
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -187,8 +187,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_1 and registrationId_2 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_1 and registrationId_2 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 1 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
@@ -196,7 +196,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and an arbitrary page is returned
     Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
-	And Request URI parameter customerId is present and set to value customerId1
+    And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 2
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -205,8 +205,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_3 and registrationId_4 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 2 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 2 elements that reflect data of registrationId_3 and registrationId_4 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 2 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
@@ -214,7 +214,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and last page is returned
     Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
-	And Request URI parameter customerId is present and set to value customerId1
+    And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 4
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -223,8 +223,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
     And the response body complies with the schema at "/components/schemas/RegistrationRecords"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-	And the response property "$.registrations" is present and contains 1 element that reflects data of registrationId_7 as previously set by the API consumer
-	And the response property "$.pagination" is present where "$.pagination.page" = 4 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
+    And the response property "$.registrations" is present and contains 1 element that reflects data of registrationId_7 as previously set by the API consumer
+    And the response property "$.pagination" is present where "$.pagination.page" = 4 and "$.pagination.perPage" = 2 and "$.pagination.totalCount" = 7 and "$.pagination.totalPages" = 4
     And response header "X-Total-Count" has the same value as the response property "$.pagination.totalCount"
     And response header "X-Total-Pages" has the same value as the response property "$.pagination.totalPages"
 
