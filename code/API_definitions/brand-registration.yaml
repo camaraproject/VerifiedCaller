@@ -298,11 +298,11 @@ paths:
         - $ref: '#/components/parameters/CallPurposeFilter'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessfulRecords'
+          $ref: '#/components/responses/SuccessfulRecords200'
         '204':
-          $ref: '#/components/responses/204NoContent'
+          $ref: '#/components/responses/SuccessfulNoContent204'
         '206':
-          $ref: '#/components/responses/SuccessfulPartialRecords'
+          $ref: '#/components/responses/SuccessfulPartialRecords206'
         '400':
           $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
@@ -376,7 +376,7 @@ paths:
             maxLength: 256
       responses:
         '204':
-          $ref: '#/components/responses/204NoContent'
+          $ref: '#/components/responses/SuccessfulNoContent204'
         '400':
           $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
@@ -980,7 +980,7 @@ components:
                 quota: 100000
                 quotaThreshold: 95000
                 callPurpose: "Survey"
-    SuccessfulRecords:
+    SuccessfulRecords200:
       description: Success response with one or more brand registration records
       headers:
         x-correlator:
@@ -1024,12 +1024,12 @@ components:
                   perPage: 20
                   totalCount: 2
                   totalPages: 1
-    204NoContent:
+    SuccessfulNoContent204:
       description: Successful response with no content
       headers:
         x-correlator:
           $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    SuccessfulPartialRecords:
+    SuccessfulPartialRecords206:
       description: |
         Success response with one or more brand registration records.
         Used if the request expects a paginated response.
