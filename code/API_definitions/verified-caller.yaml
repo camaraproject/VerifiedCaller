@@ -166,7 +166,7 @@ paths:
         '403':
           $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/Create404'
+          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
@@ -174,9 +174,9 @@ paths:
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '#/components/responses/GENERIC_500_INTERNAL'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '#/components/responses/GENERIC_503_UNAVAILABLE'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -296,7 +296,7 @@ components:
       headers:
         x-correlator:
           $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    Create404:
+    NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -330,7 +330,7 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: "Call Participant {{number}} is not known to the service provider"
-    GENERIC_500_INTERNAL:
+    Internal500:
       description: Internal Server Error
       headers:
         x-correlator:
@@ -351,7 +351,7 @@ components:
           examples:
             GENERIC_500_INTERNAL:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
-    GENERIC_503_UNAVAILABLE:
+    Unavailable503:
       description: Service Unavailable
       headers:
         x-correlator:
