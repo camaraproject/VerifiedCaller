@@ -44,6 +44,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And response property "$.quotaThreshold" is present and reflects the quotaThreshold value previously established between the API consumer and the service provider
     And response property "$.callPurpose" is present and set to the callPurpose1 value as previously set by the API consumer
     And response property "$.sink" is present and set to the sink1 value as previously set by the API consumer
+    And response property "$.sinkCredential" is excluded from the response even if previously set by the API consumer
 
   # Generic 400 errors
 
