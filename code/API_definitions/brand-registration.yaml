@@ -236,7 +236,7 @@ paths:
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
@@ -456,7 +456,7 @@ paths:
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
@@ -1153,7 +1153,7 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
-    CreateOrUpdateRegistrationUnprocessableEntity422:
+    ServiceNotApplicable422:
       description: Unprocessable Content
       headers:
         x-correlator:
