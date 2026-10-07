@@ -177,8 +177,40 @@ Feature: CAMARA Verified Caller API, vwip - Operation: createPreAnnouncement
     And the response property "$.message" contains a user friendly text
 
   @Verified_Caller_Pre-announce_400.5_timeToLive_rejected_by_service_provider
-  Scenario: The timeToLive value specified by the user is not accepted by the service provider
+  Scenario: The timeToLive value specified in the API request is not accepted by the service provider
     Given the request body property "$.timeToLive" is present and set to a syntactically valid value that is not acceptable at service provider's discretion
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @Verified_Caller_Pre-announce_400.6_dynamicDisplayName_rejected_by_service_provider
+  Scenario: The service provider applies further validations to the dynamicDisplayName value specified in the API request, and the value includes profanity
+    Given the request body property "$.dynamicDisplayName" is present and is syntactically valid but contains profanity
+    And request property "$.callingParticipant" is set to phoneNumber1
+    And request property "$.calledParticipant" is set to phoneNumber2
+    And request property "$.registrationId" is present and set to registrationId1
+    And request property "$.strategy" is present and set to literal string value "BRAND_DISPLAY"
+    And one of the scopes associated with the access token is verified-caller:create
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @Verified_Caller_Pre-announce_400.7_callReason_rejected_by_service_provider
+  Scenario: The service provider applies further validations to the callReason value specified in the API request, and the value includes profanity
+    Given the request body property "$.callReason" is present and is syntactically valid but contains profanity
     And request property "$.callingParticipant" is set to phoneNumber1
     And request property "$.calledParticipant" is set to phoneNumber2
     And request property "$.registrationId" is present and set to registrationId1

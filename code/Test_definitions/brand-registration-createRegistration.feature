@@ -7,11 +7,17 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 #
 # Testing assets:
 # * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
-# * An E.164 telephony number "phoneNumber1" that is owned by the customer "customerId1"
-# * An optional E.164 telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
-# * A display name "displayName1" that is to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
-# * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
+# * A telephony number "phoneNumber1" that is owned by the customer "customerId1"
+# * An optional telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
+# * A display name "displayName1" that is a string to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
+# * An country code "terminatingCountryCode1" per ITU-T E.164 Recommendation that identifies the target country of potential callees where the display name is to be shown.
 # * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
+# * An optional expiresAt "expiresAt1" that indicates when the registration shall expire.
+# * An optional displayAsset "displayAsset1" that is the URL of a visual to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
+# * An optional campaignName "campaignName1" that is typically used for logically grouping & billing the registration operations.
+# * An optional callPurpose "callPurpose1" that is typically used for logically grouping & billing the registration operations.
+# * An optional sink "sink1" that is an HTTPS endpoint url to send event notifications pertaining to the registration.
+# * An optional sinkCredential "sinkCredential1"  that is used to authenticate to the sink endpoint.
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -23,7 +29,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   # Success scenarios
 
-  @BrandRegistration__POST_201.01_success_scenario_1_all_parameters_provided
+  @BrandRegistration__POST_201.01_success_scenario_all_parameters_provided
   Scenario: Create a brand registration for customer1
     Given the brand's owner can be verified as customer1
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -32,14 +38,24 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.terminatingCountryCode" is set to terminatingCountryCode1
     And request property "$.customerId" is present and set to customerId1
     And request property "$.verifyCallerAction" is present and set to verifyCallerAction1
+    And request property "$.expiresAt" is present and set to expiresAt1
+    And request property "$.displayAsset" is present and set to displayAsset1
+    And request property "$.campaignName" is present and set to campaignName1
+    And request property "$.callPurpose" is present and set to callPurpose1
+    And request property "$.sink" is present and set to sink1
+    And request property "$.sinkCredential" is present and set to sinkCredential1
     And one of the scopes associated with the access token is brand-registration:create
     When the HTTPS "POST" request is sent
     Then the response status code is 201
     And the response body complies with the schema at "/components/schemas/RegistrationRecord"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And response properties mirror request properties
-    And response property "$.registrationId" is set to a UUID created by the service provider.
+    And response properties mirror request properties except "$.sinkCredential", which is excluded from the response
+    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.createdAt" is set to the time the record is created
+    And response property "$.status" is set to status of the registration in the service provider
+    And response property "$.quota" is set to the maximum value of calls that can be branded based on this registration
+    And response property "$.quotaThreshold" is set to the number of branded calls when the customer is notified of a possible quota expiry in near future
 
   # Generic 400 errors
 
@@ -54,7 +70,68 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__POST_400.2_no_request_body
+  @BrandRegistration__POST_400.2_expiresAt_not_in_the_future
+  Scenario: The expiresAt value specified in the API request is not in the future
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.expiresAt" is present and syntactically valid but not set to a value in the future
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @BrandRegistration__POST_400.3_improper_use_of_displayName
+  Scenario: The service provider applies further validations to the displayName value specified in the API request, and the value includes profanity
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.displayName" is syntactically valid but contains profanity
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @BrandRegistration__POST_400.4_improper_use_of_displayAsset
+  Scenario: The service provider applies further validations to the displayAsset object specified in the API request, and the object demonstrates indecency
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.displayAsset" is present and is syntactically valid but the visual asset demonstrates indecency
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @BrandRegistration__POST_400.5_customerId_invalid
+  Scenario: The service provider applies further validations to the customerId value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.customerId" is present and syntactically valid but set to a value not recognized in the service provider's system
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @BrandRegistration__POST_400.6_campaignName_invalid
+  Scenario: The service provider applies further validations to the campaignName value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.campaignName" is present and syntactically valid but set to a value not recognized in the service provider's system
+    When the HTTPS "POST" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+
+  @BrandRegistration__POST_400.7_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "POST" request is sent
