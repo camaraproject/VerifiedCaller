@@ -130,7 +130,6 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-
   @BrandRegistration__POST_400.7_no_request_body
   Scenario: Missing request body
     Given the request body is not included
