@@ -22,7 +22,6 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 # * A quota "quota1" to indicate the maximum value of calls that can be branded based on this registration, previously established in the service provider's system
 # * A quotaThreshold "quotaThreshold1" to indicate the number of branded calls when the customer is notified of a possible quota expiry in near future, previously established in the service provider's system
 
-
   Background: Brand Registration setup
     Given an environment at "apiRoot"
     And the resource "/brand-registration/vwip/registrations"

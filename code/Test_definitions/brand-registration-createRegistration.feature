@@ -57,7 +57,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And response property "$.createdAt" is set to the time the record is created
     And response property "$.status" is set to status of the registration in the service provider
     And response property "$.quota" is set to quota1
-    And response property "$.quotaThreshold" is set to quotaThreshold1 
+    And response property "$.quotaThreshold" is set to quotaThreshold1
 
   @BrandRegistration_POST_callback_01_async_registration_initial_event_validation
   Scenario: Receive notification for initial status-changed event on creation
@@ -81,7 +81,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And service provider's system processes the registration request asynchronously
     And service provider's system completes the activation of the registration
     And an event notification is received on sink1
@@ -98,7 +98,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And enough time has ellapsed to reach timestamp expiresAt1
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventStatusChanged"
@@ -116,7 +116,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And the registration reaches active state
     And a call from phoneNumber1 is established and branded in the service provider's network
     And an event notification is received on sink1
@@ -137,7 +137,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And the registration reaches active state
     And the API consumer successfully creates a pre-announcement "preAnnouncementId1" for a call from phoneNumber1 to phoneNumber2
     And a call from phoneNumber1 to phoneNumber2 is established, verified and branded in the service provider's network
@@ -159,7 +159,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And response property "$.quotaThreshold" is set to quotaThreshold1
     And the registration reaches active state
     And quotaThreshold1 calls from phoneNumber1 are established and branded in the service provider's network
@@ -179,7 +179,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-	And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to a UUID created by the service provider
     And response property "$.quota" is set to quota1
     And the registration reaches active state
     And quotaThreshold1 calls from phoneNumber1 are established and branded in the service provider's network
