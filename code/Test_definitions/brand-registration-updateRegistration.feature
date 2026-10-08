@@ -19,6 +19,9 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 # * An optional callPurpose "callPurpose1" that is typically used for logically grouping & billing the registration operations.
 # * An optional sink "sink1" that is an HTTPS endpoint url to send event notifications pertaining to the registration.
 # * An optional sinkCredential "sinkCredential1"  that is used to authenticate to the sink endpoint.
+# * A quota "quota1" to indicate the maximum value of calls that can be branded based on this registration, previously established in the service provider's system
+# * A quotaThreshold "quotaThreshold1" to indicate the number of branded calls when the customer is notified of a possible quota expiry in near future, previously established in the service provider's system
+
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -33,7 +36,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   @BrandRegistration_PUT_200.01_success_scenario_all_parameters_provided
   Scenario: Replace an existing brand registration data indicated by registrationId1
-    Given the brand's owner can be verified and associated with a registration "registrationId1" in the service provider
+    Given the API consumer can be verified against a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And request property "$.phoneNumber" is set to phoneNumber1
     And request property "$.phoneNumberAlternate" is present and set to phoneNumberAlternate1
@@ -59,8 +62,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And response property "$.createdAt" is set to the time the record is created
     And response property "$.updatedAt" is set to the time the record is modified (time of this PUT operation)
     And response property "$.status" is set to status of the registration in the service provider
-    And response property "$.quota" is set to the maximum value of calls that can be branded based on this registration
-    And response property "$.quotaThreshold" is set to the number of branded calls when the customer is notified of a possible quota expiry in near future
+    And response property "$.quota" is set to quota1
+    And response property "$.quotaThreshold" is set to quotaThreshold1
 
   # Generic 400 errors
 

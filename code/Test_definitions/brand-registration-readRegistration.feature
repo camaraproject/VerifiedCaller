@@ -6,7 +6,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
+# * A pre-existing brand registration "registrationId1"
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -19,7 +19,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   @BrandRegistration__GET_200.01_success_scenario_all_parameters_read
   Scenario: Read an existing brand registration where all possible parameters are returned in the API response
-    Given the brand's owner can be associated with a registration "registrationId1" in the service provider
+    Given the API consumer can be verified against a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:read
     When the HTTPS "GET" request is sent
@@ -111,7 +111,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   @BrandRegistration__GET_404.1_registration_not_found
   Scenario: Registration not found
-    Given the brand's owner cannot be associated with a registration "registrationId2" in the service provider
+    Given the API consumer cannot be associated with a registration "registrationId2" in the service provider
     And URI parameter "registrationId" is set to registrationId2
     And one of the scopes associated with the access token is brand-registration:read
     When the HTTPS "GET" request is sent

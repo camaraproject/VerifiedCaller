@@ -6,7 +6,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
+# * A pre-existing brand registration "registrationId1"
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -19,7 +19,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 
   @BrandRegistration__DEL_204.01_success_scenario_1
   Scenario: Delete an existing brand registration
-    Given the brand's owner can be associated with a registration "registrationId1" in the service provider
+    Given the API consumer can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:delete
     When the HTTPS "DEL" request is sent

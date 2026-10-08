@@ -6,7 +6,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * Pre-existing brand registrations "registrationId_1" through "registrationId_7" that can be successfully associated with the brand's owner by the service provider
+# * Pre-existing brand registrations "registrationId_1" through "registrationId_7"
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -18,7 +18,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.01_success_scenario_all_registrations_read
   Scenario: Read existing registrations of a brand owner where no filter is defined and response is not paginated
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And header parameter "page" is set to 1
     And header parameter "perpage" is set to perpage1 where perpage1 >= 7
     And one of the scopes associated with the access token is brand-registration:read
@@ -32,7 +32,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.02_success_scenario_some_registrations_read_with_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is not paginated
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And only registrations "registrationId_1" through "registrationId_3" have "$.terminatingCountryCode" property set to terminatingCountryCode1
     And Request URI parameter terminatingCountryCode is present and set to value terminatingCountryCode1
     And header parameter "page" is set to 1
@@ -48,7 +48,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.03_success_scenario_some_registrations_read_with_multiple_filters_combined
   Scenario: Read existing registrations of a brand owner where multiple filters are defined and response is not paginated
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And only registrations "registrationId_1" through "registrationId_3" have "$.terminatingCountryCode" property set to terminatingCountryCode1
     And only registrations "registrationId_2" through "registrationId_4" have "$.callPurpose" property set to callPurpose1
     And Request URI parameter terminatingCountryCode is present and set to value terminatingCountryCode1
@@ -66,7 +66,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.04_success_scenario_no_registrations_found
   Scenario: Read existing registrations of a brand owner where no filter is defined and no results are found
-    Given the brand's owner cannot be associated with any registration data in the service provider
+    Given the API consumer cannot be associated with any registration data in the service provider
     And header parameter "page" is set to page1
     And header parameter "perpage" is set to perPage1
     And one of the scopes associated with the access token is brand-registration:read
@@ -80,7 +80,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.05_success_scenario_no_registrations_found_page_out_of_bounds
   Scenario: Read existing registrations of a brand owner where no filter is defined and no results are found as requested page is out of bounds
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And header parameter "page" is set to 5
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -94,7 +94,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.06_success_scenario_no_registrations_found_with_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and no matching results found
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And none of the registrations "registrationId_1" through "registrationId_7" have "$.callPurpose" property set to callPurpose1
     And Request URI parameter callPurpose is present and set to value callPurpose1
     And header parameter "page" is set to page1
@@ -110,7 +110,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_200.07_success_scenario_no_registrations_found_with_combined_filter
   Scenario: Read existing registrations of a brand owner where multiple filters are defined and no matching results found
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And only registrations "registrationId_4" through "registrationId_5" have "$.terminatingCountryCode" property set to terminatingCountryCode2
     And only registrations "registrationId_6" through "registrationId_7" have "$.callPurpose" property set to callPurpose2
     And Request URI parameter terminatingCountryCode is present and set to value terminatingCountryCode2
@@ -128,7 +128,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.01_success_scenario_first_page_of_results_read
   Scenario: Read existing registrations of a brand owner where no filter is defined and response is paginated and first page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And header parameter "page" is set to 1
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -144,7 +144,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.02_success_scenario_arbitrary_page_of_results_read
   Scenario: Read existing registrations of a brand owner where no filter is defined and response is paginated and an arbitrary page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And header parameter "page" is set to 2
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -160,7 +160,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.03_success_scenario_last_page_of_results_read
   Scenario: Read existing registrations of a brand owner where no filter is defined and response is paginated and last page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And header parameter "page" is set to 4
     And header parameter "perpage" is set to 2
     And one of the scopes associated with the access token is brand-registration:read
@@ -176,7 +176,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.04_success_scenario_first_page_of_results_read_with_matching_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and first page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
     And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 1
@@ -194,7 +194,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.05_success_scenario_arbitrary_page_of_results_read_with_matching_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and an arbitrary page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
     And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 2
@@ -212,7 +212,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @BrandRegistration__GET_206.06_success_scenario_last_page_of_results_read_with_matching_filter
   Scenario: Read existing registrations of a brand owner where a filter is defined and response is paginated and last page is returned
-    Given the brand's owner can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
+    Given the API consumer can be associated with registrations "registrationId_1" through "registrationId_7" in the service provider
     And registrations "registrationId_1" through "registrationId_7" have the "$.customerId" property set to customerId1
     And Request URI parameter customerId is present and set to value customerId1
     And header parameter "page" is set to 4
