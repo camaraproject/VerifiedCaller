@@ -209,15 +209,15 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
                 '401':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
                 '410':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic410'
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
                 '429':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
               security:
                 - {}
                 - notificationsBearerAuth: []
@@ -226,23 +226,23 @@ paths:
         '201':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '404':
-          $ref: '#/components/responses/Create404'
+          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -298,25 +298,25 @@ paths:
         - $ref: '#/components/parameters/CallPurposeFilter'
       responses:
         '200':
-          $ref: '#/components/responses/SuccessfulRecords'
+          $ref: '#/components/responses/SuccessfulRecords200'
         '204':
-          $ref: '#/components/responses/204NoContent'
+          $ref: '#/components/responses/SuccessfulNoContent204'
         '206':
-          $ref: '#/components/responses/SuccessfulPartialRecords'
+          $ref: '#/components/responses/SuccessfulPartialRecords206'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -342,19 +342,19 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -376,21 +376,21 @@ paths:
             maxLength: 256
       responses:
         '204':
-          $ref: '#/components/responses/204NoContent'
+          $ref: '#/components/responses/SuccessfulNoContent204'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '404':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -446,23 +446,23 @@ paths:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '404':
-          $ref: '#/components/responses/Update404'
+          $ref: '#/components/responses/NotFoundWithRegistrationNotFound404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/CreateOrUpdateRegistrationUnprocessableEntity422'
+          $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -980,7 +980,7 @@ components:
                 quota: 100000
                 quotaThreshold: 95000
                 callPurpose: "Survey"
-    SuccessfulRecords:
+    SuccessfulRecords200:
       description: Success response with one or more brand registration records
       headers:
         x-correlator:
@@ -1024,12 +1024,12 @@ components:
                   perPage: 20
                   totalCount: 2
                   totalPages: 1
-    204NoContent:
+    SuccessfulNoContent204:
       description: Successful response with no content
       headers:
         x-correlator:
           $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    SuccessfulPartialRecords:
+    SuccessfulPartialRecords206:
       description: |
         Success response with one or more brand registration records.
         Used if the request expects a paginated response.
@@ -1077,7 +1077,7 @@ components:
                   totalCount: 2
                   totalPages: 1
 
-    Create404:
+    NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -1111,7 +1111,7 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
-    Update404:
+    NotFoundWithRegistrationNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -1153,7 +1153,7 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
-    CreateOrUpdateRegistrationUnprocessableEntity422:
+    ServiceNotApplicable422:
       description: Unprocessable Content
       headers:
         x-correlator:
@@ -1179,6 +1179,48 @@ components:
                 status: 422
                 code: SERVICE_NOT_APPLICABLE
                 message: The service is not available for the provided identifier.
+    Internal500:
+      description: Internal Server Error
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 500
+                  code:
+                    enum:
+                      - INTERNAL
+          examples:
+            GENERIC_500_INTERNAL:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+    Unavailable503:
+      description: Service Unavailable
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 503
+                  code:
+                    enum:
+                      - UNAVAILABLE
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
 
   examples:
     CALL_BRANDED_EVENT:
