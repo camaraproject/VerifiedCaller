@@ -6,7 +6,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
+# * A pre-existing brand registration "registrationId1"
 # * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
 # * A telephony number "phoneNumber1" that is owned by the customer "customerId1"
 # * An optional telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
