@@ -52,8 +52,8 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response body complies with the schema at "/components/schemas/RegistrationRecord"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And response properties mirror request properties except "$.sinkCredential", which is excluded from the response
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And request properties are mirrored in the response properties except "$.sinkCredential", which is excluded from the response
+    And response property "$.registrationId" is set to a registrationId1 created by the service provider
     And response property "$.createdAt" is set to the time the record is created
     And response property "$.status" is set to status of the registration in the service provider
     And response property "$.quota" is set to quota1
@@ -66,12 +66,12 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And service provider's system processes the registration request asynchronously
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventStatusChanged"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.status-changed"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "pending"
 
   @BrandRegistration_POST_callback_02_async_registration_activation_event_validation
@@ -81,13 +81,13 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And service provider's system processes the registration request asynchronously
     And service provider's system completes the activation of the registration
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventStatusChanged"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.status-changed"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "active"
 
   @BrandRegistration_POST_callback_03_subscription_expiry_event_validation
@@ -98,12 +98,12 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And enough time has ellapsed to reach timestamp expiresAt1
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventStatusChanged"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.status-changed"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "expired"
 
   @BrandRegistration_POST_callback_04_call_branding_event_validation
@@ -116,13 +116,13 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And the registration reaches active state
     And a call from phoneNumber1 is established and branded in the service provider's network
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventCallBranded"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.call-branded"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.displayNameUsed" is equal to displayName1
     And event notification body property "$.data.strategy" is equal to "BRAND_DISPLAY"
 
@@ -137,14 +137,14 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.sinkCredential" is present and set to sinkCredential1
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And the registration reaches active state
     And the API consumer successfully creates a pre-announcement "preAnnouncementId1" for a call from phoneNumber1 to phoneNumber2
     And a call from phoneNumber1 to phoneNumber2 is established, verified and branded in the service provider's network
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventCallBranded"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.call-branded"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.displayNameUsed" is equal to displayName1
     And event notification body property "$.data.strategy" is equal to "BRAND_DISPLAY"
     And event notification body property "$.data.preAnnouncementId" is equal to preAnnouncementId1
@@ -157,19 +157,20 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.expiresAt" is present and set to expiresAt1
     And request property "$.sink" is present and set to sink1
     And request property "$.sinkCredential" is present and set to sinkCredential1
+    And a quotaThreshold "quotaThreshold1" is previously established in service provider's system
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And response property "$.quotaThreshold" is set to quotaThreshold1
     And the registration reaches active state
     And quotaThreshold1 calls from phoneNumber1 are established and branded in the service provider's network
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventQuotathresholdReached"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.quota-threshold-reached"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.quotaThreshold" is equal to quotaThreshold1
 
-  @BrandRegistration_POST_callback_06_quota_exhauested_event_validation
+  @BrandRegistration_POST_callback_06_quota_exhausted_event_validation
   Scenario: Receive notification for branding quota exhausted in the service provider's network
     Given a valid subscription request body
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -177,16 +178,17 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And request property "$.expiresAt" is present and set to expiresAt1
     And request property "$.sink" is present and set to sink1
     And request property "$.sinkCredential" is present and set to sinkCredential1
+    And a quota "quota1" is previously established in service provider's system
     When the HTTPS "POST" request is sent
     Then the response code is 201
-    And response property "$.registrationId" is set to a UUID created by the service provider
+    And response property "$.registrationId" is set to registrationId1 created by the service provider
     And response property "$.quota" is set to quota1
     And the registration reaches active state
     And quotaThreshold1 calls from phoneNumber1 are established and branded in the service provider's network
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventQuotaExhausted"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.quota-exhausted"
-    And event notification body property "$.data.registrationId" is equal to property "$.registrationId" in HTTP POST response
+    And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.quota" is equal to quota1
 
   # Generic 400 errors
