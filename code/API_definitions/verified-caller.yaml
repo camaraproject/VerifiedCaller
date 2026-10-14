@@ -160,23 +160,23 @@ paths:
         '204':
           $ref: '#/components/responses/Create204'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/Create404'
+          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic409'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic422'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic500'
+          $ref: '#/components/responses/Internal500'
         '503':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic503'
+          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -296,7 +296,7 @@ components:
       headers:
         x-correlator:
           $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    Create404:
+    NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -330,3 +330,45 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: "Call Participant {{number}} is not known to the service provider"
+    Internal500:
+      description: Internal Server Error
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 500
+                  code:
+                    enum:
+                      - INTERNAL
+          examples:
+            GENERIC_500_INTERNAL:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+    Unavailable503:
+      description: Service Unavailable
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 503
+                  code:
+                    enum:
+                      - UNAVAILABLE
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
