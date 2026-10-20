@@ -209,15 +209,15 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
-                '401':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
+                  $ref: '../common/CAMARA_event_common.yaml#/components/CreateSubscriptionBadRequest400'
                 '403':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
+                '409':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409'
                 '410':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
-                '429':
-                  $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+                '422':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422'
               security:
                 - {}
                 - notificationsBearerAuth: []
