@@ -210,6 +210,8 @@ paths:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+                '401':
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
                 '409':
