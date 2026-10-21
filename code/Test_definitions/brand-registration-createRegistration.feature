@@ -31,7 +31,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   # Success scenarios
 
-  @BrandRegistration_POST_201.01_success_scenario_all_parameters_provided
+  @brand_registration_createRegistration_201.01_success_scenario_all_parameters_provided
   Scenario: Create a brand registration
     Given the API consumer can be verified in the service provider's system
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -59,7 +59,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And response property "$.quota" is set to quota1
     And response property "$.quotaThreshold" is set to quotaThreshold1
 
-  @BrandRegistration_POST_callback_01_async_registration_initial_event_validation
+  @brand_registration_createRegistration_callback_01_async_registration_initial_event_validation
   Scenario: Receive notification for initial status-changed event on creation
     Given a valid subscription request body
     And request property "$.sink" is present and set to sink1
@@ -74,7 +74,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "pending"
 
-  @BrandRegistration_POST_callback_02_async_registration_activation_event_validation
+  @brand_registration_createRegistration_callback_02_async_registration_activation_event_validation
   Scenario: Receive notification for activation of a brand registration
     Given a valid subscription request body
     And request property "$.sink" is present and set to sink1
@@ -90,7 +90,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "active"
 
-  @BrandRegistration_POST_callback_03_subscription_expiry_event_validation
+  @brand_registration_createRegistration_callback_03_subscription_expiry_event_validation
   Scenario: Receive notification for expiry of a brand registration
     Given a valid subscription request body
     And request property "$.expiresAt" is present and set to expiresAt1
@@ -106,7 +106,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.status" is "expired"
 
-  @BrandRegistration_POST_callback_04_call_branding_event_validation
+  @brand_registration_createRegistration_callback_04_call_branding_event_validation
   Scenario: Receive notification for a call branded in the service provider's network
     Given a valid subscription request body
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -126,7 +126,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.displayNameUsed" is equal to displayName1
     And event notification body property "$.data.strategy" is equal to "BRAND_DISPLAY"
 
-  @BrandRegistration_POST_callback_05_call_branding_with_preannouncement_event_validation
+  @brand_registration_createRegistration_callback_05_call_branding_with_preannouncement_event_validation
   Scenario: Receive notification for a pre-announced call branded in the service provider's network
     Given a valid subscription request body
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -149,7 +149,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.strategy" is equal to "BRAND_DISPLAY"
     And event notification body property "$.data.preAnnouncementId" is equal to preAnnouncementId1
 
-  @BrandRegistration_POST_callback_06_quota_threshold_reached_event_validation
+  @brand_registration_createRegistration_callback_06_quota_threshold_reached_event_validation
   Scenario: Receive notification for branding quota threshold reached in the service provider's network
     Given a valid subscription request body
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -170,7 +170,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And event notification body property "$.data.registrationId" is equal to registrationId1
     And event notification body property "$.data.quotaThreshold" is equal to quotaThreshold1
 
-  @BrandRegistration_POST_callback_06_quota_exhausted_event_validation
+  @brand_registration_createRegistration_callback_06_quota_exhausted_event_validation
   Scenario: Receive notification for branding quota exhausted in the service provider's network
     Given a valid subscription request body
     And request property "$.phoneNumber" is set to phoneNumber1
@@ -193,7 +193,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   # Generic 400 errors
 
-  @BrandRegistration_POST_400.1_schema_not_compliant
+  @brand_registration_createRegistration_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     When the HTTPS "POST" request is sent
@@ -204,7 +204,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.2_expiresAt_not_in_the_future
+  @brand_registration_createRegistration_400.2_expiresAt_not_in_the_future
   Scenario: The expiresAt value specified in the API request is not in the future
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.expiresAt" is present and syntactically valid but not set to a value in the future
@@ -216,7 +216,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.3_improper_use_of_displayName
+  @brand_registration_createRegistration_400.3_improper_use_of_displayName
   Scenario: The service provider applies further validations to the displayName value specified in the API request, and the value includes profanity
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.displayName" is syntactically valid but contains profanity
@@ -228,7 +228,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.4_improper_use_of_displayAsset
+  @brand_registration_createRegistration_400.4_improper_use_of_displayAsset
   Scenario: The service provider applies further validations to the displayAsset object specified in the API request, and the object demonstrates indecency
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.displayAsset" is present and is syntactically valid but the visual asset demonstrates indecency
@@ -240,7 +240,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.5_customerId_invalid
+  @brand_registration_createRegistration_400.5_customerId_invalid
   Scenario: The service provider applies further validations to the customerId value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.customerId" is present and syntactically valid but set to a value not recognized in the service provider's system
@@ -252,7 +252,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.6_campaignName_invalid
+  @brand_registration_createRegistration_400.6_campaignName_invalid
   Scenario: The service provider applies further validations to the campaignName value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.campaignName" is present and syntactically valid but set to a value not recognized in the service provider's system
@@ -264,7 +264,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_400.7_no_request_body
+  @brand_registration_createRegistration_400.7_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "POST" request is sent
@@ -277,7 +277,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   # Generic 401 errors
 
-  @BrandRegistration_POST_401.1_no_authorization_header
+  @brand_registration_createRegistration_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "POST" request is sent
@@ -288,7 +288,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_401.2_expired_access_token
+  @brand_registration_createRegistration_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "POST" request is sent
@@ -299,7 +299,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_POST_401.3_invalid_access_token
+  @brand_registration_createRegistration_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "POST" request is sent
@@ -312,7 +312,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
 
   # Generic 403 errors
 
-  @BrandRegistration_POST_403.1_missing_access_token_scope
+  @brand_registration_createRegistration_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:create
     When the HTTPS "POST" request is sent

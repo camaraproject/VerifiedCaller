@@ -17,7 +17,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 
   # Success scenarios
 
-  @BrandRegistration__DEL_204.01_success_scenario_1
+  @brand_registration_deleteRegistration_204.01_success_scenario_1
   Scenario: Delete an existing brand registration
     Given the API consumer can be associated with a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
@@ -29,7 +29,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 
   # Generic 400 errors
 
-  @BrandRegistration__DEL_400.1_schema_not_compliant
+  @brand_registration_deleteRegistration_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request URI does not contain a registrationId parameter with a valid UUID format
     When the HTTPS "DEL" request is sent
@@ -42,7 +42,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 
   # Generic 401 errors
 
-  @BrandRegistration__DEL_401.1_no_authorization_header
+  @brand_registration_deleteRegistration_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "DEL" request is sent
@@ -53,7 +53,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__DEL_401.2_expired_access_token
+  @brand_registration_deleteRegistration_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "DEL" request is sent
@@ -64,7 +64,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__DEL_401.3_invalid_access_token
+  @brand_registration_deleteRegistration_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "DEL" request is sent
@@ -77,7 +77,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
 
   # Generic 403 errors
 
-  @BrandRegistration__DEL_403.1_missing_access_token_scope
+  @brand_registration_deleteRegistration_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:delete
     When the HTTPS "DEL" request is sent

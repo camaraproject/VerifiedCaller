@@ -17,7 +17,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Success scenarios
 
-  @BrandRegistration__GET_200.01_success_scenario_all_parameters_read
+  @brand_registration_readRegistration_200.01_success_scenario_all_parameters_read
   Scenario: Read an existing brand registration where all possible parameters are returned in the API response
     Given the API consumer can be verified against a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
@@ -48,7 +48,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 400 errors
 
-  @BrandRegistration__GET_400.1_schema_not_compliant
+  @brand_registration_readRegistration_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request URI does not contain a registrationId parameter with a valid UUID format
     When the HTTPS "GET" request is sent
@@ -61,7 +61,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 401 errors
 
-  @BrandRegistration__GET_401.1_no_authorization_header
+  @brand_registration_readRegistration_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "GET" request is sent
@@ -72,7 +72,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__GET_401.2_expired_access_token
+  @brand_registration_readRegistration_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "GET" request is sent
@@ -83,7 +83,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__GET_401.3_invalid_access_token
+  @brand_registration_readRegistration_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "GET" request is sent
@@ -96,7 +96,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 403 errors
 
-  @BrandRegistration__GET_403.1_missing_access_token_scope
+  @brand_registration_readRegistration_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:read
     When the HTTPS "GET" request is sent
@@ -109,7 +109,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 404 errors
 
-  @BrandRegistration__GET_404.1_registration_not_found
+  @brand_registration_readRegistration_404.1_registration_not_found
   Scenario: Registration not found
     Given the API consumer cannot be associated with a registration "registrationId2" in the service provider
     And URI parameter "registrationId" is set to registrationId2

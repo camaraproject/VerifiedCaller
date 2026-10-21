@@ -33,7 +33,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   # Success scenarios
 
-  @BrandRegistration_PUT_200.01_success_scenario_all_parameters_provided
+  @brand_registration_updateRegistration_200.01_success_scenario_all_parameters_provided
   Scenario: Replace an existing brand registration data indicated by registrationId1
     Given the API consumer can be verified against a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
@@ -66,7 +66,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   # Generic 400 errors
 
-  @BrandRegistration_PUT_400.1_schema_not_compliant
+  @brand_registration_updateRegistration_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     When the HTTPS "PUT" request is sent
@@ -77,7 +77,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.2_expiresAt_not_in_the_future
+  @brand_registration_updateRegistration_400.2_expiresAt_not_in_the_future
   Scenario: The expiresAt value specified in the API request is not in the future
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.expiresAt" is present and syntactically valid but not set to a value in the future
@@ -89,7 +89,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.3_improper_use_of_displayName
+  @brand_registration_updateRegistration_400.3_improper_use_of_displayName
   Scenario: The service provider applies further validations to the displayName value specified in the API request, and the value includes profanity
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.displayName" is syntactically valid but contains profanity
@@ -101,7 +101,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.4_improper_use_of_displayAsset
+  @brand_registration_updateRegistration_400.4_improper_use_of_displayAsset
   Scenario: The service provider applies further validations to the displayAsset object specified in the API request, and the object demonstrates indecency
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.displayAsset" is present and is syntactically valid but the visual asset demonstrates indecency
@@ -113,7 +113,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.5_customerId_invalid
+  @brand_registration_updateRegistration_400.5_customerId_invalid
   Scenario: The service provider applies further validations to the customerId value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.customerId" is present and syntactically valid but set to a value not recognized in the service provider's system
@@ -125,7 +125,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.6_campaignName_invalid
+  @brand_registration_updateRegistration_400.6_campaignName_invalid
   Scenario: The service provider applies further validations to the campaignName value specified in the API request, and the value is not acceptable, e.g. not recognized in the system.
     Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
     And request property "$.campaignName" is present and syntactically valid but set to a value not recognized in the service provider's system
@@ -137,7 +137,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_400.7_no_request_body
+  @brand_registration_updateRegistration_400.7_no_request_body
   Scenario: Missing request body
     Given the request body is not included
     When the HTTPS "PUT" request is sent
@@ -150,7 +150,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   # Generic 401 errors
 
-  @BrandRegistration_PUT_401.1_no_authorization_header
+  @brand_registration_updateRegistration_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "PUT" request is sent
@@ -161,7 +161,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_401.2_expired_access_token
+  @brand_registration_updateRegistration_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "PUT" request is sent
@@ -172,7 +172,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration_PUT_401.3_invalid_access_token
+  @brand_registration_updateRegistration_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "PUT" request is sent
@@ -185,7 +185,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   # Generic 403 errors
 
-  @BrandRegistration_PUT_403.1_missing_access_token_scope
+  @brand_registration_updateRegistration_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:update
     When the HTTPS "PUT" request is sent
