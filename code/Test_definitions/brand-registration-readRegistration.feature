@@ -6,13 +6,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 # * apiRoot: API root of the server URL
 #
 # Testing assets:
-# * A pre-existing brand registration "registrationId1" that can be successfully associated with the brand's owner by the service provider
-# * An optional customer identifier "customerId1" to indicate the owner of the registration, typically for logically grouping & billing the registration operations.
-# * An E.164 telephony number "phoneNumber1" that is owned by the customer "customerId1"
-# * An optional E.164 telephony number "phoneNumberAlternate1" that is owned by the customer "customerId1"
-# * A display name "displayName1" that is to be displayed to the callee in case of calls made by phoneNumber1 and optionally phoneNumberAlternate1
-# * An E.164 country code "terminatingCountryCode1" that identifies the target country of potenital callees where the display name is to be shown.
-# * An optional verify caller instruction "verifyCallerAction1" that can be included in the registration to determine the action if the calling party's authenticity cannot be established via the capabilities of the Verified Caller APIs.
+# * A pre-existing brand registration "registrationId1"
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
@@ -23,9 +17,9 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Success scenarios
 
-  @BrandRegistration__GET_200.01_success_scenario_1_all_parameters_read
-  Scenario: Read an existing brand registration
-    Given the brand's owner can be associated with a registration "registrationId1" in the service provider
+  @brand_registration_readRegistration_200.01_success_scenario_all_parameters_read
+  Scenario: Read an existing brand registration where all possible parameters are returned in the API response
+    Given the API consumer can be verified against a registration "registrationId1" in the service provider
     And URI parameter "registrationId" is set to registrationId1
     And one of the scopes associated with the access token is brand-registration:read
     When the HTTPS "GET" request is sent
@@ -40,10 +34,21 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And response property "$.customerId" is present and set to customerId1 value as previously set by the API consumer
     And response property "$.verifyCallerAction" is present and set to verifyCallerAction1 value as previously set by the API consumer
     And response property "$.registrationId" is equal to the registrationId1 in the request URI
+    And response property "$.status" is present and reflects the current lifecycle status of the registration
+    And response property "$.createdAt" is present and reflects the time the registration has been created by the API consumer
+    And response property "$.updatedAt" is present and reflects the most recent time the registration has been updated by the API consumer
+    And response property "$.expiresAt" is present and set to the expiresAt1 value as previously set by the API consumer
+    And response property "$.displayAsset" is present and set to the displayAsset1 value as previously set by the API consumer
+    And response property "$.campaignName" is present and and set to the campaignName1 value as previously set by the API consumer
+    And response property "$.quota" is present and reflects the quota value previously established between the API consumer and the service provider
+    And response property "$.quotaThreshold" is present and reflects the quotaThreshold value previously established between the API consumer and the service provider
+    And response property "$.callPurpose" is present and set to the callPurpose1 value as previously set by the API consumer
+    And response property "$.sink" is present and set to the sink1 value as previously set by the API consumer
+    And response property "$.sinkCredential" is excluded from the response even if previously set by the API consumer
 
   # Generic 400 errors
 
-  @BrandRegistration__GET_400.1_schema_not_compliant
+  @brand_registration_readRegistration_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request URI does not contain a registrationId parameter with a valid UUID format
     When the HTTPS "GET" request is sent
@@ -56,7 +61,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 401 errors
 
-  @BrandRegistration__GET_401.1_no_authorization_header
+  @brand_registration_readRegistration_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the HTTPS "GET" request is sent
@@ -67,7 +72,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__GET_401.2_expired_access_token
+  @brand_registration_readRegistration_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the HTTPS "GET" request is sent
@@ -78,7 +83,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @BrandRegistration__GET_401.3_invalid_access_token
+  @brand_registration_readRegistration_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the HTTPS "GET" request is sent
@@ -91,7 +96,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   # Generic 403 errors
 
-  @BrandRegistration__GET_403.1_missing_access_token_scope
+  @brand_registration_readRegistration_403.1_missing_access_token_scope
   Scenario: Invalid access token scope
     Given the header "Authorization" is set to an access token that does not include scope brand-registration:read
     When the HTTPS "GET" request is sent
@@ -100,4 +105,19 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
-    And the response property "$.message" is user friendly
+    And the response property "$.message" contains a user friendly text
+
+  # Generic 404 errors
+
+  @brand_registration_readRegistration_404.1_registration_not_found
+  Scenario: Registration not found
+    Given the API consumer cannot be associated with a registration "registrationId2" in the service provider
+    And URI parameter "registrationId" is set to registrationId2
+    And one of the scopes associated with the access token is brand-registration:read
+    When the HTTPS "GET" request is sent
+    Then the response status code is 404
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 404
+    And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.message" contains a user friendly text
