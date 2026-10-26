@@ -70,17 +70,13 @@ info:
 
     This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
     <!-- CAMARA:MANDATORY:request-body-strictness:END -->
-
-  version: wip
+  version: 0.2.0-rc.2
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  x-camara-commonalities: 0.6
-externalDocs:
-  description: Product documentation at CAMARA
-  url: https://github.com/camaraproject/VerifiedCaller
+  x-camara-commonalities: 0.9.0
 servers:
-  - url: '{apiRoot}/verified-caller/vwip'
+  - url: '{apiRoot}/verified-caller/v0.2rc2'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -88,6 +84,9 @@ servers:
 tags:
   - name: Create Preannouncement
     description: Create a pre-announcement for a call between two phone numbers that is intended to take place within the specified period. During this period, the pre-announcement is called "valid".
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/VerifiedCaller
 paths:
   /pre-announce:
     post:
@@ -97,7 +96,7 @@ paths:
       description: Create a pre-announcement for a call between two phone numbers that is intended to take place within the specified period. During this period, the pre-announcement is called "valid".
       operationId: createPreAnnouncement
       parameters:
-        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
+        - $ref: '#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
@@ -109,96 +108,92 @@ paths:
                 summary: A short message is sent to the calledParticipant indicating that the authenticity of the callingParticipant has been verified.
                 description: A short message is sent to the calledParticipant indicating that the authenticity of the callingParticipant has been verified.
                 value:
-                  callingParticipant: "+123456789"
-                  calledParticipant: "+123456792"
-                  strategy: "SMS"
+                  callingParticipant: '+123456789'
+                  calledParticipant: '+123456792'
+                  strategy: SMS
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
               USING_REGISTERED_BRAND_DISPLAY:
                 summary: A pre-registered brand is displayed.
                 description: The brand registered in the registration phase is displayed to the calledParticipant indicating that the authenticity of the callingParticipant has been verified.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
               USING_DYNAMIC_BRAND_DISPLAY:
                 summary: A call specific brand is displayed
                 description: A brand provided in the Verified Caller API for the specific call is displayed to the calledParticipant to provide a more fine-tuned call context. It overwrites the pre-registered brand information.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Re: Your Complaint"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  dynamicDisplayName: 'Company X Re: Your Complaint'
               USING_REGISTERED_BRAND_DISPLAY_WITH_CALL_REASON:
                 summary: The pre-registered brand and a call specific reason is displayed
                 description: The brand set in the registration phase is displayed to the calledParticipant indicating that the authenticity of the caller has been verified, and providing more context to the calledParticipant by adding a call specific reason.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  callReason: "Re: Your loan application"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  callReason: 'Re: Your loan application'
               USING_DYNAMIC_BRAND_DISPLAY_WITH_CALL_REASON:
                 summary: A brand and a call reason, both set for the specific call are displayed.
                 description: |
-                              A brand set for the specific call is displayed to the callee to demonstrate the authenticity of the caller, while providing even more context to the callee with a call specific reason.
-                              This usage leverages both brand and call reason to provide the most fine-tuned information to the calledParticipant.
+                  A brand set for the specific call is displayed to the callee to demonstrate the authenticity of the caller, while providing even more context to the callee with a call specific reason.
+                  This usage leverages both brand and call reason to provide the most fine-tuned information to the calledParticipant.
                 value:
-                  callingParticipant: "+123456791"
-                  calledParticipant: "+123456792"
-                  strategy: "BRAND_DISPLAY"
+                  callingParticipant: '+123456791'
+                  calledParticipant: '+123456792'
+                  strategy: BRAND_DISPLAY
                   timeToLive: 45
-                  registrationId: "d011cbff-cf79-4db3-a72b-8164aa894b37"
-                  dynamicDisplayName: "Company X Complaint Desk"
-                  callReason: "Your support ticket 21/01/2026"
+                  registrationId: d011cbff-cf79-4db3-a72b-8164aa894b37
+                  dynamicDisplayName: Company X Complaint Desk
+                  callReason: Your support ticket 21/01/2026
       responses:
         '201':
           $ref: '#/components/responses/Create201'
         '204':
           $ref: '#/components/responses/Create204'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
+          $ref: '#/components/responses/BadRequest400'
         '401':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
+          $ref: '#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
+          $ref: '#/components/responses/PermissionDenied403'
         '404':
           $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
         '409':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
+          $ref: '#/components/responses/AlreadyExists409'
         '422':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422'
+          $ref: '#/components/responses/PhoneNumberIdentifier422'
         '429':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+          $ref: '#/components/responses/TooManyRequests429'
         '500':
           $ref: '#/components/responses/Internal500'
         '503':
           $ref: '#/components/responses/Unavailable503'
-
       security:
         - openId:
             - verified-caller:create
-
 components:
   securitySchemes:
     openId:
       description: OpenID Connect authentication
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
-
   schemas:
     PreAnnouncementId:
       type: string
       format: uuid
       maxLength: 256
       description: Unique identifier of a pre-announcement created as a result of the POST operation. Reserved for future use.
-      example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
-
+      example: 9e765f76-8037-4e5f-ba5d-e0c87c09a320
     TimeToLive:
       type: integer
       format: int32
@@ -206,45 +201,40 @@ components:
       maximum: 86400
       description: This parameter specifies for how long the pre-announcement shall be considered valid by the service provider, in units of seconds. If not specified, the service provider applies a default value. The service provider may enforce a lower and/or upper bound of their choosing while validating the API request.
       example: 60
-
     RegistrationId:
       type: string
       format: uuid
       maxLength: 256
       description: Unique identifier for the brand information registered for a brand owner with a service provider.
-      example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
-
+      example: 9e765f76-8037-4e5f-ba5d-e0c87c09a320
     DynamicDisplayName:
       type: string
       maxLength: 32
       description: If provided, this value overrides the pre-registered brand with this call specific brand.
-      example: "Company X Call Center"
-
+      example: Company X Call Center
     CallReason:
       type: string
       maxLength: 32
       description: A call specific reason that will be displayed to the calledParticipant *in addition* to the brand.
-      example: "Re: Your loan application"
-
+      example: 'Re: Your loan application'
     Strategy:
       type: string
       maxLength: 32
       description: The method (display name, SMS, ...) to be applied to indicate the calledParticipant that the authenticity of the caller has been verified. Absence of this parameter lets the service provider choose a default strategy which the API consumer must be made aware of through other means.
       enum:
-        - "SMS"
-        - "BRAND_DISPLAY"
-
+        - SMS
+        - BRAND_DISPLAY
     CreatePreAnnouncementRequest:
       type: object
-      description: "Request object to create a call pre-announcement"
+      description: Request object to create a call pre-announcement
       required:
-        - "callingParticipant"
-        - "calledParticipant"
+        - callingParticipant
+        - calledParticipant
       properties:
         callingParticipant:
-          $ref: '../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         calledParticipant:
-          $ref: '../common/CAMARA_common.yaml#/components/schemas/PhoneNumber'
+          $ref: '#/components/schemas/PhoneNumber'
         strategy:
           $ref: '#/components/schemas/Strategy'
         timeToLive:
@@ -255,17 +245,15 @@ components:
           $ref: '#/components/schemas/DynamicDisplayName'
         callReason:
           $ref: '#/components/schemas/CallReason'
-
     ExpiresAt:
       type: string
       format: date-time
       maxLength: 64
       description: |
-       Timestamp when the pre-announcement for a call will expire. The call must be placed up to this timestamp for the service provider to apply the caller verification action. The service provider may include it especially if the API consumer did not specify a timeToLive in the Verified Caller API request, or the service provider chose to apply a different value than requested.
-       It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-       Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
-      example: "2023-07-03T12:27:08.312Z"
-
+        Timestamp when the pre-announcement for a call will expire. The call must be placed up to this timestamp for the service provider to apply the caller verification action. The service provider may include it especially if the API consumer did not specify a timeToLive in the Verified Caller API request, or the service provider chose to apply a different value than requested.
+        It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+        Recommended format is yyyy-MM-dd'T'HH:mm:ss.SSSZ (i.e. which allows 2023-07-03T14:27:08.312+02:00 or 2023-07-03T12:27:08.312Z)
+      example: '2023-07-03T12:27:08.312Z'
     AnnouncementInfo:
       type: object
       description: Object to represent the creation of a single pre-announcement in the service provider
@@ -274,13 +262,46 @@ components:
           $ref: '#/components/schemas/PreAnnouncementId'
         expiresAt:
           $ref: '#/components/schemas/ExpiresAt'
-
+    XCorrelator:
+      type: string
+      description: Correlator string, UUID format recommended but any string matching the pattern can be used
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      maxLength: 256
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: ^\+[1-9][0-9]{4,14}$
+      maxLength: 16
+      example: '+123456789'
+    ErrorInfo:
+      type: object
+      description: A structured error response providing details about a failed request, including the HTTP status code, an error code, and a human-readable message
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP response status code
+        code:
+          type: string
+          maxLength: 96
+          description: A human-readable code to describe the error
+        message:
+          type: string
+          maxLength: 512
+          description: A human-readable description of what the event represents
   responses:
     Create201:
       description: Successful creation of a pre-announcement
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -290,24 +311,23 @@ components:
               summary: Success response with optional parameters
               description: Successful creation of a pre-announcement request for a call. The service provider may include optional parameter(s) to inform the API consumer.
               value:
-                preAnnouncementId: "be5105dc-9b0e-437b-a03e-6e6ffb5e50c0"
-                expiresAt: "2023-07-03T12:27:08.312Z"
-
+                preAnnouncementId: be5105dc-9b0e-437b-a03e-6e6ffb5e50c0
+                expiresAt: '2023-07-03T12:27:08.312Z'
     Create204:
       description: Successful creation of a pre-announcement with no content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
     NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
         x-correlator:
-          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -324,24 +344,24 @@ components:
               value:
                 status: 404
                 code: NOT_FOUND
-                message: "{{resource}} is not found"
+                message: '{{resource}} is not found'
             DEVICE_NOT_FOUND:
               summary: Device not found
               description: Device is not found
               value:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: "Call Participant {{number}} is not known to the service provider"
+                message: Call Participant {{number}} is not known to the service provider
     Internal500:
       description: Internal Server Error
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -352,17 +372,17 @@ components:
                       - INTERNAL
           examples:
             GENERIC_500_INTERNAL:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+              $ref: '#/components/examples/GENERIC_500_INTERNAL'
     Unavailable503:
       description: Service Unavailable
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -373,4 +393,209 @@ components:
                       - UNAVAILABLE
           examples:
             GENERIC_503_UNAVAILABLE:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
+              $ref: '#/components/examples/GENERIC_503_UNAVAILABLE'
+    BadRequest400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              $ref: '#/components/examples/GENERIC_400_INVALID_ARGUMENT'
+    Unauthenticated401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 401
+                  code:
+                    enum:
+                      - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              $ref: '#/components/examples/GENERIC_401_UNAUTHENTICATED'
+    PermissionDenied403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 403
+                  code:
+                    enum:
+                      - PERMISSION_DENIED
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              $ref: '#/components/examples/GENERIC_403_PERMISSION_DENIED'
+    AlreadyExists409:
+      description: Conflict
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 409
+                  code:
+                    enum:
+                      - ALREADY_EXISTS
+          examples:
+            GENERIC_409_ALREADY_EXISTS:
+              $ref: '#/components/examples/GENERIC_409_ALREADY_EXISTS'
+    PhoneNumberIdentifier422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 422
+                  code:
+                    enum:
+                      - SERVICE_NOT_APPLICABLE
+                      - MISSING_IDENTIFIER
+                      - UNNECESSARY_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              $ref: '#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE'
+            GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
+              $ref: '#/components/examples/GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER'
+            GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
+              $ref: '#/components/examples/GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER'
+    TooManyRequests429:
+      description: Too Many Requests
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 429
+                  code:
+                    enum:
+                      - TOO_MANY_REQUESTS
+          examples:
+            GENERIC_429_TOO_MANY_REQUESTS:
+              $ref: '#/components/examples/GENERIC_429_TOO_MANY_REQUESTS'
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  examples:
+    GENERIC_400_INVALID_ARGUMENT:
+      description: Invalid Argument. Generic Syntax Exception
+      value:
+        status: 400
+        code: INVALID_ARGUMENT
+        message: Client specified an invalid argument, request body or query param.
+    GENERIC_401_UNAUTHENTICATED:
+      description: Request cannot be authenticated and a new authentication is required
+      value:
+        status: 401
+        code: UNAUTHENTICATED
+        message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+    GENERIC_403_PERMISSION_DENIED:
+      description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+      value:
+        status: 403
+        code: PERMISSION_DENIED
+        message: Client does not have sufficient permissions to perform this action.
+    GENERIC_409_ALREADY_EXISTS:
+      description: Trying to create an existing resource
+      value:
+        status: 409
+        code: ALREADY_EXISTS
+        message: The resource that a client tried to create already exists.
+    GENERIC_422_SERVICE_NOT_APPLICABLE:
+      description: Service not applicable for the provided identifier
+      value:
+        status: 422
+        code: SERVICE_NOT_APPLICABLE
+        message: The service is not available for the provided identifier.
+    GENERIC_422_MISSING_IDENTIFIER_PHONE_NUMBER:
+      description: The phone number is not included in the request and cannot be derived from the access token
+      value:
+        status: 422
+        code: MISSING_IDENTIFIER
+        message: The phone number cannot be identified.
+    GENERIC_422_UNNECESSARY_IDENTIFIER_PHONE_NUMBER:
+      description: An explicit phone number is provided when the phone number has already been identified from the access token
+      value:
+        status: 422
+        code: UNNECESSARY_IDENTIFIER
+        message: The phone number is already identified by the access token.
+    GENERIC_429_TOO_MANY_REQUESTS:
+      description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
+      value:
+        status: 429
+        code: TOO_MANY_REQUESTS
+        message: Rate limit reached.
+    GENERIC_500_INTERNAL:
+      description: Problem in Server side. Regular Server Exception
+      value:
+        status: 500
+        code: INTERNAL
+        message: Unknown server error. Typically a server bug.
+    GENERIC_503_UNAVAILABLE:
+      description: Service is not available. Temporary situation usually related to maintenance process in the server side
+      value:
+        status: 503
+        code: UNAVAILABLE
+        message: Service Unavailable.
