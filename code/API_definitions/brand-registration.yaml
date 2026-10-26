@@ -1207,12 +1207,12 @@ components:
       description: Service Unavailable
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
