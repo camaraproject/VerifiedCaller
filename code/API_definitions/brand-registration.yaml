@@ -585,28 +585,6 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: '#/components/schemas/XCorrelator'
-    ErrorInfo:
-      type: object
-      description: A structured error response providing details about a failed request, including the HTTP status code, an error code, and a human-readable message
-      required:
-        - status
-        - code
-        - message
-      properties:
-        status:
-          type: integer
-          format: int32
-          minimum: 100
-          maximum: 599
-          description: HTTP response status code
-        code:
-          type: string
-          maxLength: 96
-          description: A human-readable code to describe the error
-        message:
-          type: string
-          maxLength: 512
-          description: A human-readable description of what the event represents
   schemas:
     PhoneNumber:
       description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be in international format according to ITU-T E.164 standard.
