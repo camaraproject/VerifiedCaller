@@ -1,0 +1,238 @@
+@startuml
+title CAMARA Brand Registration API and Verified Caller usage flow
+autonumber "<font color=blue><b>[00]"
+hide footbox
+skinparam responseMessageBelowArrow true
+
+participant CC as "**API consumer**\nCall Center Platform"
+box "Operator network"
+  participant APIGW as "API Gateway\nExposure"
+  participant BRAND as "Brand Registration\nService"
+  participant VC as "Verified Caller\nService"
+  participant CSCF as "Voice\nnetwork"
+end box
+participant SINK as "Consumer notification\nendpoint (sink)"
+
+== Authentication and onboarding ==
+note over CC,APIGW
+  Obtain an access token according to the CAMARA Security and Interoperability Profile.
+  Required scopes: brand-registration:create/read/update/delete or verified-caller:create.
+  The exact authorization flow is agreed during onboarding.
+end note
+
+== Create Brand Registration ==
+CC -> APIGW: **POST /registrations**\nAuthorization: Bearer token\nx-correlator (optional)
+activate APIGW
+note right of APIGW
+  JSON body: CreateOrUpdateRegistrationRequest
+
+  Required properties:
+  • phoneNumber — registered caller number in international E.164 format.
+  • displayName — brand text shown to the called party (max. 32 characters).
+  • terminatingCountryCode — country calling code of the called number (integer 1–999).
+
+  Optional properties:
+  • phoneNumberAlternate — an alternate phone number, also in E.164 format.
+  • expiresAt — registration expiry date, YYYY-MM-DD (RFC 3339 / ISO 8601 date).
+  • displayAsset — URI for a visual asset such as a logo, image or video; may use IMS-style URI parameters. Display depends on provider/device support.
+  • customerId — unique customer identifier for the brand (max. 64 characters).
+  • verifyCallerAction — anti-spoofing action if caller verification fails:
+    BLOCK_UNVERIFIED blocks the call; DO_NOT_BRAND allows it without branding.
+    If omitted, this feature is not enabled.
+  • campaignName — logical campaign name grouping numbers under a brand (max. 64 characters).
+  • callPurpose — purpose classification; e.g. Customer-Service, Survey,
+    Telemarketing, Debt-Collection, Charity, Informational, Do-Not-Originate.
+  • sink — HTTPS URL receiving event notifications (max. 2048 characters).
+  • sinkCredential — credentials used by the provider to authenticate callback delivery;
+    credentialType can be ACCESSTOKEN or PRIVATE_KEY_JWT.
+
+  Request bodies with undeclared properties are rejected
+  with 400 INVALID_ARGUMENT.
+end note
+APIGW -> BRAND: Create registration
+activate BRAND
+BRAND --> APIGW: **201 Created**\nRegistrationRecord
+APIGW --> CC: **201 Created**\nRegistrationRecord
+deactivate BRAND
+deactivate APIGW
+
+note over CC,BRAND
+  Response fields can include registrationId, status, createdAt, updatedAt,
+  expiresAt, quota, quotaThreshold and sink. sinkCredential is not returned.
+end note
+
+== Read registrations ==
+opt List registrations
+  CC -> APIGW: **GET /registrations**\nQuery parameters (all optional)
+  note right of APIGW
+    Filters:
+    • customerId — filter by enterprise/brand owner identifier, within the authenticated client's own registrations.
+    • displayName — filter by registered display name.
+    • status — filter by registration status.
+    • createdAt.lte / createdAt.gte — creation timestamp less than/equal to or greater than/equal to the supplied timestamp.
+    • updatedAt.lte / updatedAt.gte — last-update timestamp less than/equal to or greater than/equal to the supplied timestamp.
+    • expiresAt — filter by expiry date.
+    • terminatingCountryCode — filter by called-party country code.
+    • callPurpose — filter by call-purpose classification.
+    • page / perPage — pagination controls.
+
+    Providers may support a subset of recommended filters.
+    Multiple filters are combined with logical AND.
+    Results are restricted to registrations owned by the authenticated client.
+  end note
+  APIGW -> BRAND: Query registrations
+  BRAND --> APIGW: **200 OK / 206 Partial Content**\nRegistrationRecords + pagination
+  APIGW --> CC: Results + pagination\n(204 No Content if empty)
+end
+
+opt Read one registration
+  CC -> APIGW: **GET /registrations/{registrationId}**
+  note right of APIGW
+    registrationId — unique identifier of the existing registration
+    (path parameter; max. 256 characters).
+  end note
+  APIGW -> BRAND: Read registration by ID
+  BRAND --> APIGW: **200 OK** RegistrationRecord
+  APIGW --> CC: RegistrationRecord
+end
+
+== Update Brand Registration ==
+opt Replace an existing registration
+  CC -> APIGW: **PUT /registrations/{registrationId}**\nJSON body: CreateOrUpdateRegistrationRequest
+  note right of APIGW
+    registrationId — unique identifier of the registration to update (path parameter).
+    The request body uses the same properties and descriptions as POST /registrations.
+    Required: phoneNumber, displayName, terminatingCountryCode.
+    Optional: phoneNumberAlternate, expiresAt, displayAsset, customerId,
+    verifyCallerAction, campaignName, callPurpose, sink, sinkCredential.
+  end note
+  APIGW -> BRAND: Replace registration
+  BRAND --> APIGW: **200 OK** RegistrationRecord
+  APIGW --> CC: Updated RegistrationRecord
+end
+
+== Delete Brand Registration ==
+opt Delete an existing registration
+  CC -> APIGW: **DELETE /registrations/{registrationId}**
+  note right of APIGW
+    registrationId — unique identifier of the registration to delete
+    (path parameter; max. 256 characters).
+  end note
+  APIGW -> BRAND: Delete registration
+  BRAND --> APIGW: **204 No Content**
+  APIGW --> CC: **204 No Content**
+end
+
+== Call pre-announcement (Verified Caller API) ==
+opt If a call pre-announcement is required
+  CC -> APIGW: **POST /pre-announce**\nAuthorization: Bearer token\nScope: verified-caller:create\nx-correlator (optional)
+  APIGW -> VC: Create pre-announcement\nJSON request
+  activate VC
+  note right of VC
+    Required:
+    • callingParticipant — registered caller phone number (E.164).
+    • calledParticipant — destination phone number (E.164).
+
+    Optional:
+    • strategy — verification method: BRAND_DISPLAY or SMS.
+      If omitted, the provider chooses a default; SMS is reserved for future use.
+    • timeToLive — validity duration in seconds (1–86400); provider may enforce bounds or a different value.
+    • registrationId — UUID identifying the registered brand information.
+    • dynamicDisplayName — call-specific display name overriding the registered brand (max. 32 characters; BRAND_DISPLAY only).
+    • callReason — call-specific reason shown in addition to the brand (max. 32 characters; BRAND_DISPLAY only).
+
+    Unknown JSON properties are rejected with 400 INVALID_ARGUMENT.
+  end note
+  alt Created with response body
+    VC --> APIGW: **201 Created**\nAnnouncementInfo\npreAnnouncementId (optional UUID)\nexpiresAt (optional RFC 3339 timestamp)
+    APIGW --> CC: **201 Created**\nAnnouncementInfo
+  else Created without response body
+    VC --> APIGW: **204 No Content**
+    APIGW --> CC: **204 No Content**
+  end
+  deactivate VC
+  note over CC,VC
+    The call must be placed before expiresAt to be eligible for verification.
+    The provider may return the effective expiry if it differs from the requested timeToLive.
+    The provider is advised to verify only one call per pre-announcement.
+    Documented responses include 400, 401, 403, 404, 409, 422, 429, 500 and 503.
+  end note
+end
+
+== Call branding ==
+CC -> CSCF: **INVITE**\n\
+  FROM: calling number\n\
+  TO: called number\n\
+  X-VERIFIED: preAnnouncementId
+activate CSCF
+
+CSCF -> VC: **GET /pre-announce**\n\
+  callingParticipant\n\
+  calledParticipant\n\
+  preAnnouncementId
+activate VC
+
+note over VC, CSCF
+  Validate the pre-announcement context,
+  its validity period and the calling/called numbers.
+end note
+
+alt pre-announced and verified
+  VC --> CSCF: **200 OK**\n\
+    preAnnouncementId\n\
+    verification: VERIFIED
+
+  CSCF -> BRAND: Check registration and retrieve branding\n\
+    calling number
+  activate BRAND
+  BRAND --> CSCF: **200 OK**\n\
+    displayName\n\
+    displayAsset
+  deactivate BRAND
+
+  CSCF -> CSCF: **INVITE**\n\
+    calling number\n\
+    called number\n\
+    RCD (branding)\n\
+    <size:30><&circle-check>
+
+  CSCF -> VC: **Inform**\nBranding successfully performed
+
+  opt Registration configured with sink URL
+    VC -> SINK: **POST {sink}**\nContent-Type: application/cloudevents+json\nCloudEvent notification
+    note right of SINK
+      Event types:
+      • call-branded
+      • status-changed
+      • quota-threshold-reached
+      • quota-exhausted
+
+      sinkCredential configures callback authentication:
+      ACCESSTOKEN or PRIVATE_KEY_JWT.
+    end note
+    SINK --> VC: **204 No Content**
+  end
+
+else continue - Not branded
+  VC --> CSCF: **200 OK**\n\
+    verification: NOT_VERIFIED\n\
+    verifyCallerAction: DO_NOT_BRAND
+  CSCF -> CSCF: **INVITE**\n\
+    calling number\n\
+    called number
+
+else blocked
+  VC --> CSCF: **200 OK**\n\
+    verification: NOT_VERIFIED\n\
+    verifyCallerAction: BLOCK_UNVERIFIED
+  CSCF-\\: <color:red>**BLOCKED INVITE**
+end
+
+deactivate VC
+deactivate CSCF
+
+note over CC,BRAND
+  Consult the OpenAPI specifications and CAMARA common files for complete error details.
+  x-correlator is an optional correlation header where documented.
+end note
+@enduml
