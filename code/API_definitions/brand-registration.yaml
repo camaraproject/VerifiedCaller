@@ -343,6 +343,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
             maxLength: 256
       responses:
         '200':
