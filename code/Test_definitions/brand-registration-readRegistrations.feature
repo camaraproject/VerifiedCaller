@@ -232,7 +232,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistrations
 
   @brand_registration_readRegistrations_400.1_schema_not_compliant
   Scenario: Invalid Argument. Generic Syntax Exception
-    Given the request URI does not contain a registrationId parameter with a valid UUID format
+    Given the request URI contains a malformed query parameter
     When the HTTPS "GET" request is sent
     Then the response status code is 400
     And the response header "x-correlator" has same value as the request header "x-correlator"
