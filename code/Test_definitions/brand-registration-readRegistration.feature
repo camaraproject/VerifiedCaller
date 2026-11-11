@@ -10,7 +10,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
-    And the resource "/brand-registration/vwip/registrations"
+    And the resource "/brand-registration/vwip/registrations/{registrationId}"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request URI includes a registrationId parameter that is is a valid UUID format
