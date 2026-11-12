@@ -13,7 +13,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the resource "/brand-registration/vwip/registrations/{registrationId}"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
-    And the request URI includes a registrationId parameter that is is a valid UUID format
+    And the request URI includes a registrationId parameter that is in valid UUID format
 
   # Success scenarios
 
