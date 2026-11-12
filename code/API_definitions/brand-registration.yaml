@@ -305,10 +305,6 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecords200'
-        '204':
-          $ref: '#/components/responses/SuccessfulNoContent204'
-        '206':
-          $ref: '#/components/responses/SuccessfulPartialRecords206'
         '400':
           $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         '401':
@@ -343,6 +339,7 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
             maxLength: 256
       responses:
         '200':
@@ -991,57 +988,6 @@ components:
       headers:
         x-correlator:
           $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/RegistrationRecords'
-          examples:
-            TWO_RECORDS_FOUND:
-              summary: Two registration records available
-              description: Two registration records returned to the client
-              value:
-                registrations:
-                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
-                    phoneNumber: "+123456789"
-                    status: "pending"
-                    expiresAt: "2023-07-03"
-                    terminatingCountryCode: 44
-                    displayName: "Company X Calling"
-                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
-                    customerId: "Customer1"
-                    verifyCallerAction: "DO_NOT_BRAND"
-                    quota: 100000
-                    quotaThreshold: 95000
-                    callPurpose: "Survey"
-                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
-                    phoneNumber: "+123456790"
-                    phoneNumberAlternate: "+123456791"
-                    status: "pending"
-                    expiresAt: "2023-07-03"
-                    terminatingCountryCode: 44
-                    displayName: "Company Y Calling"
-                    customerId: "Customer2"
-                    verifyCallerAction: "BLOCK_UNVERIFIED"
-                    quota: 100000
-                    quotaThreshold: 95000
-                    callPurpose: "Survey"
-                pagination:
-                  page: 1
-                  perPage: 20
-                  totalCount: 2
-                  totalPages: 1
-    SuccessfulNoContent204:
-      description: Successful response with no content
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    SuccessfulPartialRecords206:
-      description: |
-        Success response with one or more brand registration records.
-        Used if the request expects a paginated response.
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
         X-Total-Count:
           $ref: "#/components/headers/X-Total-Count"
         X-Total-Pages:
@@ -1051,9 +997,9 @@ components:
           schema:
             $ref: '#/components/schemas/RegistrationRecords'
           examples:
-            TWO_RECORDS_FOUND:
-              summary: Two registration records available
-              description: Two registration records returned to the client
+            ALL_RECORDS_RETURNED:
+              summary: All records returned in a single page
+              description: A total of two registration records available, all returned in a single page based on perPage parameter in the request
               value:
                 registrations:
                   - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794832"
@@ -1062,8 +1008,12 @@ components:
                     expiresAt: "2023-07-03"
                     terminatingCountryCode: 44
                     displayName: "Company X Calling"
+                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                     customerId: "Customer1"
                     verifyCallerAction: "DO_NOT_BRAND"
+                    quota: 100000
+                    quotaThreshold: 95000
+                    callPurpose: "Survey"
                   - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794833"
                     phoneNumber: "+123456790"
                     phoneNumberAlternate: "+123456791"
@@ -1071,7 +1021,6 @@ components:
                     expiresAt: "2023-07-03"
                     terminatingCountryCode: 44
                     displayName: "Company Y Calling"
-                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
                     customerId: "Customer2"
                     verifyCallerAction: "BLOCK_UNVERIFIED"
                     quota: 100000
@@ -1082,7 +1031,45 @@ components:
                   perPage: 20
                   totalCount: 2
                   totalPages: 1
-
+            LAST_PAGE_OF_RECORDS_RETURNED:
+              summary: Last page of records returned
+              description: A total of thirty-two registration records available, last two are returned in the last (fourth) page based on page and perPage parameters in the request
+              value:
+                registrations:
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794862"
+                    phoneNumber: "+123456889"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company X Calling"
+                    displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
+                    customerId: "Customer1"
+                    verifyCallerAction: "DO_NOT_BRAND"
+                    quota: 100000
+                    quotaThreshold: 95000
+                    callPurpose: "Survey"
+                  - registrationId: "ea77c42f-fa5e-4612-cb43-d502ae794863"
+                    phoneNumber: "+123456890"
+                    phoneNumberAlternate: "+123456891"
+                    status: "pending"
+                    expiresAt: "2023-07-03"
+                    terminatingCountryCode: 44
+                    displayName: "Company Y Calling"
+                    customerId: "Customer2"
+                    verifyCallerAction: "BLOCK_UNVERIFIED"
+                    quota: 100000
+                    quotaThreshold: 95000
+                    callPurpose: "Survey"
+                pagination:
+                  page: 4
+                  perPage: 10
+                  totalCount: 32
+                  totalPages: 4
+    SuccessfulNoContent204:
+      description: Successful response with no content
+      headers:
+        x-correlator:
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
     NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
