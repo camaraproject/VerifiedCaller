@@ -435,7 +435,7 @@ paths:
                 '401':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
-                  $ref: '../common/CAMARA_common.yaml.yaml#/components/responses/PermissionDenied403'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
                 '410':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
                 '429':
