@@ -1,0 +1,73 @@
+@startuml
+
+title CAMARA VerifiedCaller usage flow
+
+autonumber "<font color=blue><b>[00]"
+hide footbox
+
+' ---------------
+
+participant CC as "**API consumer**\nCall Center\nPlatform" #lightSalmon
+participant AGG as "API platform\nor aggregator"
+box Operator network
+    participant APIGW as "API Gateway\nExposure"
+    participant BRAND as "Branded\nSolution"
+    participant CSCF as "Voice\nnetwork"
+endbox
+
+== Onboarding ==
+
+-> CC: register
+activate CC #lightBlue
+CC <-> AGG: **onboard**
+activate AGG #lightBlue
+
+AGG -> APIGW: **POST /registrations**\n\
+  phoneNumber, displayName, terminatingCountryCode
+
+activate APIGW
+return **201 Created**\n\
+  registrationId
+
+return **201 Created**\n\
+  registrationId
+|||
+
+== Call pre-announcement ==
+
+-> CC: campaing\nactivation
+activate CC
+
+-> CC: pre-announce
+CC -> APIGW: **POST /pre-announce**\n\
+  callingParticipant, calledParticipant
+activate APIGW
+
+APIGW -> BRAND ++
+'activate BRAND
+return 
+
+return **201 Created**\n\
+  timeToLive, preAnnounceId
+return
+
+-> CC: make call
+
+== Call Branding ==
+
+CC-> CSCF: **INVITE**\n\
+  callingParticipant, calledParticipant, preAnnounceId (optional)
+activate CSCF
+note over BRAND, CSCF 
+  Based on the verifyCallerAction, different
+  levels of attesitation are possible
+end note
+
+CSCF -> : **INVITE**\n\
+  callingParticipant\n\
+  calledParticipant\n\
+  RCD (branding)\n\
+  <size:30><&circle-check>
+
+
+@enduml
