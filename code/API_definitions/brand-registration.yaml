@@ -97,7 +97,7 @@ tags:
   - name: Delete Brand Registration
     description: Delete Existing Brand Registration Information for a Calling Party
   - name: Call Branded Notifications Callback
-    description: Notifications callback invoked by the API provider when a call is successfully branded for a registration that opted in with `sink`.
+    description: Notifications callback invoked by the API provider for registration lifecycle and call branding events if a registration has opted in with `sink`.
 paths:
   /registrations:
     post:
@@ -105,6 +105,13 @@ paths:
         - Create Brand Registration
       summary: Register new brand information in the service platform
       description: Register new brand information with optional call verification request.
+        If the request includes the `sink` (and optionally `sinkCredential`) property, the API
+        provider will deliver event notifications related to this resource to the supplied sink for as long as the resource exists.
+
+        If `sink` is provided but the API provider does not support notification
+        delivery, the request MUST be rejected with `422 EVENT_NOTIFICATIONS_NOT_SUPPORTED`
+        and the resource MUST NOT be created. The consumer can then retry without
+        `sink` (e.g. fall back to polling via `GET /registrations/{registrationId}`).
       operationId: createRegistration
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -162,17 +169,13 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
                 '401':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
-                '409':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
                 '410':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
-                '422':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422'
                 '429':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
               security:
@@ -350,7 +353,21 @@ paths:
       tags:
         - Update Brand Registration
       summary: Update an existing brand registration in the service platform
-      description: Update an existing brand registration
+      description: Update an existing brand registration by fully replacing existing data with the content of the request.
+        The service provider may consider certain parameters of the registration data immutable and hence reject the update request,
+        in which case the API consumer would need to delete and (re)create the registration anew.
+
+        If the request includes the `sink` (and optionally `sinkCredential`) property, the API
+        provider will deliver event notifications related to this resource to the supplied sink for as long as the resource exists.
+        As is the case with other parameters, service provider may consider `sink` and/or `sinkCredential` immutable and hence reject the update request.
+        
+        If an update request removes the `sink` from existing registration data, the API provider must stop creating further notifications.
+        If an update request adds/updates/removes `sinkCredential` for an existing registration data, the API provider must comply with the change in the credentials. 
+        
+        If `sink` is provided but the API provider does not support notification
+        delivery, the request MUST be rejected with `422 EVENT_NOTIFICATIONS_NOT_SUPPORTED`
+        and the resource MUST NOT be updated. The consumer can then retry without
+        `sink` (e.g. fall back to polling via `GET /registrations/{registrationId}`).
       operationId: updateRegistration
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
@@ -414,17 +431,13 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+                  $ref: '../common/CAMARA_common.yaml.yaml#/components/responses/BadRequest400'
                 '401':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
-                '409':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409'
+                  $ref: '../common/CAMARA_common.yaml.yaml#/components/responses/PermissionDenied403'
                 '410':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
-                '422':
-                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422'
                 '429':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
               security:
