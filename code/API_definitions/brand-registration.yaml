@@ -116,65 +116,13 @@ paths:
               $ref: '#/components/schemas/CreateOrUpdateRegistrationRequest'
             examples:
               INPUT_SINGLE_PHONE_NUMBER:
-                summary: Device identified by phoneNumber
-                description: Create a registration for a device, identified by a phone number
-                value:
-                  phoneNumber: "+123456789"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
+                $ref: '#/components/examples/INPUT_SINGLE_PHONE_NUMBER'
               INPUT_TWO_PHONE_NUMBERS:
-                summary: Device identified by phoneNumber & phoneNumberAlternate
-                description: Create a registration for a device, identified by a phone number & phone number alternate
-                value:
-                  phoneNumber: "+123456789"
-                  phoneNumberAlternate: "+123456790"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company Y Calling"
-                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
-                  customerId: "Customer2"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
+                $ref: '#/components/examples/INPUT_TWO_PHONE_NUMBERS'
               INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN:
-                summary: Registration with notifications (ACCESSTOKEN credential)
-                description: |
-                  Create a registration and opt in for CloudEvent notifications.
-                  The API provider will call the `sink` URL with a bearer token when a call is branded.
-                value:
-                  phoneNumber: "+123456789"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
-                  sink: "https://endpoint.example.com/sink"
-                  sinkCredential:
-                    credentialType: "ACCESSTOKEN"
-                    accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    accessTokenExpiresUtc: "2026-07-03T12:27:08.312Z"
-                    accessTokenType: "bearer"
+                $ref: '#/components/examples/INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN'
               INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT:
-                summary: Registration with notifications (PRIVATE_KEY_JWT credential)
-                description: |
-                  Create a registration and opt in for CloudEvent notifications using PRIVATE_KEY_JWT.
-                  Authorization server details (token endpoint, client ID, JWKS URL) are shared out-of-band
-                  between the consumer and the API provider during onboarding.
-                value:
-                  phoneNumber: "+123456789"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
-                  sink: "https://endpoint.example.com/sink"
-                  sinkCredential:
-                    credentialType: "PRIVATE_KEY_JWT"
+                $ref: '#/components/examples/INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT'
 
       callbacks:
         notifications:
@@ -182,12 +130,13 @@ paths:
             post:
               tags:
                 - Call Branded Notifications Callback
-              summary: Call branded notifications callback
+              summary: Notifications callback for registration lifecycle and call branding events
               description: |
                 Important: this endpoint is to be implemented by the API consumer.
-                The API provider will call this endpoint whenever a call associated with
-                a brand registration that opted in with `sink` is successfully branded.
-              operationId: postCallBrandedNotification
+                The API provider will call this endpoint whenever an event occurs that is associated with
+                a brand registration that opted in with `sink`. The events that merit a notification are defined
+                in the API specific event schema.
+              operationId: registrationCreationNotification
               parameters:
                 - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
               requestBody:
@@ -224,6 +173,8 @@ paths:
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
                 '422':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422'
+                '429':
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
               security:
                 - {}
                 - notificationsBearerAuth: []
@@ -232,7 +183,7 @@ paths:
         '201':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
+          $ref: '#/components/responses/CreateOrUpdateResourceBadRequest400'
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
@@ -242,7 +193,7 @@ paths:
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/ServiceNotApplicable422'
+          $ref: '#/components/responses/CreateOrUpdateResourceUnprocessableEntity422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
@@ -417,35 +368,74 @@ paths:
               $ref: '#/components/schemas/CreateOrUpdateRegistrationRequest'
             examples:
               INPUT_SINGLE_PHONE_NUMBER:
-                summary: Device identified by phoneNumber
-                description: Update registration for a device, identified by a phone number
-                value:
-                  phoneNumber: "+123456789"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company X Calling"
-                  customerId: "Customer1"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
+                $ref: '#/components/examples/INPUT_SINGLE_PHONE_NUMBER'
               INPUT_TWO_PHONE_NUMBERS:
-                summary: Device identified by phoneNumber & phoneNumberAlternate
-                description: Update registration for a device, identified by a phone number & phone number alternate
-                value:
-                  phoneNumber: "+123456789"
-                  phoneNumberAlternate: "+123456790"
-                  expiresAt: "2023-07-03"
-                  terminatingCountryCode: 44
-                  displayName: "Company Y Calling"
-                  displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
-                  customerId: "Customer2"
-                  verifyCallerAction: "DO_NOT_BRAND"
-                  callPurpose: "Survey"
+                $ref: '#/components/examples/INPUT_TWO_PHONE_NUMBERS'
+              INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN:
+                $ref: '#/components/examples/INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN'
+              INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT:
+                $ref: '#/components/examples/INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT'
+
+      callbacks:
+        notifications:
+          "{$request.body#/sink}":
+            post:
+              tags:
+                - Call Branded Notifications Callback
+              summary: Notifications callback for registration lifecycle and call branding events
+              description: |
+                Important: this endpoint is to be implemented by the API consumer.
+                The API provider will call this endpoint whenever an event occurs that is associated with
+                a brand registration that opted in with `sink`. The events that merit a notification are defined
+                in the API specific event schema.
+              operationId: registrationUpdateNotification
+              parameters:
+                - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+              requestBody:
+                required: true
+                content:
+                  application/cloudevents+json:
+                    schema:
+                      $ref: '#/components/schemas/BrandRegistrationNotificationEvent'
+                    examples:
+                      CALL_BRANDED_EVENT:
+                        $ref: '#/components/examples/CALL_BRANDED_EVENT'
+                      BRAND_REGISTRATION_STATUS_EVENT:
+                        $ref: '#/components/examples/BRAND_REGISTRATION_STATUS_EVENT'
+                      QUOTA_EXHAUSTED_EVENT:
+                        $ref: '#/components/examples/QUOTA_EXHAUSTED_EVENT'
+                      QUOTA_THRESHOLD_REACHED_EVENT:
+                        $ref: '#/components/examples/QUOTA_THRESHOLD_REACHED_EVENT'
+
+              responses:
+                '204':
+                  description: Successful notification
+                  headers:
+                    x-correlator:
+                      $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+                '400':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
+                '401':
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
+                '403':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SubscriptionPermissionDenied403'
+                '409':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionConflict409'
+                '410':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/SinkGone410'
+                '422':
+                  $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionPhoneNumber422'
+                '429':
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+              security:
+                - {}
+                - notificationsBearerAuth: []
 
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
         '400':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
+          $ref: '#/components/responses/CreateOrUpdateResourceBadRequest400'
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
@@ -455,7 +445,7 @@ paths:
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '#/components/responses/ServiceNotApplicable422'
+          $ref: '#/components/responses/CreateOrUpdateResourceUnprocessableEntity422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
         '500':
@@ -1100,6 +1090,42 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
+    CreateOrUpdateResourceBadRequest400:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '../common/CAMARA_common.yaml#/components/schemas/ErrorInfo'
+              - type: object
+                properties:
+                  status:
+                    enum:
+                      - 400
+                  code:
+                    enum:
+                      - INVALID_ARGUMENT
+                      - OUT_OF_RANGE
+                      - INVALID_PROTOCOL
+                      - INVALID_CREDENTIAL
+                      - INVALID_TOKEN
+                      - INVALID_SINK
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              $ref: '../common/CAMARA_common.yaml#/components/examples/GENERIC_400_INVALID_ARGUMENT'
+            GENERIC_400_OUT_OF_RANGE:
+              $ref: '../common/CAMARA_common.yaml#/components/examples/GENERIC_400_OUT_OF_RANGE'
+            GENERIC_400_INVALID_PROTOCOL:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_PROTOCOL'
+            GENERIC_400_INVALID_CREDENTIAL:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_CREDENTIAL'
+            GENERIC_400_INVALID_TOKEN:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_TOKEN'
+            GENERIC_400_INVALID_SINK:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_SINK'
     NotFoundWithRegistrationNotFound404:
       description: Not found
       headers:
@@ -1142,7 +1168,7 @@ components:
                 status: 404
                 code: GENERIC_404_IDENTIFIER_NOT_FOUND
                 message: 'The device is not known to the service provider'
-    ServiceNotApplicable422:
+    CreateOrUpdateResourceUnprocessableEntity422:
       description: Unprocessable Content
       headers:
         x-correlator:
@@ -1160,14 +1186,12 @@ components:
                   code:
                     enum:
                       - SERVICE_NOT_APPLICABLE
+                      - EVENT_NOTIFICATIONS_NOT_SUPPORTED
           examples:
             GENERIC_422_SERVICE_NOT_APPLICABLE:
-              summary: Service not applicable
-              description: Service not applicable for the provided identifier
-              value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
+              $ref: '../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE'
+            GENERIC_422_EVENT_NOTIFICATIONS_NOT_SUPPORTED:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_422_EVENT_NOTIFICATIONS_NOT_SUPPORTED'
     Internal500:
       description: Internal Server Error
       headers:
@@ -1212,6 +1236,67 @@ components:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
 
   examples:
+    INPUT_SINGLE_PHONE_NUMBER:
+      summary: Device identified by phoneNumber
+      description: Registration for a device identified by a phone number
+      value:
+        phoneNumber: "+123456789"
+        expiresAt: "2023-07-03"
+        terminatingCountryCode: 44
+        displayName: "Company X Calling"
+        customerId: "Customer1"
+        verifyCallerAction: "DO_NOT_BRAND"
+        callPurpose: "Survey"
+    INPUT_TWO_PHONE_NUMBERS:
+      summary: Device identified by phoneNumber & phoneNumberAlternate
+      description: Registration for a device, identified by a phone number & phone number alternate
+      value:
+        phoneNumber: "+123456789"
+        phoneNumberAlternate: "+123456790"
+        expiresAt: "2023-07-03"
+        terminatingCountryCode: 44
+        displayName: "Company Y Calling"
+        displayAsset: "https://ims.operator-name.com/brand-logo.bmp;purpose=icon"
+        customerId: "Customer2"
+        verifyCallerAction: "DO_NOT_BRAND"
+        callPurpose: "Survey"
+    INPUT_WITH_NOTIFICATIONS_ACCESSTOKEN:
+      summary: Registration with notifications (ACCESSTOKEN credential)
+      description: |
+        A registration with opt in for CloudEvent notifications.
+        The API provider will call the `sink` URL with a bearer token.
+      value:
+        phoneNumber: "+123456789"
+        expiresAt: "2023-07-03"
+        terminatingCountryCode: 44
+        displayName: "Company X Calling"
+        customerId: "Customer1"
+        verifyCallerAction: "DO_NOT_BRAND"
+        callPurpose: "Survey"
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential:
+          credentialType: "ACCESSTOKEN"
+          accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          accessTokenExpiresUtc: "2026-07-03T12:27:08.312Z"
+          accessTokenType: "bearer"
+    INPUT_WITH_NOTIFICATIONS_PRIVATE_KEY_JWT:
+      summary: Registration with notifications (PRIVATE_KEY_JWT credential)
+      description: |
+        A registration with opt in for CloudEvent notifications using PRIVATE_KEY_JWT.
+        Authorization server details (token endpoint, client ID, JWKS URL) are shared out-of-band
+        between the consumer and the API provider during onboarding.
+      value:
+        phoneNumber: "+123456789"
+        expiresAt: "2023-07-03"
+        terminatingCountryCode: 44
+        displayName: "Company X Calling"
+        customerId: "Customer1"
+        verifyCallerAction: "DO_NOT_BRAND"
+        callPurpose: "Survey"
+        sink: "https://endpoint.example.com/sink"
+        sinkCredential:
+          credentialType: "PRIVATE_KEY_JWT"
+
     CALL_BRANDED_EVENT:
       summary: Call branded event
       description: Notification emitted when a call associated with a brand registration has been successfully branded.
