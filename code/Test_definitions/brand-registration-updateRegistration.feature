@@ -148,6 +148,30 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
+  @brand_registration_updateRegistration_400.8_invalid_sink
+  Scenario: The sink value specified in the API request is not matching the defined pattern
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.sink" is present but is not matching the defined pattern
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_SINK"
+    And the response property "$.message" contains a user friendly text
+
+  @brand_registration_updateRegistration_400.9_attempt_to_update_immutable_data
+  Scenario: The service provider considers certain components of an existing registration data to be immutable
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And the request contains at least one property that is syntactically valid but considered as immutable by the service provider
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
   # Generic 401 errors
 
   @brand_registration_updateRegistration_401.1_no_authorization_header
@@ -194,4 +218,18 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+
+  # Generic 422 errors
+
+  @brand_registration_updateRegistration_422.1_event_notifications_not_supported
+  Scenario: The sink value is specified in the API request but event notifications are not supported by the service provider
+    Given the request body is set to any value which is compliant with the schema at "/components/schemas/CreateOrUpdateRegistrationRequest"
+    And request property "$.sink" is present and syntactically valid but event notifications are not supported by the service provider
+    When the HTTPS "PUT" request is sent
+    Then the response status code is 422
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 422
+    And the response property "$.code" is "EVENT_NOTIFICATIONS_NOT_SUPPORTED"
     And the response property "$.message" contains a user friendly text
