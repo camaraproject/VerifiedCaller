@@ -360,10 +360,10 @@ paths:
         If the request includes the `sink` (and optionally `sinkCredential`) property, the API
         provider will deliver event notifications related to this resource to the supplied sink for as long as the resource exists.
         As is the case with other parameters, service provider may consider `sink` and/or `sinkCredential` immutable and hence reject the update request.
-        
+
         If an update request removes the `sink` from existing registration data, the API provider must stop creating further notifications.
-        If an update request adds/updates/removes `sinkCredential` for an existing registration data, the API provider must comply with the change in the credentials. 
-        
+        If an update request adds/updates/removes `sinkCredential` for an existing registration data, the API provider must comply with the change in the credentials.
+
         If `sink` is provided but the API provider does not support notification
         delivery, the request MUST be rejected with `422 EVENT_NOTIFICATIONS_NOT_SUPPORTED`
         and the resource MUST NOT be updated. The consumer can then retry without
@@ -431,7 +431,7 @@ paths:
                     x-correlator:
                       $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
                 '400':
-                  $ref: '../common/CAMARA_common.yaml.yaml#/components/responses/BadRequest400'
+                  $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
                 '401':
                   $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
                 '403':
