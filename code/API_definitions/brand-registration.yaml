@@ -36,7 +36,7 @@ info:
     The API exposes the following endpoints/operations:
 
     - `/registrations` :
-      - **POST** operation creates a new registration and returns a registration identifier
+      - **POST** operation creates a new registration and returns a registration identifier. Identifying the device from the access token is not applicable to this version of the API. The API consumer has to identify the subject of the API using the mandatory `phoneNumber` object.
       - **GET** operation reads existing registrations from the brand registration service
     - `/registrations/{registrationId}` :
       - **PUT** operation updates an existing registration identified by the registrationId in the brand registration service
@@ -107,7 +107,7 @@ paths:
       description: Register new brand information with optional call verification request.
       operationId: createRegistration
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
       requestBody:
         required: true
         content:
@@ -189,7 +189,7 @@ paths:
                 a brand registration that opted in with `sink` is successfully branded.
               operationId: postCallBrandedNotification
               parameters:
-                - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+                - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
               requestBody:
                 required: true
                 content:
@@ -211,7 +211,7 @@ paths:
                   description: Successful notification
                   headers:
                     x-correlator:
-                      $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+                      $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
                 '400':
                   $ref: '../common/CAMARA_event_common.yaml#/components/responses/CreateSubscriptionBadRequest400'
                 '401':
@@ -236,19 +236,15 @@ paths:
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404'
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
           $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -289,9 +285,9 @@ paths:
         is interpreted within the scope of the authenticated client.
       operationId: readRegistrations
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/page"
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/perPage"
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/page'
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/perPage'
         - $ref: '#/components/parameters/CustomerIdFilter'
         - $ref: '#/components/parameters/DisplayNameFilter'
         - $ref: '#/components/parameters/StatusFilter'
@@ -310,15 +306,9 @@ paths:
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '404':
-          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -332,7 +322,7 @@ paths:
       description: Read an existing brand registration from the service platform
       operationId: readRegistration
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
         - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
@@ -347,15 +337,11 @@ paths:
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
+          $ref: '#/components/responses/RegistrationNotFound404'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -367,7 +353,7 @@ paths:
       description: Delete an existing brand registration from the service platform
       operationId: deleteRegistration
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
         - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
@@ -382,15 +368,11 @@ paths:
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '#/components/responses/RegistrationNotFound404'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -402,7 +384,7 @@ paths:
       description: Update an existing brand registration
       operationId: updateRegistration
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: '../common/CAMARA_common.yaml#/components/parameters/x-correlator'
         - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
@@ -449,19 +431,15 @@ paths:
         '401':
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         '403':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/NotFoundWithRegistrationNotFound404'
+          $ref: '#/components/responses/RegistrationNotFound404'
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
           $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -793,7 +771,7 @@ components:
           items:
             $ref: '#/components/schemas/RegistrationRecord'
         pagination:
-          $ref: "../common/CAMARA_common.yaml#/components/schemas/Pagination"
+          $ref: '../common/CAMARA_common.yaml#/components/schemas/Pagination'
 
     BrandRegistrationEventType:
       type: string
@@ -941,7 +919,7 @@ components:
       description: Success response with a brand registration record
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -983,11 +961,11 @@ components:
       description: Success response with one or more brand registration records
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
         X-Total-Count:
-          $ref: "#/components/headers/X-Total-Count"
+          $ref: '#/components/headers/X-Total-Count'
         X-Total-Pages:
-          $ref: "#/components/headers/X-Total-Pages"
+          $ref: '#/components/headers/X-Total-Pages'
       content:
         application/json:
           schema:
@@ -1065,17 +1043,17 @@ components:
       description: Successful response with no content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    NotFoundWithIdentifierNotFound404:
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+    RegistrationNotFound404:
       description: Not found
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '../common/CAMARA_common.yaml#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1083,75 +1061,25 @@ components:
                       - 404
                   code:
                     enum:
-                      - NOT_FOUND
-                      - GENERIC_404_IDENTIFIER_NOT_FOUND
-          examples:
-            GENERIC_404_NOT_FOUND:
-              summary: Generic Not Found
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "{{resource}} is not found"
-            DEVICE_NOT_FOUND:
-              summary: Device not found
-              description: The device is not known to the service provider
-              value:
-                status: 404
-                code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: 'The device is not known to the service provider'
-    NotFoundWithRegistrationNotFound404:
-      description: Not found
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 404
-                  code:
-                    enum:
-                      - NOT_FOUND
                       - BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-                      - GENERIC_404_IDENTIFIER_NOT_FOUND
           examples:
-            GENERIC_404_NOT_FOUND:
-              summary: Generic Not Found
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "{{resource}} is not found"
             BRAND_REGISTRATION_404_REGISTRATION_NOT_FOUND:
               summary: Registration not found
-              description: The brand registration service is not able to identify the registration
+              description: The service platform is not able to identify the registration using the registrationId parameter
               value:
                 status: 404
                 code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-                message: 'The brand registration service is not able to identify an existing registration'
-            DEVICE_NOT_FOUND:
-              summary: Device not found
-              description: The device is not known to the service provider
-              value:
-                status: 404
-                code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: 'The device is not known to the service provider'
+                message: 'The service platform is not able to identify the specified registration'
     ServiceNotApplicable422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '../common/CAMARA_common.yaml#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
@@ -1168,48 +1096,6 @@ components:
                 status: 422
                 code: SERVICE_NOT_APPLICABLE
                 message: The service is not available for the provided identifier.
-    Internal500:
-      description: Internal Server Error
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 500
-                  code:
-                    enum:
-                      - INTERNAL
-          examples:
-            GENERIC_500_INTERNAL:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
-    Unavailable503:
-      description: Service Unavailable
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 503
-                  code:
-                    enum:
-                      - UNAVAILABLE
-          examples:
-            GENERIC_503_UNAVAILABLE:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
 
   examples:
     CALL_BRANDED_EVENT:

@@ -40,7 +40,7 @@ info:
 
     The API exposes the following endpoints/operations:
     - `/pre-announce` :
-      - **POST** operation creates a new pre-announcement for a call
+      - **POST** operation creates a new pre-announcement for a call. Identifying the device from the access token is not applicable to this version of the API. The API consumer has to identify the subject of the API using the mandatory `calledParticipant` object.
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
 
@@ -168,17 +168,13 @@ paths:
         '403':
           $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         '404':
-          $ref: '#/components/responses/NotFoundWithIdentifierNotFound404'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404'
         '409':
           $ref: '../common/CAMARA_common.yaml#/components/responses/AlreadyExists409'
         '422':
-          $ref: '../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422'
+          $ref: '#/components/responses/ServiceNotApplicable422'
         '429':
           $ref: '../common/CAMARA_common.yaml#/components/responses/TooManyRequests429'
-        '500':
-          $ref: '#/components/responses/Internal500'
-        '503':
-          $ref: '#/components/responses/Unavailable503'
 
       security:
         - openId:
@@ -280,7 +276,7 @@ components:
       description: Successful creation of a pre-announcement
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
       content:
         application/json:
           schema:
@@ -297,9 +293,9 @@ components:
       description: Successful creation of a pre-announcement with no content
       headers:
         x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    NotFoundWithIdentifierNotFound404:
-      description: Not found
+          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+    ServiceNotApplicable422:
+      description: Unprocessable Content
       headers:
         x-correlator:
           $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
@@ -307,70 +303,15 @@ components:
         application/json:
           schema:
             allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
+              - $ref: '../common/CAMARA_common.yaml#/components/schemas/ErrorInfo'
               - type: object
                 properties:
                   status:
                     enum:
-                      - 404
+                      - 422
                   code:
                     enum:
-                      - NOT_FOUND
-                      - GENERIC_404_IDENTIFIER_NOT_FOUND
+                      - SERVICE_NOT_APPLICABLE
           examples:
-            GENERIC_404_NOT_FOUND:
-              summary: Generic Not Found
-              description: Resource is not found
-              value:
-                status: 404
-                code: NOT_FOUND
-                message: "{{resource}} is not found"
-            DEVICE_NOT_FOUND:
-              summary: Device not found
-              description: Device is not found
-              value:
-                status: 404
-                code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: "Call Participant {{number}} is not known to the service provider"
-    Internal500:
-      description: Internal Server Error
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 500
-                  code:
-                    enum:
-                      - INTERNAL
-          examples:
-            GENERIC_500_INTERNAL:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_500_INTERNAL"
-    Unavailable503:
-      description: Service Unavailable
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 503
-                  code:
-                    enum:
-                      - UNAVAILABLE
-          examples:
-            GENERIC_503_UNAVAILABLE:
-              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_503_UNAVAILABLE"
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              $ref: '../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE'
