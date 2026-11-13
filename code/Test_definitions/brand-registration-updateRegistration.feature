@@ -24,7 +24,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: PUT updateRegistration
 
   Background: Brand Registration setup
     Given an environment at "apiRoot"
-    And the resource "/brand-registration/vwip/registrations"
+    And the resource "/brand-registration/vwip/registrations/{registrationId}"
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"

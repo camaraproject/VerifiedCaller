@@ -333,13 +333,12 @@ paths:
       operationId: readRegistration
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - description: Unique identifier of an existing brand registration
+        - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
           required: true
           schema:
-            type: string
-            maxLength: 256
+            $ref: '#/components/schemas/RegistrationId'
       responses:
         '200':
           $ref: '#/components/responses/SuccessfulRecord'
@@ -369,13 +368,12 @@ paths:
       operationId: deleteRegistration
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - description: Unique identifier of an existing brand registration
+        - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
           required: true
           schema:
-            type: string
-            maxLength: 256
+            $ref: '#/components/schemas/RegistrationId'
       responses:
         '204':
           $ref: '#/components/responses/SuccessfulNoContent204'
@@ -405,13 +403,12 @@ paths:
       operationId: updateRegistration
       parameters:
         - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
-        - description: Unique identifier of an existing brand registration
+        - description: Unique identifier of a registration created in the service platform
           in: path
           name: registrationId
           required: true
           schema:
-            type: string
-            maxLength: 256
+            $ref: '#/components/schemas/RegistrationId'
       requestBody:
         required: true
         content:
@@ -584,7 +581,7 @@ components:
       type: string
       format: uuid
       maxLength: 256
-      description: Unique identifier of a registration created in the Branded Calling Platform as a result of the POST operation.
+      description: Unique identifier of a registration created in the service platform
       example: "9e765f76-8037-4e5f-ba5d-e0c87c09a320"
 
     Status:

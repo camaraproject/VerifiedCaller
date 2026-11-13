@@ -184,7 +184,7 @@ Feature: CAMARA Brand Registration API, vwip - Operation: createRegistration
     And response property "$.registrationId" is set to registrationId1 created by the service provider
     And response property "$.quota" is set to quota1
     And the registration reaches active state
-    And quotaThreshold1 calls from phoneNumber1 are established and branded in the service provider's network
+    And quota1 calls from phoneNumber1 are established and branded in the service provider's network
     And an event notification is received on sink1
     And event notification body complies with the OAS schema at "#/components/schemas/EventQuotaExhausted"
     And event notification body property "$.type" is "org.camaraproject.brand-registration.v0.quota-exhausted"
