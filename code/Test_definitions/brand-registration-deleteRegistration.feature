@@ -87,3 +87,18 @@ Feature: CAMARA Brand Registration API, vwip - Operation: deleteRegistration
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
+
+  # Generic 404 errors
+
+  @brand_registration_deleteRegistration_404.1_registration_not_found
+  Scenario: Registration not found
+    Given the API consumer cannot be associated with a registration "registrationId2" in the service provider
+    And URI parameter "registrationId" is set to registrationId2
+    And one of the scopes associated with the access token is brand-registration:delete
+    When the HTTPS "DELETE" request is sent
+    Then the response status code is 404
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 404
+    And the response property "$.code" is "BRAND_REGISTRATION.REGISTRATION_NOT_FOUND"
+    And the response property "$.message" contains a user friendly text

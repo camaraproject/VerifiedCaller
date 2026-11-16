@@ -119,5 +119,5 @@ Feature: CAMARA Brand Registration API, vwip - Operation: readRegistration
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 404
-    And the response property "$.code" is "NOT_FOUND"
+    And the response property "$.code" is "BRAND_REGISTRATION.REGISTRATION_NOT_FOUND"
     And the response property "$.message" contains a user friendly text
