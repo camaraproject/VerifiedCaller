@@ -1048,8 +1048,6 @@ components:
         x-correlator:
           $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
     RegistrationNotFound404:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-    NotFoundWithIdentifierNotFound404:
       description: Not found
       headers:
         x-correlator:
@@ -1066,23 +1064,15 @@ components:
                       - 404
                   code:
                     enum:
-                      - NOT_FOUND
-                      - GENERIC_404_IDENTIFIER_NOT_FOUND
+                      - BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
           examples:
-            GENERIC_404_NOT_FOUND:
-              summary: Generic Not Found
-              description: Resource is not found
+            BRAND_REGISTRATION_404_REGISTRATION_NOT_FOUND:
+              summary: Registration not found
+              description: The service platform is not able to identify the registration using the registrationId parameter
               value:
                 status: 404
-                code: NOT_FOUND
-                message: "{{resource}} is not found"
-            DEVICE_NOT_FOUND:
-              summary: Device not found
-              description: The device is not known to the service provider
-              value:
-                status: 404
-                code: GENERIC_404_IDENTIFIER_NOT_FOUND
-                message: 'The device is not known to the service provider'
+                code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
+                message: 'The service platform is not able to identify the specified registration'
     CreateOrUpdateResourceBadRequest400:
       description: Problem with the client request
       headers:
