@@ -1145,16 +1145,16 @@ components:
                 status: 404
                 code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
                 message: 'The service platform is not able to identify the specified registration'
-    ServiceNotApplicable422:
+    CreateOrUpdateResourceUnprocessableEntity422:
       description: Unprocessable Content
       headers:
         x-correlator:
-          $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: '../common/CAMARA_common.yaml#/components/schemas/ErrorInfo'
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
@@ -1166,12 +1166,9 @@ components:
                       - EVENT_NOTIFICATIONS_NOT_SUPPORTED
           examples:
             GENERIC_422_SERVICE_NOT_APPLICABLE:
-              summary: Service not applicable
-              description: Service not applicable for the provided identifier
-              value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
+              $ref: '../common/CAMARA_common.yaml#/components/examples/GENERIC_422_SERVICE_NOT_APPLICABLE'
+            GENERIC_422_EVENT_NOTIFICATIONS_NOT_SUPPORTED:
+              $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_422_EVENT_NOTIFICATIONS_NOT_SUPPORTED'
 
   examples:
     INPUT_SINGLE_PHONE_NUMBER:
