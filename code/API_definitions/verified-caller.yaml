@@ -40,7 +40,7 @@ info:
 
     The API exposes the following endpoints/operations:
     - `/pre-announce` :
-      - **POST** operation creates a new pre-announcement for a call. Identifying the device from the access token is not applicable to this version of the API. The API consumer has to identify the subject of the API using the mandatory `calledParticipant` object.
+      - **POST** operation creates a new pre-announcement for a call. Identifying the device from the access token is not applicable to this version of the API. The API consumer identifies the called party as the subject of the API using the mandatory 'calledParticipant' property.
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
 
