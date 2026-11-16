@@ -36,7 +36,7 @@ info:
     The API exposes the following endpoints/operations:
 
     - `/registrations` :
-      - **POST** operation creates a new registration and returns a registration identifier. Identifying the device from the access token is not applicable to this version of the API. The API consumer has to identify the subject of the API using the mandatory `phoneNumber` object.
+      - **POST** operation creates a new registration and returns a registration identifier.
       - **GET** operation reads existing registrations from the brand registration service
     - `/registrations/{registrationId}` :
       - **PUT** operation updates an existing registration identified by the registrationId in the brand registration service
