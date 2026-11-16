@@ -1047,32 +1047,6 @@ components:
       headers:
         x-correlator:
           $ref: '../common/CAMARA_common.yaml#/components/headers/x-correlator'
-    RegistrationNotFound404:
-      description: Not found
-      headers:
-        x-correlator:
-          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 404
-                  code:
-                    enum:
-                      - BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-          examples:
-            BRAND_REGISTRATION_404_REGISTRATION_NOT_FOUND:
-              summary: Registration not found
-              description: The service platform is not able to identify the registration using the registrationId parameter
-              value:
-                status: 404
-                code: BRAND_REGISTRATION.REGISTRATION_NOT_FOUND
-                message: 'The service platform is not able to identify the specified registration'
     CreateOrUpdateResourceBadRequest400:
       description: Problem with the client request
       headers:
@@ -1109,7 +1083,7 @@ components:
               $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_TOKEN'
             GENERIC_400_INVALID_SINK:
               $ref: '../common/CAMARA_event_common.yaml#/components/examples/GENERIC_400_INVALID_SINK'
-    NotFoundWithRegistrationNotFound404:
+    RegistrationNotFound404:
       description: Not found
       headers:
         x-correlator:
