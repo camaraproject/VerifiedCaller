@@ -128,7 +128,7 @@ Changes documented below are compared to version 0.1.0.
 
 ### Changed
 
- `terminatingCountryCode` is an `int32` in the range 1-999 by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/117
+* `terminatingCountryCode` is an `int32` in the range 1-999 by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/117
 * `customerId` has a maximum length of 64 characters by @mohdfarhanakram in https://github.com/camaraproject/VerifiedCaller/pull/99
 * Request bodies with properties not declared in the API definition are rejected with `400 INVALID_ARGUMENT`, aligned with Commonalities r4.4, by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/119
 * Descriptions clarified: behaviour of `verifyCallerAction`; `PUT` replaces the full registration and may reject changes to parameters the provider treats as immutable; the provider may reject `displayName`, `customerId` or `campaignName` after further validation, by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/143, https://github.com/camaraproject/VerifiedCaller/pull/151, https://github.com/camaraproject/VerifiedCaller/pull/175
