@@ -176,7 +176,8 @@ Changes documented below are compared to version 0.1.0.
 
 ### Removed
 
-* N/A
+* `429` code `QUOTA_EXCEEDED` by @GillesInnov35 in https://github.com/camaraproject/VerifiedCaller/pull/125
+* `500` and `503` responses are no longer documented (CAMARA API Design Guide r4.4, section 3.2.1) by @alpaycetin74 in https://github.com/camaraproject/VerifiedCaller/pull/176
 
 **Full Changelog**: https://github.com/camaraproject/VerifiedCaller/compare/r1.3...r2.4
 
